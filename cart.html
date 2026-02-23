@@ -19,7 +19,10 @@
 <section class="products" id="cart-items"></section>
 
 <h2 id="total" style="text-align:center;"></h2>
-
+<button onclick="goToCheckout()" style="display:block;margin:20px auto;padding:10px 20px;">
+  Proceed to Checkout
+</button>
+  
 <script>
 const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
 const cartContainer = document.getElementById("cart-items");
