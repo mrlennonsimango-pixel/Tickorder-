@@ -47,11 +47,20 @@ if (cart.length === 0) {
 }
 
 totalDisplay.textContent = "Total: $" + total;
-
+<button onclick="goToCheckout()" style="display:block;margin:20px auto;padding:10px 20px;">
+  Proceed to Checkout
+</button>
 function removeItem(index) {
   cart.splice(index, 1);
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
   location.reload();
+}
+  function goToCheckout() {
+  if (cart.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
+  window.location.href = "checkout.html";
 }
 </script>
 
