@@ -60,12 +60,28 @@ document.getElementById("checkout-form").addEventListener("submit", function(e) 
     return;
   }
 
-  localStorage.removeItem("tickorderCart");
+  const name = e.target[0].value;
+  const email = e.target[1].value;
+  const address = e.target[2].value;
 
-  document.getElementById("order-status").textContent =
-    "Order placed successfully!";
+  db.collection("orders").add({
+    name: name,
+    email: email,
+    address: address,
+    items: cart,
+    total: cart.reduce((sum, item) => sum + item.price, 0),
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  })
+  .then(() => {
+    localStorage.removeItem("tickorderCart");
+    document.getElementById("order-status").textContent = "Order placed successfully!";
+  })
+  .catch((error) => {
+    console.error("Error adding order: ", error);
+    alert("Failed to place order. Try again.");
+  });
 });
-</script>
+</script>>
 
 </body>
                                                               </html>
