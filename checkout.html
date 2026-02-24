@@ -29,6 +29,26 @@
   <h3 id="order-status" style="margin-top:20px;"></h3>
 </section>
 
+  <!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // Firebase config — copy exactly from your Firebase console
+  const firebaseConfig = {
+    apiKey: "AIzaSyBhDQeyV9_REmBi0zjQQyawkDoaX7Ho544",
+    authDomain: "tickorder-13b84.firebaseapp.com",
+    projectId: "tickorder-13b84",
+    storageBucket: "tickorder-13b84.firebasestorage.app",
+    messagingSenderId: "288232701324",
+    appId: "1:288232701324:web:ae43423dacecd9508f6aa9"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+</script>
+  
 <script>
 const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
 
