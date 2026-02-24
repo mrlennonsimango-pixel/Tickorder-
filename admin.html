@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TickOrder Admin</title>
+</head>
+<body>
+
+<h2>Admin - Orders</h2>
+<div id="orders"></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "YOUR_KEY",
+    authDomain: "YOUR_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_BUCKET",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const ordersDiv = document.getElementById("orders");
+
+  db.collection("orders")
+    .orderBy("createdAt", "desc")
+    .onSnapshot(snapshot => {
+      ordersDiv.innerHTML = "";
+      snapshot.forEach(doc => {
+        const order = doc.data();
+        ordersDiv.innerHTML += `
+          <div style="border:1px solid #000; margin:10px; padding:10px;">
+            <p><strong>Name:</strong> ${order.name}</p>
+            <p><strong>Email:</strong> ${order.email}</p>
+            <p><strong>Address:</strong> ${order.address}</p>
+            <p><strong>Total:</strong> $${order.total}</p>
+          </div>
+        `;
+      });
+    });
+</script>
+
+</body>
+</html>
