@@ -41,7 +41,7 @@ auth.onAuthStateChanged(user => {
         ordersDiv.innerHTML = "";
         snapshot.forEach(doc => {
           const order = doc.data();
-          ordersDiv.innerHTML += `
+ordersDiv.innerHTML += `
   <div style="border:1px solid #000; margin:10px; padding:10px;">
     <p><strong>Name:</strong> ${order.name}</p>
     <p><strong>Email:</strong> ${order.email}</p>
@@ -49,7 +49,10 @@ auth.onAuthStateChanged(user => {
     <p><strong>Total:</strong> $${order.total}</p>
     <p><strong>Status:</strong> ${order.status}</p>
     <p><strong>Payment:</strong> ${order.paymentStatus}</p>
+
     <button onclick="markShipped('${doc.id}')">Mark as Shipped</button>
+    <button onclick="markDelivered('${doc.id}')">Mark as Delivered</button>
+    <button onclick="markPaid('${doc.id}')">Mark as Paid</button>
   </div>
 `;
         });
@@ -62,7 +65,17 @@ function markShipped(orderId) {
     status: "shipped"
   });
 }
-  
+  function markDelivered(orderId) {
+  db.collection("orders").doc(orderId).update({
+    status: "delivered"
+  });
+}
+
+function markPaid(orderId) {
+  db.collection("orders").doc(orderId).update({
+    paymentStatus: "paid"
+  });
+}
 </script>
 
 </body>
