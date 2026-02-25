@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TickOrder Admin Login</title>
+</head>
+<body>
+
+<h2>Admin Login</h2>
+
+<form id="login-form">
+  <input type="email" placeholder="Email" required><br><br>
+  <input type="password" placeholder="Password" required><br><br>
+  <button type="submit">Login</button>
+</form>
+
+<p id="error" style="color:red;"></p>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyBhDQeyV9_REmBi0zjQQyawkDoaX7Ho544",
+    authDomain: "tickorder-13b84.firebaseapp.com",
+    projectId: "tickorder-13b84",
+    storageBucket: "tickorder-13b84.firebasestorage.app",
+    messagingSenderId: "288232701324",
+    appId: "1:288232701324:web:ae43423dacecd9508f6aa9"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+
+  const auth = firebase.auth();
+
+  document.getElementById("login-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const email = e.target[0].value;
+    const password = e.target[1].value;
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        window.location.href = "admin.html";
+      })
+      .catch((error) => {
+        document.getElementById("error").textContent = error.message;
+      });
+  });
+</script>
+
+</body>
+</html>
