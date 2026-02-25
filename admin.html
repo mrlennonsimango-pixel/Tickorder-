@@ -6,6 +6,15 @@
 <body>
 
 <h2>Admin - Orders</h2>
+  
+  <div style="margin-bottom:20px;">
+  <button onclick="loadOrders('all')">All</button>
+  <button onclick="loadOrders('pending')">Pending</button>
+  <button onclick="loadOrders('shipped')">Shipped</button>
+  <button onclick="loadOrders('delivered')">Delivered</button>
+  <button onclick="loadOrders('unpaid')">Unpaid</button>
+</div>
+  
 <div id="orders"></div>
 
 <!-- Firebase SDK -->
@@ -33,32 +42,56 @@ auth.onAuthStateChanged(user => {
   if (!user) {
     window.location.href = "login.html";
   } else {
+    // Load all orders automatically when admin logs in
+    loadOrders('all');
+  }
+});
 
     // Only load orders if logged in
-    db.collection("orders")
-      .orderBy("createdAt", "desc")
-      .onSnapshot(snapshot => {
-        ordersDiv.innerHTML = "";
-        snapshot.forEach(doc => {
-          const order = doc.data();
-ordersDiv.innerHTML += `
-  <div style="border:1px solid #000; margin:10px; padding:10px;">
-    <p><strong>Name:</strong> ${order.name}</p>
-    <p><strong>Email:</strong> ${order.email}</p>
-    <p><strong>Address:</strong> ${order.address}</p>
-    <p><strong>Total:</strong> $${order.total}</p>
-    <p><strong>Status:</strong> ${order.status}</p>
-    <p><strong>Payment:</strong> ${order.paymentStatus}</p>
+    function loadOrders(filter) {
 
-    <button onclick="markShipped('${doc.id}')">Mark as Shipped</button>
-    <button onclick="markDelivered('${doc.id}')">Mark as Delivered</button>
-    <button onclick="markPaid('${doc.id}')">Mark as Paid</button>
-  </div>
-`;
-        });
-      });
+  let query = db.collection("orders").orderBy("createdAt", "desc");
 
+  if (filter === "pending") {
+    query = query.where("status", "==", "pending");
   }
+
+  if (filter === "shipped") {
+    query = query.where("status", "==", "shipped");
+  }
+
+  if (filter === "delivered") {
+    query = query.where("status", "==", "delivered");
+  }
+
+  if (filter === "unpaid") {
+    query = query.where("paymentStatus", "==", "unpaid");
+  }
+
+  query.onSnapshot(snapshot => {
+    ordersDiv.innerHTML = "";
+
+    snapshot.forEach(doc => {
+      const order = doc.data();
+
+      ordersDiv.innerHTML += `
+        <div style="border:1px solid #000; margin:10px; padding:10px;">
+          <p><strong>Name:</strong> ${order.name}</p>
+          <p><strong>Email:</strong> ${order.email}</p>
+          <p><strong>Address:</strong> ${order.address}</p>
+          <p><strong>Total:</strong> $${order.total}</p>
+          <p><strong>Status:</strong> ${order.status}</p>
+          <p><strong>Payment:</strong> ${order.paymentStatus}</p>
+
+          <button onclick="markShipped('${doc.id}')">Mark as Shipped</button>
+          <button onclick="markDelivered('${doc.id}')">Mark as Delivered</button>
+          <button onclick="markPaid('${doc.id}')">Mark as Paid</button>
+        </div>
+      `;
+    });
+
+  });
+}
 });
 function markShipped(orderId) {
   db.collection("orders").doc(orderId).update({
