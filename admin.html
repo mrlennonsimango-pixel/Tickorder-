@@ -11,7 +11,8 @@
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  
 <script>
   const firebaseConfig = {
   apiKey: "AIzaSyBhDQeyV9_REmBi0zjQQyawkDoaX7Ho544",
@@ -24,7 +25,14 @@
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
+const auth = firebase.auth();
 
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = "login.html";
+  }
+});
+  
   const ordersDiv = document.getElementById("orders");
 
   db.collection("orders")
