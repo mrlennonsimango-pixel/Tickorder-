@@ -65,13 +65,15 @@ document.getElementById("checkout-form").addEventListener("submit", function(e) 
   const address = e.target[2].value;
 
   db.collection("orders").add({
-    name: name,
-    email: email,
-    address: address,
-    items: cart,
-    total: cart.reduce((sum, item) => sum + item.price, 0),
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  })
+  name: name,
+  email: email,
+  address: address,
+  items: cart,
+  total: cart.reduce((sum, item) => sum + item.price, 0),
+  status: "pending",
+  paymentStatus: "unpaid",
+  createdAt: firebase.firestore.FieldValue.serverTimestamp()
+})
   .then(() => {
     localStorage.removeItem("tickorderCart");
     document.getElementById("order-status").textContent = "Order placed successfully!";
