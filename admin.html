@@ -42,18 +42,27 @@ auth.onAuthStateChanged(user => {
         snapshot.forEach(doc => {
           const order = doc.data();
           ordersDiv.innerHTML += `
-            <div style="border:1px solid #000; margin:10px; padding:10px;">
-              <p><strong>Name:</strong> ${order.name}</p>
-              <p><strong>Email:</strong> ${order.email}</p>
-              <p><strong>Address:</strong> ${order.address}</p>
-              <p><strong>Total:</strong> $${order.total}</p>
-            </div>
-          `;
+  <div style="border:1px solid #000; margin:10px; padding:10px;">
+    <p><strong>Name:</strong> ${order.name}</p>
+    <p><strong>Email:</strong> ${order.email}</p>
+    <p><strong>Address:</strong> ${order.address}</p>
+    <p><strong>Total:</strong> $${order.total}</p>
+    <p><strong>Status:</strong> ${order.status}</p>
+    <p><strong>Payment:</strong> ${order.paymentStatus}</p>
+    <button onclick="markShipped('${doc.id}')">Mark as Shipped</button>
+  </div>
+`;
         });
       });
 
   }
 });
+function markShipped(orderId) {
+  db.collection("orders").doc(orderId).update({
+    status: "shipped"
+  });
+}
+  
 </script>
 
 </body>
