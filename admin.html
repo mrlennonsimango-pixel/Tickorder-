@@ -48,6 +48,7 @@ auth.onAuthStateChanged(user => {
 
     // Only load orders if logged in
     function loadOrders(filter) {
+function loadOrders(filter) {
 
   let query = db.collection("orders").orderBy("createdAt", "desc");
 
