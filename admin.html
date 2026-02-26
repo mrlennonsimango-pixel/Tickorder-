@@ -38,49 +38,49 @@
   const ordersDiv = document.getElementById("orders");
 
   // ✅ FILTER FUNCTION (GLOBAL)
-  function loadOrders(filter) {
+function loadOrders(filter) {
 
-    let query = db.collection("orders").orderBy("createdAt", "desc");
+  let query;
 
-    if (filter === "pending") {
-      query = query.where("status", "==", "pending");
-    }
-
-    if (filter === "shipped") {
-      query = query.where("status", "==", "shipped");
-    }
-
-    if (filter === "delivered") {
-      query = query.where("status", "==", "delivered");
-    }
-
-    if (filter === "unpaid") {
-      query = query.where("paymentStatus", "==", "unpaid");
-    }
-
-    query.get().then(snapshot => {
-      ordersDiv.innerHTML = "";
-
-      snapshot.forEach(doc => {
-        const order = doc.data();
-
-        ordersDiv.innerHTML += `
-          <div style="border:1px solid #000; margin:10px; padding:10px;">
-            <p><strong>Name:</strong> ${order.name}</p>
-            <p><strong>Email:</strong> ${order.email}</p>
-            <p><strong>Address:</strong> ${order.address}</p>
-            <p><strong>Total:</strong> $${order.total}</p>
-            <p><strong>Status:</strong> ${order.status}</p>
-            <p><strong>Payment:</strong> ${order.paymentStatus}</p>
-
-            <button onclick="markShipped('${doc.id}')">Mark as Shipped</button>
-            <button onclick="markDelivered('${doc.id}')">Mark as Delivered</button>
-            <button onclick="markPaid('${doc.id}')">Mark as Paid</button>
-          </div>
-        `;
-      });
-    });
+  if (filter === "all") {
+    query = db.collection("orders")
+              .orderBy("createdAt", "desc");
+  } 
+  else if (filter === "unpaid") {
+    query = db.collection("orders")
+              .where("paymentStatus", "==", "unpaid");
+  } 
+  else {
+    query = db.collection("orders")
+              .where("status", "==", filter);
   }
+
+  query.get().then(snapshot => {
+    ordersDiv.innerHTML = "";
+
+    snapshot.forEach(doc => {
+      const order = doc.data();
+
+      ordersDiv.innerHTML += `
+        <div style="border:1px solid #000; margin:10px; padding:10px;">
+          <p><strong>Name:</strong> ${order.name}</p>
+          <p><strong>Email:</strong> ${order.email}</p>
+          <p><strong>Address:</strong> ${order.address}</p>
+          <p><strong>Total:</strong> $${order.total}</p>
+          <p><strong>Status:</strong> ${order.status}</p>
+          <p><strong>Payment:</strong> ${order.paymentStatus}</p>
+
+          <button onclick="markShipped('${doc.id}')">Mark as Shipped</button>
+          <button onclick="markDelivered('${doc.id}')">Mark as Delivered</button>
+          <button onclick="markPaid('${doc.id}')">Mark as Paid</button>
+        </div>
+      `;
+    });
+  })
+  .catch(error => {
+    console.error("Query error:", error);
+  });
+}
 
   // ✅ UPDATE FUNCTIONS
   function markShipped(orderId) {
