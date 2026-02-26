@@ -101,6 +101,27 @@ function loadOrders(filter) {
     db.collection("orders").doc(orderId).update({ paymentStatus: "paid" });
   }
 
+    function updateDashboard(snapshot) {
+
+  let totalOrders = 0;
+  let paidRevenue = 0;
+  let unpaidRevenue = 0;
+
+  snapshot.forEach(doc => {
+    const order = doc.data();
+    totalOrders++;
+
+    if (order.paymentStatus === "paid") {
+      paidRevenue += Number(order.total);
+    } else {
+      unpaidRevenue += Number(order.total);
+    }
+  });
+
+  document.getElementById("totalOrders").innerText = totalOrders;
+  document.getElementById("paidRevenue").innerText = paidRevenue;
+  document.getElementById("unpaidRevenue").innerText = unpaidRevenue;
+}
   // ✅ AUTH CHECK
   auth.onAuthStateChanged(user => {
     if (!user) {
