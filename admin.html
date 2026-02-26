@@ -81,6 +81,7 @@ query.onSnapshot(snapshot => {
         <button onclick="markShipped('${doc.id}')">Mark as Shipped</button>
         <button onclick="markDelivered('${doc.id}')">Mark as Delivered</button>
         <button onclick="markPaid('${doc.id}')">Mark as Paid</button>
+        <button onclick="exportOrders()">Export to CSV</button>
       </div>
     `;
   });
@@ -112,6 +113,27 @@ function markPaid(orderId) {
     });
 }
 
+    function exportOrders() {
+  let csv = "Name,Email,Address,Total,Status,Payment\n"; // CSV headers
+
+  // Get all orders from Firestore
+  db.collection("orders").orderBy("createdAt", "desc").get().then(snapshot => {
+    snapshot.forEach(doc => {
+      const o = doc.data();
+      csv += `"${o.name}","${o.email}","${o.address}",${o.total},"${o.status}","${o.paymentStatus}"\n`;
+    });
+
+    // Create a downloadable CSV file
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "orders.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+}
     function updateDashboard(snapshot) {
 
   let totalOrders = 0;
