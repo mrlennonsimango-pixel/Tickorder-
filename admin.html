@@ -78,7 +78,6 @@ query.onSnapshot(snapshot => {
         <p><strong>Status:</strong> ${order.status}</p>
         <p><strong>Payment:</strong> ${order.paymentStatus}</p>
 
-<button onclick="exportOrders()">Export to CSV</button>
         <button onclick="markShipped('${doc.id}')">Mark as Shipped</button>
         <button onclick="markDelivered('${doc.id}')">Mark as Delivered</button>
         <button onclick="markPaid('${doc.id}')">Mark as Paid</button>
