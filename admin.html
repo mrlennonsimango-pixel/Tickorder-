@@ -23,92 +23,87 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   
 <script>
+  <script>
   const firebaseConfig = {
-  apiKey: "AIzaSyBhDQeyV9_REmBi0zjQQyawkDoaX7Ho544",
-  authDomain: "tickorder-13b84.firebaseapp.com",
-  projectId: "tickorder-13b84",
-  storageBucket: "tickorder-13b84.firebasestorage.app",
-  messagingSenderId: "288232701324",
-  appId: "1:288232701324:web:ae43423dacecd9508f6aa9"
-};
+    apiKey: "AIzaSyBhDQeyV9_REmBi0zjQQyawkDoaX7Ho544",
+    authDomain: "tickorder-13b84.firebaseapp.com",
+    projectId: "tickorder-13b84",
+    storageBucket: "tickorder-13b84.firebasestorage.app",
+    messagingSenderId: "288232701324",
+    appId: "1:288232701324:web:ae43423dacecd9508f6aa9"
+  };
 
   firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-const auth = firebase.auth();
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+  const ordersDiv = document.getElementById("orders");
 
-const ordersDiv = document.getElementById("orders");
+  // ✅ FILTER FUNCTION (GLOBAL)
+  function loadOrders(filter) {
 
-auth.onAuthStateChanged(user => {
-  if (!user) {
-    window.location.href = "login.html";
-  } else {
-    // Load all orders automatically when admin logs in
-    loadOrders('all');
-  }
+    let query = db.collection("orders").orderBy("createdAt", "desc");
 
-    // Only load orders if logged in
-    function loadOrders(filter) {
-function loadOrders(filter) {
+    if (filter === "pending") {
+      query = query.where("status", "==", "pending");
+    }
 
-  let query = db.collection("orders").orderBy("createdAt", "desc");
+    if (filter === "shipped") {
+      query = query.where("status", "==", "shipped");
+    }
 
-  if (filter === "pending") {
-    query = query.where("status", "==", "pending");
-  }
+    if (filter === "delivered") {
+      query = query.where("status", "==", "delivered");
+    }
 
-  if (filter === "shipped") {
-    query = query.where("status", "==", "shipped");
-  }
+    if (filter === "unpaid") {
+      query = query.where("paymentStatus", "==", "unpaid");
+    }
 
-  if (filter === "delivered") {
-    query = query.where("status", "==", "delivered");
-  }
+    query.get().then(snapshot => {
+      ordersDiv.innerHTML = "";
 
-  if (filter === "unpaid") {
-    query = query.where("paymentStatus", "==", "unpaid");
-  }
+      snapshot.forEach(doc => {
+        const order = doc.data();
 
-  query.get().then(snapshot => {
-    ordersDiv.innerHTML = "";
+        ordersDiv.innerHTML += `
+          <div style="border:1px solid #000; margin:10px; padding:10px;">
+            <p><strong>Name:</strong> ${order.name}</p>
+            <p><strong>Email:</strong> ${order.email}</p>
+            <p><strong>Address:</strong> ${order.address}</p>
+            <p><strong>Total:</strong> $${order.total}</p>
+            <p><strong>Status:</strong> ${order.status}</p>
+            <p><strong>Payment:</strong> ${order.paymentStatus}</p>
 
-    snapshot.forEach(doc => {
-      const order = doc.data();
-
-      ordersDiv.innerHTML += `
-        <div style="border:1px solid #000; margin:10px; padding:10px;">
-          <p><strong>Name:</strong> ${order.name}</p>
-          <p><strong>Email:</strong> ${order.email}</p>
-          <p><strong>Address:</strong> ${order.address}</p>
-          <p><strong>Total:</strong> $${order.total}</p>
-          <p><strong>Status:</strong> ${order.status}</p>
-          <p><strong>Payment:</strong> ${order.paymentStatus}</p>
-
-          <button onclick="markShipped('${doc.id}')">Mark as Shipped</button>
-          <button onclick="markDelivered('${doc.id}')">Mark as Delivered</button>
-          <button onclick="markPaid('${doc.id}')">Mark as Paid</button>
-        </div>
-      `;
+            <button onclick="markShipped('${doc.id}')">Mark as Shipped</button>
+            <button onclick="markDelivered('${doc.id}')">Mark as Delivered</button>
+            <button onclick="markPaid('${doc.id}')">Mark as Paid</button>
+          </div>
+        `;
+      });
     });
+  }
 
-  });
-}
-});
-function markShipped(orderId) {
-  db.collection("orders").doc(orderId).update({
-    status: "shipped"
-  });
-}
+  // ✅ UPDATE FUNCTIONS
+  function markShipped(orderId) {
+    db.collection("orders").doc(orderId).update({ status: "shipped" });
+  }
+
   function markDelivered(orderId) {
-  db.collection("orders").doc(orderId).update({
-    status: "delivered"
-  });
-}
+    db.collection("orders").doc(orderId).update({ status: "delivered" });
+  }
 
-function markPaid(orderId) {
-  db.collection("orders").doc(orderId).update({
-    paymentStatus: "paid"
+  function markPaid(orderId) {
+    db.collection("orders").doc(orderId).update({ paymentStatus: "paid" });
+  }
+
+  // ✅ AUTH CHECK
+  auth.onAuthStateChanged(user => {
+    if (!user) {
+      window.location.href = "login.html";
+    } else {
+      loadOrders("all");
+    }
   });
-}
 </script>
 
 </body>
