@@ -60,7 +60,7 @@ function loadOrders(filter) {
     query = db.collection("orders")
               .where("status", "==", filter);
   }
-
+updateDashboard(snapshot);
   query.get().then(snapshot => {
     ordersDiv.innerHTML = "";
 
