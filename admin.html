@@ -42,10 +42,12 @@
   const db = firebase.firestore();
   const auth = firebase.auth();
   const ordersDiv = document.getElementById("orders");
-
+let currentFilter = "all"; // default filter
+    
   // ✅ FILTER FUNCTION (GLOBAL)
 function loadOrders(filter) {
-
+currentFilter = filter;
+  
   let query;
 
   if (filter === "all") {
@@ -91,16 +93,25 @@ function loadOrders(filter) {
 
   // ✅ UPDATE FUNCTIONS
   function markShipped(orderId) {
-    db.collection("orders").doc(orderId).update({ status: "shipped" });
-  }
+  db.collection("orders").doc(orderId).update({ status: "shipped" })
+    .then(() => {
+      loadOrders(currentFilter); // refresh orders automatically
+    });
+}
 
-  function markDelivered(orderId) {
-    db.collection("orders").doc(orderId).update({ status: "delivered" });
-  }
+function markDelivered(orderId) {
+  db.collection("orders").doc(orderId).update({ status: "delivered" })
+    .then(() => {
+      loadOrders(currentFilter); // refresh orders automatically
+    });
+}
 
-  function markPaid(orderId) {
-    db.collection("orders").doc(orderId).update({ paymentStatus: "paid" });
-  }
+function markPaid(orderId) {
+  db.collection("orders").doc(orderId).update({ paymentStatus: "paid" })
+    .then(() => {
+      loadOrders(currentFilter); // refresh orders automatically
+    });
+}
 
     function updateDashboard(snapshot) {
 
