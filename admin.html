@@ -139,6 +139,37 @@ function exportSingleOrder(orderId) {
     URL.revokeObjectURL(url);
   });
 }
+
+    function exportFilteredOrders(filter) {
+  let csv = "Name,Email,Address,Total,Status,Payment\n"; // CSV headers
+  let query;
+
+  if (filter === "all") {
+    query = db.collection("orders").orderBy("createdAt", "desc");
+  } else if (filter === "unpaid") {
+    query = db.collection("orders").where("paymentStatus", "==", "unpaid");
+  } else {
+    query = db.collection("orders").where("status", "==", filter);
+  }
+
+  query.get().then(snapshot => {
+    snapshot.forEach(doc => {
+      const o = doc.data();
+      csv += `"${o.name}","${o.email}","${o.address}",${o.total},"${o.status}","${o.paymentStatus}"\n`;
+    });
+
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${filter}_orders.csv`;
+    a.click();
+
+    URL.revokeObjectURL(url);
+  });
+}
+    
     function updateDashboard(snapshot) {
 
   let totalOrders = 0;
