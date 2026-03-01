@@ -81,7 +81,7 @@ query.onSnapshot(snapshot => {
         <button onclick="markShipped('${doc.id}')">Mark as Shipped</button>
         <button onclick="markDelivered('${doc.id}')">Mark as Delivered</button>
         <button onclick="markPaid('${doc.id}')">Mark as Paid</button>
-        <button onclick="exportOrders()">Export to CSV</button>
+        <button onclick="exportSingleOrder('${doc.id}')">Export Order</button>
       </div>
     `;
   });
