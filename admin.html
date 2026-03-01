@@ -86,7 +86,8 @@ query.onSnapshot(snapshot => {
     `;
   });
 });
-
+  }
+    
   // ✅ UPDATE FUNCTIONS
   function markShipped(orderId) {
   db.collection("orders").doc(orderId).update({ status: "shipped" })
