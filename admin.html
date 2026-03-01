@@ -15,6 +15,14 @@
   <button onclick="loadOrders('unpaid')">Unpaid</button>
 </div>
 
+<div style="margin-bottom:10px;">
+  <button onclick="exportFilteredOrders('all')">Export All Orders</button>
+  <button onclick="exportFilteredOrders('pending')">Export Pending</button>
+  <button onclick="exportFilteredOrders('shipped')">Export Shipped</button>
+  <button onclick="exportFilteredOrders('delivered')">Export Delivered</button>
+  <button onclick="exportFilteredOrders('unpaid')">Export Unpaid</button>
+</div>
+
   <h3>Dashboard</h3>
 <p><strong>Total Orders:</strong> <span id="totalOrders">0</span></p>
 <p><strong>Paid Revenue:</strong> $<span id="paidRevenue">0</span></p>
