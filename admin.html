@@ -110,24 +110,24 @@ function markPaid(orderId) {
     });
 }
 
-    function exportOrders() {
-  let csv = "Name,Email,Address,Total,Status,Payment\n"; // CSV headers
+function exportSingleOrder(orderId) {
 
-  // Get all orders from Firestore
-  db.collection("orders").orderBy("createdAt", "desc").get().then(snapshot => {
-    snapshot.forEach(doc => {
-      const o = doc.data();
-      csv += `"${o.name}","${o.email}","${o.address}",${o.total},"${o.status}","${o.paymentStatus}"\n`;
-    });
+  db.collection("orders").doc(orderId).get().then(doc => {
 
-    // Create a downloadable CSV file
+    const o = doc.data();
+
+    let csv = "Name,Email,Address,Total,Status,Payment\n";
+
+    csv += `"${o.name}","${o.email}","${o.address}",${o.total},"${o.status}","${o.paymentStatus}"\n`;
+
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement("a");
     a.href = url;
-    a.download = "orders.csv";
+    a.download = `order_${orderId}.csv`;
     a.click();
+
     URL.revokeObjectURL(url);
   });
 }
