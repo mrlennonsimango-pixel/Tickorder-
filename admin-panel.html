@@ -163,30 +163,53 @@ function showSection(section) {
   const content = document.getElementById("content");
 
   content.innerHTML = `
-    <h2>Employees</h2>
+    <h2 style="color:#0bbf63;">Employees</h2>
 
     <div style="margin-bottom:20px;">
-      <button onclick="loadEmployees('all')">All Employees</button>
-      <button onclick="loadEmployees('active')">Active</button>
-      <button onclick="loadEmployees('inactive')">Inactive</button>
-      <button onclick="exportEmployees('all')">Export All</button>
+      <button style="background:#0bbf63; color:white; border:none; padding:8px 15px; margin-right:5px; border-radius:5px; cursor:pointer;" onclick="loadEmployees('all')">All Employees</button>
+      <button style="background:#0bbf63; color:white; border:none; padding:8px 15px; margin-right:5px; border-radius:5px; cursor:pointer;" onclick="loadEmployees('active')">Active</button>
+      <button style="background:#0bbf63; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;" onclick="loadEmployees('inactive')">Inactive</button>
+    </div>
+
+    <div style="margin-bottom:10px;">
+      <button style="background:#ffffff; color:#0bbf63; border:2px solid #0bbf63; padding:8px 15px; margin-right:5px; border-radius:5px; cursor:pointer;" onclick="exportEmployees('all')">Export All</button>
+      <button style="background:#ffffff; color:#0bbf63; border:2px solid #0bbf63; padding:8px 15px; margin-right:5px; border-radius:5px; cursor:pointer;" onclick="exportEmployees('active')">Export Active</button>
+      <button style="background:#ffffff; color:#0bbf63; border:2px solid #0bbf63; padding:8px 15px; border-radius:5px; cursor:pointer;" onclick="exportEmployees('inactive')">Export Inactive</button>
     </div>
 
     <div id="employeesList"></div>
   `;
 
   loadEmployees('all'); // default view
-  } 
+}
 
-  function loadEmployees(filter) {
+function loadEmployees(filter) {
   const employeesDiv = document.getElementById("employeesList");
-  employeesDiv.innerHTML = `<p>Loading ${filter} employees...</p>`;
+  employeesDiv.innerHTML = "<p style='color:#0bbf63;'>Loading " + filter + " employees...</p>";
 
-  // Here you will connect to Firestore like you did for orders later
+  // Example employee cards (replace with Firestore data later)
+  const sampleEmployees = [
+    {name:"John Doe", email:"john@example.com", phone:"1234567890", status:"active"},
+    {name:"Jane Smith", email:"jane@example.com", phone:"0987654321", status:"inactive"}
+  ];
+
+  let html = "";
+  sampleEmployees.forEach(e => {
+    if(filter !== 'all' && e.status !== filter) return;
+    html += `
+      <div style="border:1px solid #0bbf63; margin:10px 0; padding:10px; border-radius:5px; background:#e8f7ef;">
+        <p><strong>Name:</strong> ${e.name}</p>
+        <p><strong>Email:</strong> ${e.email}</p>
+        <p><strong>Phone:</strong> ${e.phone}</p>
+        <p><strong>Status:</strong> <span style="color:${e.status === 'active' ? '#0bbf63' : '#ff3b3b'}">${e.status}</span></p>
+      </div>
+    `;
+  });
+
+  employeesDiv.innerHTML = html;
 }
 
 function exportEmployees(filter) {
-  // Logic to export filtered employee list to CSV
   alert("Export " + filter + " employees - To be implemented");
 }
 </script>
