@@ -118,6 +118,21 @@
 </div>
 
 <script>
+  const firebaseConfig = {
+  apiKey: "AIzaSyBhDQeyV9_REmBi0zjQQyawkDoaX7Ho544",
+  authDomain: "tickorder-13b84.firebaseapp.com",
+  projectId: "tickorder-13b84",
+  storageBucket: "tickorder-13b84.firebasestorage.app",
+  messagingSenderId: "288232701324",
+  appId: "1:288232701324:web:ae43423dacecd9508f6aa9"
+};
+
+
+firebase.initializeApp(firebaseConfig);
+
+// 2️⃣ Firestore and Auth references
+const db = firebase.firestore();
+const auth = firebase.auth();
 // Function to load a full page inside the main panel
 function loadPage(url) {
   const content = document.getElementById("content");
