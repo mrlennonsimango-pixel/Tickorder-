@@ -200,28 +200,41 @@ function showSection(section) {
 
 function loadEmployees(filter) {
   const employeesDiv = document.getElementById("employeesList");
-  employeesDiv.innerHTML = "<p style='color:#0bbf63;'>Loading " + filter + " employees...</p>";
+  employeesDiv.innerHTML = `<p>Loading ${filter} employees...</p>`;
 
-  // Example employee cards (replace with Firestore data later)
-  const sampleEmployees = [
-    {name:"John Doe", email:"john@example.com", phone:"1234567890", status:"active"},
-    {name:"Jane Smith", email:"jane@example.com", phone:"0987654321", status:"inactive"}
-  ];
+  let query = db.collection("employees");
 
-  let html = "";
-  sampleEmployees.forEach(e => {
-    if(filter !== 'all' && e.status !== filter) return;
-    html += `
-      <div style="border:1px solid #0bbf63; margin:10px 0; padding:10px; border-radius:5px; background:#e8f7ef;">
-        <p><strong>Name:</strong> ${e.name}</p>
-        <p><strong>Email:</strong> ${e.email}</p>
-        <p><strong>Phone:</strong> ${e.phone}</p>
-        <p><strong>Status:</strong> <span style="color:${e.status === 'active' ? '#0bbf63' : '#ff3b3b'}">${e.status}</span></p>
-      </div>
-    `;
+  if (filter === "active") {
+    query = query.where("status", "==", "active");
+  } else if (filter === "inactive") {
+    query = query.where("status", "==", "inactive");
+  }
+
+  query.get().then(snapshot => {
+    if (snapshot.empty) {
+      employeesDiv.innerHTML = "<p>No employees found.</p>";
+      return;
+    }
+
+    let html = "";
+    snapshot.forEach(doc => {
+      const emp = doc.data();
+
+      // Add green for active, red for inactive
+      const bgColor = emp.status === "active" ? "#e8f7ef" : "#fbeaea";
+
+      html += `
+        <div style="background:${bgColor}; padding:15px; margin-bottom:10px; border-radius:8px;">
+          <p><strong>Name:</strong> ${emp.name}</p>
+          <p><strong>Email:</strong> ${emp.email}</p>
+          <p><strong>Position:</strong> ${emp.position}</p>
+          <p><strong>Joined:</strong> ${emp.joinedAt.toDate().toLocaleDateString()}</p>
+        </div>
+      `;
+    });
+
+    employeesDiv.innerHTML = html;
   });
-
-  employeesDiv.innerHTML = html;
 }
 
 function exportEmployees(filter) {
