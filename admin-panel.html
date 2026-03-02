@@ -80,7 +80,7 @@
   <!-- LEFT MENU -->
   <div class="sidebar">
 
-    <div class="menu-item" onclick="loadPage('admin.html')">
+    <div class="menu-item" onclick="loadOrdersSection()">
       Orders
     </div>
 
@@ -128,6 +128,35 @@ function loadPage(url) {
 function showSection(section) {
   const content = document.getElementById("content");
   content.innerHTML = "<h2>" + section.toUpperCase() + "</h2><p>Section loading...</p>";
+}
+
+  function loadOrdersSection() {
+  const content = document.getElementById("content");
+
+  content.innerHTML = `
+    <h2>Orders</h2>
+    <div style="margin-bottom:20px;">
+      <button onclick="loadOrders('all')">All</button>
+      <button onclick="loadOrders('pending')">Pending</button>
+      <button onclick="loadOrders('shipped')">Shipped</button>
+      <button onclick="loadOrders('delivered')">Delivered</button>
+      <button onclick="loadOrders('unpaid')">Unpaid</button>
+    </div>
+
+    <div style="margin-bottom:10px;">
+      <button onclick="exportFilteredOrders('all')">Export All Orders</button>
+      <button onclick="exportFilteredOrders('pending')">Export Pending</button>
+      <button onclick="exportFilteredOrders('shipped')">Export Shipped</button>
+      <button onclick="exportFilteredOrders('delivered')">Export Delivered</button>
+      <button onclick="exportFilteredOrders('unpaid')">Export Unpaid</button>
+    </div>
+
+    <div id="ordersList"></div>
+  `;
+
+    const ordersDiv = document.getElementById("ordersList");
+
+  loadOrders("all"); // default load all orders
 }
 </script>
 
