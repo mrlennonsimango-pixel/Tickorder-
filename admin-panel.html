@@ -84,7 +84,7 @@
       Orders
     </div>
 
-    <div class="menu-item" onclick="showSection('employees')">
+    <div class="menu-item" onclick="loadEmployeesSection()">
       Employees
     </div>
 
@@ -157,6 +157,37 @@ function showSection(section) {
     const ordersDiv = document.getElementById("ordersList");
 
   loadOrders("all"); // default load all orders
+}
+
+ function loadEmployeesSection() {
+  const content = document.getElementById("content");
+
+  content.innerHTML = `
+    <h2>Employees</h2>
+
+    <div style="margin-bottom:20px;">
+      <button onclick="loadEmployees('all')">All Employees</button>
+      <button onclick="loadEmployees('active')">Active</button>
+      <button onclick="loadEmployees('inactive')">Inactive</button>
+      <button onclick="exportEmployees('all')">Export All</button>
+    </div>
+
+    <div id="employeesList"></div>
+  `;
+
+  loadEmployees('all'); // default view
+  } 
+
+  function loadEmployees(filter) {
+  const employeesDiv = document.getElementById("employeesList");
+  employeesDiv.innerHTML = `<p>Loading ${filter} employees...</p>`;
+
+  // Here you will connect to Firestore like you did for orders later
+}
+
+function exportEmployees(filter) {
+  // Logic to export filtered employee list to CSV
+  alert("Export " + filter + " employees - To be implemented");
 }
 </script>
 
