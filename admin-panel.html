@@ -236,7 +236,8 @@ function loadEmployees(filter) {
     snapshot.forEach(doc => {
       const emp = doc.data();
       console.log(emp); // <-- debug to see employee data
-
+      
+      const bgColor = emp.status === "active" ? "#e8f7ef" : "#fbeaea";
       const photo = emp.photoURL ? emp.photoURL : "https://via.placeholder.com/80"; // placeholder if no photo
 
 html += `
