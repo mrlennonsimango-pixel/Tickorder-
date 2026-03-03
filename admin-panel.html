@@ -211,6 +211,7 @@ function loadEmployees(filter) {
   }
 
   query.get().then(snapshot => {
+    console.log("Snapshot size:", snapshot.size); // <-- debug
     if (snapshot.empty) {
       employeesDiv.innerHTML = "<p>No employees found.</p>";
       return;
@@ -219,8 +220,8 @@ function loadEmployees(filter) {
     let html = "";
     snapshot.forEach(doc => {
       const emp = doc.data();
+      console.log(emp); // <-- debug to see employee data
 
-      // Add green for active, red for inactive
       const bgColor = emp.status === "active" ? "#e8f7ef" : "#fbeaea";
 
       html += `
@@ -234,6 +235,9 @@ function loadEmployees(filter) {
     });
 
     employeesDiv.innerHTML = html;
+  }).catch(error => {
+    console.error("Error loading employees:", error);
+    employeesDiv.innerHTML = "<p>Error loading employees. Check console.</p>";
   });
 }
 
