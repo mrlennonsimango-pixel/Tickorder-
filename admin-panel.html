@@ -305,7 +305,7 @@ function exportEmployees(filter) {
   })
   .then(() => {
     alert("Employee Added!");
-    showEmployees(); // reload list
+    loadEmployees('all'); // reload list
   })
   .catch(error => {
     console.error("Error adding employee:", error);
