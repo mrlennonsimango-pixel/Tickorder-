@@ -157,20 +157,20 @@ function showSection(section) {
   content.innerHTML = `
     <h2>Orders</h2>
     <div style="margin-bottom:20px;">
-      <button onclick="loadOrders('all')">All</button>
-      <button onclick="loadOrders('pending')">Pending</button>
-      <button onclick="loadOrders('shipped')">Shipped</button>
-      <button onclick="loadOrders('delivered')">Delivered</button>
-      <button onclick="loadOrders('unpaid')">Unpaid</button>
-    </div>
+  <button onclick="loadOrders('all')">All</button>
+  <button onclick="loadOrders('pending_confirmation')">Pending Confirmation</button>
+  <button onclick="loadOrders('confirmed')">Confirmed</button>
+  <button onclick="loadOrders('shipped')">Shipped</button>
+  <button onclick="loadOrders('delivered')">Delivered</button>
+</div>
 
-    <div style="margin-bottom:10px;">
-      <button onclick="exportFilteredOrders('all')">Export All Orders</button>
-      <button onclick="exportFilteredOrders('pending')">Export Pending</button>
-      <button onclick="exportFilteredOrders('shipped')">Export Shipped</button>
-      <button onclick="exportFilteredOrders('delivered')">Export Delivered</button>
-      <button onclick="exportFilteredOrders('unpaid')">Export Unpaid</button>
-    </div>
+<div style="margin-bottom:10px;">
+  <button onclick="exportFilteredOrders('all')">Export All Orders</button>
+  <button onclick="exportFilteredOrders('pending_confirmation')">Export Pending Confirmation</button>
+  <button onclick="exportFilteredOrders('confirmed')">Export Confirmed</button>
+  <button onclick="exportFilteredOrders('shipped')">Export Shipped</button>
+  <button onclick="exportFilteredOrders('delivered')">Export Delivered</button>
+</div>
 
     <div id="ordersList"></div>
   `;
@@ -415,22 +415,26 @@ function exportEmployees(filter) {
 // ===============================
 
 function loadOrders(filter) {
-
   const ordersDiv = document.getElementById("ordersList");
-
   if (!ordersDiv) return;
 
   ordersDiv.innerHTML = `<p>Loading ${filter} orders...</p>`;
 
   let query = db.collection("orders")
-              .where("paymentStatus", "==", "paid"); // only confirmed purchases
+                .where("paymentStatus", "==", "paid"); // exclude carts
 
   if (filter !== "all") {
     query = query.where("status", "==", filter);
   }
 
-  query.get().then(snapshot => {
+  const statusColors = {
+    "pending_confirmation": "#fff3cd",
+    "confirmed": "#d1ecf1",
+    "shipped": "#cce5ff",
+    "delivered": "#d4edda"
+  };
 
+  query.get().then(snapshot => {
     if (snapshot.empty) {
       ordersDiv.innerHTML = "<p>No orders found.</p>";
       return;
@@ -439,41 +443,33 @@ function loadOrders(filter) {
     let html = "";
 
     snapshot.forEach(doc => {
-  const order = doc.data();
+      const order = doc.data();
+      const createdAt = order.createdAt 
+        ? order.createdAt.toDate().toLocaleString() 
+        : "N/A";
+      const bgColor = statusColors[order.status] || "#ffffff";
 
-  const createdAt = order.createdAt 
-    ? order.createdAt.toDate().toLocaleString() 
-    : "N/A";
+      html += `
+        <div style="background:${bgColor}; padding:15px; margin-bottom:12px; border:1px solid #ddd; border-radius:8px; cursor:pointer;"
+             onclick="openOrder('${doc.id}')">
+          <p><strong>Order ID:</strong> ${doc.id}</p>
+          <p><strong>Customer:</strong> ${order.name || "N/A"}</p>
+          <p><strong>Email:</strong> ${order.email || "N/A"}</p>
+          <p><strong>Address:</strong> ${order.address || "N/A"}</p>
+          <p><strong>Total:</strong> R${order.total || 0}</p>
+          <p><strong>Payment:</strong> ${order.paymentStatus || "N/A"}</p>
+          <p><strong>Status:</strong> ${order.status || "N/A"}</p>
+          <p><strong>Ordered At:</strong> ${createdAt}</p>
+        </div>
+      `;
+    });
 
-  html += `
-    <div style="padding:15px; margin-bottom:12px; border:1px solid #ddd; border-radius:8px;">
-      
-      <p><strong>Order ID:</strong> ${doc.id}</p>
-      <p><strong>Customer:</strong> ${order.name || "N/A"}</p>
-      <p><strong>Email:</strong> ${order.email || "N/A"}</p>
-      <p><strong>Address:</strong> ${order.address || "N/A"}</p>
-
-      <p><strong>Total:</strong> R${order.total || 0}</p>
-      <p><strong>Payment:</strong> ${order.paymentStatus || "N/A"}</p>
-      <p><strong>Status:</strong> ${order.status || "N/A"}</p>
-      <p><strong>Ordered At:</strong> ${createdAt}</p>
-
-      <p><strong>Status:</strong> ${order.fulfillmentStatus || "awaiting_confirmation"}</p>
-
-<div style="margin-top:10px;">
-  ${generateButtons(order, doc.id)}
-</div>
-
-    </div>
-  `;
-});
     ordersDiv.innerHTML = html;
-
   }).catch(error => {
     console.error("Error loading orders:", error);
     ordersDiv.innerHTML = "<p>Error loading orders. Check console.</p>";
   });
-}
+  }
 
   function updateFulfillmentStatus(orderId, newStatus) {
   db.collection("orders").doc(orderId).update({
@@ -498,9 +494,50 @@ function updateOrderStatus(orderId, newStatus) {
 
 
 function exportFilteredOrders(filter) {
-  alert("Export feature coming next phase.");
+  let query = db.collection("orders");
+
+  if (filter !== "all") {
+    query = query.where("status", "==", filter);
   }
 
+  query.get().then(snapshot => {
+    if (snapshot.empty) {
+      alert("No orders found for export.");
+      return;
+    }
+
+    let csvContent = "Order ID,Customer,Email,Address,Total,Payment Status,Order Status,Ordered At\n";
+
+    snapshot.forEach(doc => {
+      const order = doc.data();
+      const createdAt = order.createdAt ? order.createdAt.toDate().toLocaleString() : "";
+      const row = [
+        doc.id,
+        `"${order.name || ""}"`,
+        `"${order.email || ""}"`,
+        `"${order.address || ""}"`,
+        order.total || 0,
+        order.paymentStatus || "",
+        order.status || "",
+        `"${createdAt}"`
+      ];
+      csvContent += row.join(",") + "\n";
+    });
+
+    // Create a downloadable CSV file
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `orders_${filter}_${Date.now()}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }).catch(error => {
+    console.error("Error exporting orders:", error);
+    alert("Export failed. Check console.");
+  });
+}
   function confirmOrder(orderId) {
   db.collection("orders").doc(orderId).update({
     fulfillmentStatus: "confirmed",
