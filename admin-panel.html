@@ -388,6 +388,28 @@ function exportEmployees(filter) {
   }
 }
 
+  function generateButtons(order, orderId) {
+
+  const status = order.fulfillmentStatus || "awaiting_confirmation";
+
+  if (status === "awaiting_confirmation") {
+    return `<button onclick="updateFulfillmentStatus('${orderId}', 'confirmed')">Confirm</button>`;
+  }
+
+  if (status === "confirmed") {
+    return `<button onclick="updateFulfillmentStatus('${orderId}', 'packaged')">Package</button>`;
+  }
+
+  if (status === "packaged") {
+    return `<button onclick="updateFulfillmentStatus('${orderId}', 'shipped')">Ship</button>`;
+  }
+
+  if (status === "shipped") {
+    return `<button onclick="updateFulfillmentStatus('${orderId}', 'delivered')">Deliver</button>`;
+  }
+
+  return "";
+}
   // ===============================
 // ORDERS SYSTEM
 // ===============================
@@ -435,11 +457,11 @@ function loadOrders(filter) {
       <p><strong>Status:</strong> ${order.status || "N/A"}</p>
       <p><strong>Ordered At:</strong> ${createdAt}</p>
 
-      <div style="margin-top:10px;">
-        <button onclick="updateOrderStatus('${doc.id}', 'pending')">Pending</button>
-        <button onclick="updateOrderStatus('${doc.id}', 'shipped')">Shipped</button>
-        <button onclick="updateOrderStatus('${doc.id}', 'delivered')">Delivered</button>
-      </div>
+      <p><strong>Status:</strong> ${order.fulfillmentStatus || "awaiting_confirmation"}</p>
+
+<div style="margin-top:10px;">
+  ${generateButtons(order, doc.id)}
+</div>
 
     </div>
   `;
@@ -452,6 +474,14 @@ function loadOrders(filter) {
   });
 }
 
+  function updateFulfillmentStatus(orderId, newStatus) {
+  db.collection("orders").doc(orderId).update({
+    fulfillmentStatus: newStatus,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => {
+    loadOrders("all");
+  });
+}
 
 function updateOrderStatus(orderId, newStatus) {
 
@@ -469,6 +499,37 @@ function updateOrderStatus(orderId, newStatus) {
 function exportFilteredOrders(filter) {
   alert("Export feature coming next phase.");
   }
+
+  function confirmOrder(orderId) {
+  db.collection("orders").doc(orderId).update({
+    fulfillmentStatus: "confirmed",
+    confirmedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => loadOrdersSection());
+}
+
+function packageOrder(orderId) {
+  const adminName = "Admin"; // later we make this dynamic
+
+  db.collection("orders").doc(orderId).update({
+    fulfillmentStatus: "packaged",
+    packagedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    packagedBy: adminName
+  }).then(() => loadOrdersSection());
+}
+
+function shipOrder(orderId) {
+  db.collection("orders").doc(orderId).update({
+    fulfillmentStatus: "shipped",
+    shippedAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => loadOrdersSection());
+}
+
+function deliverOrder(orderId) {
+  db.collection("orders").doc(orderId).update({
+    fulfillmentStatus: "delivered",
+    deliveredAt: firebase.firestore.FieldValue.serverTimestamp()
+  }).then(() => loadOrdersSection());
+}
 </script>
 
 </body>
