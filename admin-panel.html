@@ -184,6 +184,17 @@ function showSection(section) {
   content.innerHTML = `
     <h2 style="color:#0bbf63;">Employees</h2>
 
+     <div style="margin:20px 0; padding:15px; background:#f4f6f5; border-radius:8px;">
+  <input id="empName" placeholder="Full Name" style="padding:8px; margin-right:5px;" />
+  <input id="empEmail" placeholder="Email" style="padding:8px; margin-right:5px;" />
+  <input id="empPosition" placeholder="Position" style="padding:8px; margin-right:5px;" />
+  <button 
+    style="background:#0bbf63; color:white; border:none; padding:8px 15px; border-radius:5px; cursor:pointer;"
+    onclick="addEmployee()">
+    Add Employee
+  </button>
+</div>
+
     <div style="margin-bottom:20px;">
       <button style="background:#0bbf63; color:white; border:none; padding:8px 15px; margin-right:5px; border-radius:5px; cursor:pointer;" onclick="loadEmployees('all')">All Employees</button>
       <button style="background:#0bbf63; color:white; border:none; padding:8px 15px; margin-right:5px; border-radius:5px; cursor:pointer;" onclick="loadEmployees('active')">Active</button>
@@ -247,6 +258,32 @@ function loadEmployees(filter) {
 
 function exportEmployees(filter) {
   alert("Export " + filter + " employees - To be implemented");
+}
+
+  function addEmployee() {
+  const name = document.getElementById("empName").value;
+  const email = document.getElementById("empEmail").value;
+  const position = document.getElementById("empPosition").value;
+
+  if (!name || !email || !position) {
+    alert("Fill all fields");
+    return;
+  }
+
+  db.collection("employees").add({
+    name: name,
+    email: email,
+    position: position,
+    status: "active",
+    joinedAt: firebase.firestore.FieldValue.serverTimestamp()
+  })
+  .then(() => {
+    alert("Employee Added!");
+    showEmployees(); // reload list
+  })
+  .catch(error => {
+    console.error("Error adding employee:", error);
+  });
 }
 </script>
 
