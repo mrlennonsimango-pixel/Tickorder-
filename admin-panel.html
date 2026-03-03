@@ -422,7 +422,8 @@ function loadOrders(filter) {
 
   ordersDiv.innerHTML = `<p>Loading ${filter} orders...</p>`;
 
-  let query = db.collection("orders");
+  let query = db.collection("orders")
+              .where("paymentStatus", "==", "paid"); // only confirmed purchases
 
   if (filter !== "all") {
     query = query.where("status", "==", filter);
