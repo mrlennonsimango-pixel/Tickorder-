@@ -414,25 +414,45 @@ function exportEmployees(filter) {
 // ORDERS SYSTEM
 // ===============================
 
+function loadOrdersSection() {
+  const content = document.getElementById("content");
+
+  content.innerHTML = `
+    <h2>Orders</h2>
+
+    <div style="margin-bottom:20px;">
+      <button style="background:#f8d7da" onclick="loadOrders('pendingConfirmation')">Pending Confirmation</button>
+      <button style="background:#fff3cd" onclick="loadOrders('confirmed')">Confirmed</button>
+      <button style="background:#d1ecf1" onclick="loadOrders('shipped')">Shipped</button>
+      <button style="background:#d4edda" onclick="loadOrders('delivered')">Delivered</button>
+    </div>
+
+    <div style="margin-bottom:10px;">
+      <button onclick="exportFilteredOrders(currentFilter)">Export Orders</button>
+    </div>
+
+    <div id="ordersList"></div>
+  `;
+
+  currentFilter = "confirmed"; // default view shows confirmed orders
+  loadOrders(currentFilter);
+}
+
+let currentFilter = "confirmed"; // global to keep track for export
+
 function loadOrders(filter) {
+  currentFilter = filter; // update global filter
   const ordersDiv = document.getElementById("ordersList");
+
   if (!ordersDiv) return;
 
   ordersDiv.innerHTML = `<p>Loading ${filter} orders...</p>`;
 
-  let query = db.collection("orders")
-                .where("paymentStatus", "==", "paid"); // exclude carts
+  let query = db.collection("orders");
 
   if (filter !== "all") {
     query = query.where("status", "==", filter);
   }
-
-  const statusColors = {
-    "pending_confirmation": "#fff3cd",
-    "confirmed": "#d1ecf1",
-    "shipped": "#cce5ff",
-    "delivered": "#d4edda"
-  };
 
   query.get().then(snapshot => {
     if (snapshot.empty) {
@@ -444,14 +464,17 @@ function loadOrders(filter) {
 
     snapshot.forEach(doc => {
       const order = doc.data();
-      const createdAt = order.createdAt 
-        ? order.createdAt.toDate().toLocaleString() 
-        : "N/A";
-      const bgColor = statusColors[order.status] || "#ffffff";
+      const createdAt = order.createdAt ? order.createdAt.toDate().toLocaleString() : "N/A";
+
+      // Status colors
+      let bgColor = "#ffffff";
+      if(order.status === "pendingConfirmation") bgColor = "#f8d7da";
+      else if(order.status === "confirmed") bgColor = "#fff3cd";
+      else if(order.status === "shipped") bgColor = "#d1ecf1";
+      else if(order.status === "delivered") bgColor = "#d4edda";
 
       html += `
-        <div style="background:${bgColor}; padding:15px; margin-bottom:12px; border:1px solid #ddd; border-radius:8px; cursor:pointer;"
-             onclick="openOrder('${doc.id}')">
+        <div style="background:${bgColor}; padding:15px; margin-bottom:12px; border:1px solid #ddd; border-radius:8px; cursor:pointer;" onclick="openOrder('${doc.id}')">
           <p><strong>Order ID:</strong> ${doc.id}</p>
           <p><strong>Customer:</strong> ${order.name || "N/A"}</p>
           <p><strong>Email:</strong> ${order.email || "N/A"}</p>
@@ -465,11 +488,101 @@ function loadOrders(filter) {
     });
 
     ordersDiv.innerHTML = html;
+
   }).catch(error => {
     console.error("Error loading orders:", error);
     ordersDiv.innerHTML = "<p>Error loading orders. Check console.</p>";
   });
-  }
+}
+
+// Open full order view with items and pictures
+function openOrder(orderId) {
+  db.collection("orders").doc(orderId).get().then(doc => {
+    if(!doc.exists) {
+      alert("Order not found");
+      return;
+    }
+
+    const order = doc.data();
+    const createdAt = order.createdAt ? order.createdAt.toDate().toLocaleString() : "N/A";
+
+    let itemsHTML = "";
+    if(order.items && order.items.length > 0){
+      order.items.forEach(item => {
+        itemsHTML += `
+          <div style="display:flex; align-items:center; margin-bottom:10px;">
+            <img src="${item.imageURL || 'https://via.placeholder.com/60'}" style="width:60px; height:60px; object-fit:cover; border-radius:5px; margin-right:10px;">
+            <div>
+              <p><strong>${item.name}</strong></p>
+              <p>Price: R${item.price}</p>
+              <p>Qty: ${item.quantity || 1}</p>
+            </div>
+          </div>
+        `;
+      });
+    } else {
+      itemsHTML = "<p>No items found</p>";
+    }
+
+    const content = document.getElementById("content");
+    content.innerHTML = `
+      <h2>Order ${orderId}</h2>
+      <p><strong>Customer:</strong> ${order.name}</p>
+      <p><strong>Email:</strong> ${order.email}</p>
+      <p><strong>Address:</strong> ${order.address}</p>
+      <p><strong>Total:</strong> R${order.total}</p>
+      <p><strong>Payment:</strong> ${order.paymentStatus}</p>
+      <p><strong>Status:</strong> ${order.status}</p>
+      <p><strong>Ordered At:</strong> ${createdAt}</p>
+      <h3>Items</h3>
+      ${itemsHTML}
+      <div style="margin-top:10px;">
+        <button onclick="updateOrderStatus('${orderId}','confirmed')">Confirm</button>
+        <button onclick="updateOrderStatus('${orderId}','shipped')">Shipped</button>
+        <button onclick="updateOrderStatus('${orderId}','delivered')">Delivered</button>
+      </div>
+      <button style="margin-top:10px;" onclick="loadOrdersSection()">Back to Orders</button>
+    `;
+  });
+}
+
+// Export orders respecting current filter
+function exportFilteredOrders(filter) {
+  let query = db.collection("orders");
+  if(filter !== "all") query = query.where("status", "==", filter);
+
+  query.get().then(snapshot => {
+    if(snapshot.empty){ alert("No orders to export"); return; }
+
+    const rows = [];
+    snapshot.forEach(doc => {
+      const order = doc.data();
+      rows.push({
+        "Order ID": doc.id,
+        "Customer": order.name,
+        "Email": order.email,
+        "Address": order.address,
+        "Total": order.total,
+        "Payment": order.paymentStatus,
+        "Status": order.status,
+        "Ordered At": order.createdAt ? order.createdAt.toDate().toLocaleString() : "N/A"
+      });
+    });
+
+    const csvContent = [
+      Object.keys(rows[0]).join(","), // header
+      ...rows.map(r => Object.values(r).join(","))
+    ].join("\n");
+
+    const blob = new Blob([csvContent], {type:"text/csv"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `TickOrder_${filter}_Orders.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+}
 
   function updateFulfillmentStatus(orderId, newStatus) {
   db.collection("orders").doc(orderId).update({
@@ -493,57 +606,7 @@ function updateOrderStatus(orderId, newStatus) {
 }
 
 
-function exportFilteredOrders(filter) {
-  let query = db.collection("orders");
 
-  if (filter !== "all") {
-    query = query.where("status", "==", filter);
-  }
-
-  query.get().then(snapshot => {
-    if (snapshot.empty) {
-      alert("No orders found for export.");
-      return;
-    }
-
-    let csvContent = "Order ID,Customer,Email,Address,Total,Payment Status,Order Status,Ordered At\n";
-
-    snapshot.forEach(doc => {
-      const order = doc.data();
-      const createdAt = order.createdAt ? order.createdAt.toDate().toLocaleString() : "";
-      const row = [
-        doc.id,
-        `"${order.name || ""}"`,
-        `"${order.email || ""}"`,
-        `"${order.address || ""}"`,
-        order.total || 0,
-        order.paymentStatus || "",
-        order.status || "",
-        `"${createdAt}"`
-      ];
-      csvContent += row.join(",") + "\n";
-    });
-
-    // Create a downloadable CSV file
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `orders_${filter}_${Date.now()}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }).catch(error => {
-    console.error("Error exporting orders:", error);
-    alert("Export failed. Check console.");
-  });
-}
-  function confirmOrder(orderId) {
-  db.collection("orders").doc(orderId).update({
-    fulfillmentStatus: "confirmed",
-    confirmedAt: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(() => loadOrdersSection());
-}
 
 function packageOrder(orderId) {
   const adminName = "Admin"; // later we make this dynamic
