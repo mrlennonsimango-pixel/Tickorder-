@@ -266,6 +266,19 @@ html += `
   });
 }
 
+  function toggleEmployeeStatus(empId, currentStatus) {
+  const newStatus = currentStatus === "active" ? "inactive" : "active";
+
+  db.collection("employees").doc(empId).update({
+    status: newStatus
+  }).then(() => {
+    loadEmployees('all');
+  }).catch(err => {
+    console.error(err);
+    alert("Error updating employee status");
+  });
+  }
+  
 function exportEmployees(filter) {
   alert("Export " + filter + " employees - To be implemented");
 }
