@@ -418,21 +418,20 @@ function loadOrders(filter) {
     snapshot.forEach(doc => {
   const order = doc.data();
 
-  const bgColor =
-    order.status === "pending" ? "#fff3cd" :
-    order.status === "shipped" ? "#d1ecf1" :
-    order.status === "delivered" ? "#d4edda" :
-    order.status === "unpaid" ? "#f8d7da" :
-    "#ffffff";
-
-  const createdAt = order.createdAt ? order.createdAt.toDate().toLocaleString() : "N/A";
+  const createdAt = order.createdAt 
+    ? order.createdAt.toDate().toLocaleString() 
+    : "N/A";
 
   html += `
-    <div style="background:${bgColor}; padding:15px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
+    <div style="padding:15px; margin-bottom:12px; border:1px solid #ddd; border-radius:8px;">
+      
       <p><strong>Order ID:</strong> ${doc.id}</p>
-      <p><strong>Customer:</strong> ${order.customerName || "N/A"} (${order.customerEmail || "N/A"})</p>
-      <p><strong>Items:</strong> ${order.items ? order.items.length : 0}</p>
+      <p><strong>Customer:</strong> ${order.name || "N/A"}</p>
+      <p><strong>Email:</strong> ${order.email || "N/A"}</p>
+      <p><strong>Address:</strong> ${order.address || "N/A"}</p>
+
       <p><strong>Total:</strong> R${order.total || 0}</p>
+      <p><strong>Payment:</strong> ${order.paymentStatus || "N/A"}</p>
       <p><strong>Status:</strong> ${order.status || "N/A"}</p>
       <p><strong>Ordered At:</strong> ${createdAt}</p>
 
@@ -441,10 +440,10 @@ function loadOrders(filter) {
         <button onclick="updateOrderStatus('${doc.id}', 'shipped')">Shipped</button>
         <button onclick="updateOrderStatus('${doc.id}', 'delivered')">Delivered</button>
       </div>
+
     </div>
   `;
 });
-
     ordersDiv.innerHTML = html;
 
   }).catch(error => {
