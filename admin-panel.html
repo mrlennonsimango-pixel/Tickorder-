@@ -138,6 +138,7 @@ firebase.initializeApp(firebaseConfig);
 // 2️⃣ Firestore and Auth references
 const db = firebase.firestore();
 const auth = firebase.auth();
+  const storage = firebase.storage();
 // Function to load a full page inside the main panel
 function loadPage(url) {
   const content = document.getElementById("content");
