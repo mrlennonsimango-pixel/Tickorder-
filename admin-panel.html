@@ -273,6 +273,62 @@ html += `
   });
 }
 
+  function openEmployee(empId) {
+
+  db.collection("employees").doc(empId).get().then(doc => {
+
+    if (!doc.exists) {
+      alert("Employee not found");
+      return;
+    }
+
+    const emp = doc.data();
+    const content = document.getElementById("content");
+
+    content.innerHTML = `
+      <h2>Edit Employee</h2>
+
+      <div style="margin-bottom:15px;">
+        <img src="${emp.photoURL || 'https://via.placeholder.com/120'}"
+             style="width:120px; height:120px; border-radius:50%; object-fit:cover; border:3px solid #0bbf63;" />
+      </div>
+
+      <input id="editName" value="${emp.name}" style="display:block; margin-bottom:10px; padding:8px; width:300px;" />
+      <input id="editEmail" value="${emp.email}" style="display:block; margin-bottom:10px; padding:8px; width:300px;" />
+      <input id="editPosition" value="${emp.position}" style="display:block; margin-bottom:10px; padding:8px; width:300px;" />
+
+      <button onclick="updateEmployee('${empId}')" 
+              style="background:#0bbf63; color:white; padding:10px 20px; border:none; border-radius:5px;">
+        Save Changes
+      </button>
+
+      <button onclick="loadEmployeesSection()" 
+              style="margin-left:10px; padding:10px 20px;">
+        Back
+      </button>
+    `;
+  });
+}
+
+  function updateEmployee(empId) {
+
+  const name = document.getElementById("editName").value;
+  const email = document.getElementById("editEmail").value;
+  const position = document.getElementById("editPosition").value;
+
+  db.collection("employees").doc(empId).update({
+    name: name,
+    email: email,
+    position: position
+  }).then(() => {
+    alert("Employee updated successfully");
+    loadEmployeesSection();
+  }).catch(error => {
+    console.error(error);
+    alert("Update failed");
+  });
+}
+  
   function toggleEmployeeStatus(empId, currentStatus) {
   const newStatus = currentStatus === "active" ? "inactive" : "active";
 
