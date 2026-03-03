@@ -293,26 +293,42 @@ function exportEmployees(filter) {
   const name = document.getElementById("empName").value;
   const email = document.getElementById("empEmail").value;
   const position = document.getElementById("empPosition").value;
+  const photoFile = document.getElementById("empPhoto").files[0];
 
   if (!name || !email || !position) {
     alert("Fill all fields");
     return;
   }
 
-  db.collection("employees").add({
-    name: name,
-    email: email,
-    position: position,
-    status: "active",
-    joinedAt: firebase.firestore.FieldValue.serverTimestamp()
-  })
-  .then(() => {
-    alert("Employee Added!");
-    loadEmployees('all'); // reload list
-  })
-  .catch(error => {
-    console.error("Error adding employee:", error);
-  });
+  function saveEmployee(photoURL = "") {
+    db.collection("employees").add({
+      name: name,
+      email: email,
+      position: position,
+      status: "active",
+      photoURL: photoURL,
+      joinedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(() => {
+      alert("Employee Added!");
+      loadEmployees('all');
+    });
+  }
+
+  if (photoFile) {
+    const storageRef = storage.ref("employee_photos/" + Date.now() + "_" + photoFile.name);
+    
+    storageRef.put(photoFile).then(snapshot => {
+      snapshot.ref.getDownloadURL().then(downloadURL => {
+        saveEmployee(downloadURL);
+      });
+    }).catch(error => {
+      console.error("Upload error:", error);
+      alert("Image upload failed.");
+    });
+
+  } else {
+    saveEmployee();
+  }
 }
 </script>
 
