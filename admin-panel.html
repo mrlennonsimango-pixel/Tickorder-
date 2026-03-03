@@ -387,6 +387,85 @@ function exportEmployees(filter) {
     saveEmployee();
   }
 }
+
+  // ===============================
+// ORDERS SYSTEM
+// ===============================
+
+function loadOrders(filter) {
+
+  const ordersDiv = document.getElementById("ordersList");
+
+  if (!ordersDiv) return;
+
+  ordersDiv.innerHTML = `<p>Loading ${filter} orders...</p>`;
+
+  let query = db.collection("orders");
+
+  if (filter !== "all") {
+    query = query.where("status", "==", filter);
+  }
+
+  query.get().then(snapshot => {
+
+    if (snapshot.empty) {
+      ordersDiv.innerHTML = "<p>No orders found.</p>";
+      return;
+    }
+
+    let html = "";
+
+    snapshot.forEach(doc => {
+      const order = doc.data();
+
+      const bgColor =
+        order.status === "pending" ? "#fff3cd" :
+        order.status === "shipped" ? "#d1ecf1" :
+        order.status === "delivered" ? "#d4edda" :
+        order.status === "unpaid" ? "#f8d7da" :
+        "#ffffff";
+
+      html += `
+        <div style="background:${bgColor}; padding:15px; margin-bottom:10px; border-radius:8px; border:1px solid #ddd;">
+          <p><strong>Order ID:</strong> ${doc.id}</p>
+          <p><strong>Customer:</strong> ${order.customerName || "N/A"}</p>
+          <p><strong>Total:</strong> ${order.total || "N/A"}</p>
+          <p><strong>Status:</strong> ${order.status || "N/A"}</p>
+
+          <div style="margin-top:10px;">
+            <button onclick="updateOrderStatus('${doc.id}', 'pending')">Pending</button>
+            <button onclick="updateOrderStatus('${doc.id}', 'shipped')">Shipped</button>
+            <button onclick="updateOrderStatus('${doc.id}', 'delivered')">Delivered</button>
+          </div>
+        </div>
+      `;
+    });
+
+    ordersDiv.innerHTML = html;
+
+  }).catch(error => {
+    console.error("Error loading orders:", error);
+    ordersDiv.innerHTML = "<p>Error loading orders. Check console.</p>";
+  });
+}
+
+
+function updateOrderStatus(orderId, newStatus) {
+
+  db.collection("orders").doc(orderId).update({
+    status: newStatus
+  }).then(() => {
+    loadOrders("all");
+  }).catch(error => {
+    console.error("Error updating order:", error);
+  });
+
+}
+
+
+function exportFilteredOrders(filter) {
+  alert("Export feature coming next phase.");
+  }
 </script>
 
 </body>
