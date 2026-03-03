@@ -237,16 +237,26 @@ function loadEmployees(filter) {
       const emp = doc.data();
       console.log(emp); // <-- debug to see employee data
 
-      const bgColor = emp.status === "active" ? "#e8f7ef" : "#fbeaea";
+      const photo = emp.photoURL ? emp.photoURL : "https://via.placeholder.com/80"; // placeholder if no photo
 
-      html += `
-        <div style="background:${bgColor}; padding:15px; margin-bottom:10px; border-radius:8px;">
-          <p><strong>Name:</strong> ${emp.name}</p>
-          <p><strong>Email:</strong> ${emp.email}</p>
-          <p><strong>Position:</strong> ${emp.position}</p>
-          <p><strong>Joined:</strong> ${emp.joinedAt.toDate().toLocaleDateString()}</p>
-        </div>
-      `;
+html += `
+  <div style="background:${bgColor}; padding:15px; margin-bottom:10px; border-radius:8px; display:flex; align-items:center;">
+    <img src="${photo}" alt="Profile" style="width:80px; height:80px; border-radius:50%; margin-right:15px; object-fit:cover; border:2px solid #0bbf63;" />
+    <div style="flex:1;">
+      <p><strong>Name:</strong> ${emp.name}</p>
+      <p><strong>Email:</strong> ${emp.email}</p>
+      <p><strong>Position:</strong> ${emp.position}</p>
+      <p><strong>Joined:</strong> ${emp.joinedAt.toDate().toLocaleDateString()}</p>
+    </div>
+    <div style="text-align:right;">
+      <button 
+        style="background:${emp.status === 'active' ? '#f44336' : '#0bbf63'}; color:white; border:none; padding:8px 12px; border-radius:5px; cursor:pointer;"
+        onclick="toggleEmployeeStatus('${doc.id}', '${emp.status}')">
+        ${emp.status === 'active' ? 'Deactivate' : 'Activate'}
+      </button>
+    </div>
+  </div>
+`;
     });
 
     employeesDiv.innerHTML = html;
