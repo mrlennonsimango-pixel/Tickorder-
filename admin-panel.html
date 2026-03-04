@@ -414,31 +414,6 @@ function exportEmployees(filter) {
 // ORDERS SYSTEM
 // ===============================
 
-function loadOrdersSection() {
-  const content = document.getElementById("content");
-
-  content.innerHTML = `
-    <h2>Orders</h2>
-
-    <div style="margin-bottom:20px;">
-      <button style="background:#f8d7da" onclick="loadOrders('pendingConfirmation')">Pending Confirmation</button>
-      <button style="background:#fff3cd" onclick="loadOrders('confirmed')">Confirmed</button>
-      <button style="background:#d1ecf1" onclick="loadOrders('shipped')">Shipped</button>
-      <button style="background:#d4edda" onclick="loadOrders('delivered')">Delivered</button>
-    </div>
-
-    <div style="margin-bottom:10px;">
-      <button onclick="exportFilteredOrders(currentFilter)">Export Orders</button>
-    </div>
-
-    <div id="ordersList"></div>
-  `;
-
-  currentFilter = "confirmed"; // default view shows confirmed orders
-  loadOrders(currentFilter);
-}
-
-let currentFilter = "confirmed"; // global to keep track for export
 
 function loadOrders(filter) {
   currentFilter = filter; // update global filter
