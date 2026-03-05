@@ -139,6 +139,9 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
   
 <script>
+  window.onerror = (msg, url, line, col, err) => {
+    console.error("Global error:", msg, "Line:", line, "Column:", col, err);
+};
   const firebaseConfig = {
   apiKey: "AIzaSyBhDQeyV9_REmBi0zjQQyawkDoaX7Ho544",
   authDomain: "tickorder-13b84.firebaseapp.com",
