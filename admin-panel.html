@@ -668,6 +668,19 @@ function deliverOrder(orderId) {
   }).then(() => loadOrdersSection());
 }
 
+  function previewEmployeePhoto() {
+  const fileInput = document.getElementById("editEmpPhoto");
+  const previewImg = document.getElementById("editEmpPhotoPreview");
+
+  if (fileInput.files && fileInput.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result; // show selected image
+    }
+    reader.readAsDataURL(fileInput.files[0]);
+  }
+}
+
   function searchEmployees() {
   const query = document.getElementById("empSearch").value.toLowerCase();
   const employeesDiv = document.getElementById("employeesList");
