@@ -920,16 +920,33 @@ function deliverOrder(orderId) {
 
   }
 
-  stockSettingsRef.set({
-    lowStockQty: lowStockQty,
-    showStockQty: showStockQty
-  }).then(() => {
-    alert("Stock settings saved successfully!");
-  }).catch(err => {
-    console.error(err);
-    alert("Error saving stock settings");
-  });
+  function saveStockSettings() {
+  const lowStockThreshold = parseInt(document.getElementById("lowStockThreshold").value);
+  const outOfStockBehavior = document.getElementById("outOfStockBehavior").value;
+  const notifyAdmin = document.getElementById("notifyAdmin").checked;
+  const displayStock = document.getElementById("displayStock").checked;
+  const enableStockTracking = document.getElementById("enableStockTracking").checked;
+
+  if (isNaN(lowStockThreshold)) {
+    alert("Please enter a valid number for Low Stock Threshold.");
+    return;
   }
+
+  stockSettingsRef.set({
+    lowStockThreshold,
+    outOfStockBehavior,
+    notifyAdmin,
+    displayStock,
+    enableStockTracking
+  })
+  .then(() => {
+    alert("Stock settings saved successfully!");
+  })
+  .catch(err => {
+    console.error("Error saving stock settings:", err);
+    alert("Failed to save stock settings. Check console.");
+  });
+}
 </script>
 
 </body>
