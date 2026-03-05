@@ -338,25 +338,40 @@ html += `
   });
 }
 
-  function updateEmployee(empId) {
+  const photoFile = document.getElementById("editEmpPhoto").files[0];
 
-  const name = document.getElementById("editName").value;
-  const email = document.getElementById("editEmail").value;
-  const position = document.getElementById("editPosition").value;
-
-  db.collection("employees").doc(empId).update({
+function saveUpdatedEmployee(photoURL = null) {
+  const updateData = {
     name: name,
     email: email,
     position: position
-  }).then(() => {
-    alert("Employee updated successfully");
-    loadEmployeesSection();
-  }).catch(error => {
-    console.error(error);
-    alert("Update failed");
-  });
+  };
+  if(photoURL) updateData.photoURL = photoURL;
+
+  db.collection("employees").doc(empId).update(updateData)
+    .then(() => {
+      alert("Employee updated successfully");
+      loadEmployeesSection();
+    })
+    .catch(error => {
+      console.error(error);
+      alert("Update failed");
+    });
 }
-  
+
+if(photoFile) {
+  const storageRef = storage.ref("employee_photos/" + Date.now() + "_" + photoFile.name);
+  storageRef.put(photoFile).then(snapshot => {
+    snapshot.ref.getDownloadURL().then(downloadURL => {
+      saveUpdatedEmployee(downloadURL);
+    });
+  }).catch(error => {
+    console.error("Upload error:", error);
+    alert("Image upload failed.");
+  });
+} else {
+  saveUpdatedEmployee();
+}
   function toggleEmployeeStatus(empId, currentStatus) {
   const newStatus = currentStatus === "active" ? "inactive" : "active";
 
