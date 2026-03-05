@@ -163,10 +163,41 @@ function loadPage(url) {
 
 // Function for other sections
 function showSection(section) {
+
   const content = document.getElementById("content");
+
+  if(section === "stock"){
+
+    content.innerHTML = `
+      <h2 style="color:#0bbf63;">Stock Management</h2>
+
+      <div style="margin-bottom:15px;">
+        <input id="stockSearch" placeholder="Search product..."
+        style="padding:8px; width:300px;" onkeyup="searchStock()" />
+      </div>
+
+      <div style="margin:20px 0; padding:15px; background:#f4f6f5; border-radius:8px;">
+        <input id="productName" placeholder="Product Name" style="padding:8px; margin-right:5px;">
+        <input id="productPrice" placeholder="Price" type="number" style="padding:8px; margin-right:5px;">
+        <input id="productStock" placeholder="Stock Qty" type="number" style="padding:8px; margin-right:5px;">
+        <input type="file" id="productImage" accept="image/*">
+
+        <button onclick="addProduct()"
+        style="background:#0bbf63;color:white;border:none;padding:8px 15px;border-radius:5px;">
+        Add Product
+        </button>
+      </div>
+
+      <div id="stockList"></div>
+    `;
+
+    loadStock();
+    return;
+  }
+
   content.innerHTML = "<h2>" + section.toUpperCase() + "</h2><p>Section loading...</p>";
 }
-
+  
   function loadOrdersSection() {
   const content = document.getElementById("content");
 
@@ -709,6 +740,104 @@ function deliverOrder(orderId) {
     reader.readAsDataURL(file);
   }
     }
+
+  function addProduct(){
+
+  const name = document.getElementById("productName").value;
+  const price = parseFloat(document.getElementById("productPrice").value);
+  const stockQty = parseInt(document.getElementById("productStock").value);
+  const imageFile = document.getElementById("productImage").files[0];
+
+  if(!name || !price || !stockQty){
+    alert("Fill all fields");
+    return;
+  }
+
+  function saveProduct(imageURL=""){
+
+    db.collection("products").add({
+      name:name,
+      price:price,
+      stock:stockQty,
+      imageURL:imageURL,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).then(()=>{
+      alert("Product added successfully");
+      loadStock();
+    });
+
+  }
+
+  if(imageFile){
+
+    const storageRef = storage.ref("product_images/"+Date.now()+"_"+imageFile.name);
+
+    storageRef.put(imageFile)
+    .then(snapshot => snapshot.ref.getDownloadURL())
+    .then(url=>{
+      saveProduct(url);
+    });
+
+  }else{
+    saveProduct();
+  }
+
+  }
+
+  function loadStock(){
+
+  const stockDiv = document.getElementById("stockList");
+
+  if(!stockDiv) return;
+
+  stockDiv.innerHTML = "Loading products...";
+
+  db.collection("products").get().then(snapshot=>{
+
+    if(snapshot.empty){
+      stockDiv.innerHTML = "No products added yet.";
+      return;
+    }
+
+    let html="";
+
+    snapshot.forEach(doc=>{
+
+      const p = doc.data();
+
+      html += `
+      <div style="background:white;padding:15px;margin-bottom:10px;border-radius:8px;display:flex;align-items:center;">
+        <img src="${p.imageURL || 'https://via.placeholder.com/80'}"
+        style="width:80px;height:80px;object-fit:cover;border-radius:6px;margin-right:15px;">
+
+        <div style="flex:1;">
+          <p><strong>${p.name}</strong></p>
+          <p>Price: R${p.price}</p>
+          <p>Stock: ${p.stock}</p>
+        </div>
+      </div>
+      `;
+
+    });
+
+    stockDiv.innerHTML = html;
+
+  });
+
+    }
+
+  function searchStock(){
+
+  const search = document.getElementById("stockSearch").value.toLowerCase();
+
+  const cards = document.querySelectorAll("#stockList div");
+
+  cards.forEach(card=>{
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(search) ? "flex" : "none";
+  });
+
+  }
 </script>
 
 </body>
