@@ -168,7 +168,17 @@ function showSection(section) {
 }
 
   function loadOrdersSection() {
-  const content = document.getElementById("content");
+  const ordersDiv = document.getElementById("ordersList");
+loadOrders("all"); // default load all orders
+
+// ✅ Step 2 — Highlight active button
+const filterButtons = document.querySelectorAll(".filterBtn");
+filterButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    filterButtons.forEach(btn => btn.classList.remove("active"));
+    button.classList.add("active");
+  });
+});
 
   content.innerHTML = `
     <h2>Orders</h2>
