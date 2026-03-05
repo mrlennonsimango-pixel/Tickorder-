@@ -342,7 +342,7 @@ html += `
   const name = document.getElementById("editName").value;
   const email = document.getElementById("editEmail").value;
   const position = document.getElementById("editPosition").value;
-  const photoFile = document.getElementById("editPhoto").files[0];
+  const photoFile = document.getElementById("editEmpPhoto").files[0]; // <-- correct ID
 
   function saveUpdate(photoURL = null) {
     const updateData = { name, email, position };
@@ -360,12 +360,13 @@ html += `
 
   if(photoFile) {
     const storageRef = storage.ref("employee_photos/" + Date.now() + "_" + photoFile.name);
-    storageRef.put(photoFile).then(snapshot => {
-      snapshot.ref.getDownloadURL().then(downloadURL => saveUpdate(downloadURL));
-    }).catch(error => {
-      console.error("Upload error:", error);
-      alert("Image upload failed.");
-    });
+    storageRef.put(photoFile)
+      .then(snapshot => snapshot.ref.getDownloadURL())
+      .then(downloadURL => saveUpdate(downloadURL))
+      .catch(error => {
+        console.error("Upload error:", error);
+        alert("Image upload failed.");
+      });
   } else {
     saveUpdate();
   }
