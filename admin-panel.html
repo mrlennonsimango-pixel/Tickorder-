@@ -806,17 +806,32 @@ function deliverOrder(orderId) {
       const p = doc.data();
 
       html += `
-      <div style="background:white;padding:15px;margin-bottom:10px;border-radius:8px;display:flex;align-items:center;">
-        <img src="${p.imageURL || 'https://via.placeholder.com/80'}"
-        style="width:80px;height:80px;object-fit:cover;border-radius:6px;margin-right:15px;">
+      html += `
+<div style="background:white;padding:15px;margin-bottom:10px;border-radius:8px;display:flex;align-items:center;gap:15px;">
 
-        <div style="flex:1;">
-          <p><strong>${p.name}</strong></p>
-          <p>Price: R${p.price}</p>
-          <p>Stock: ${p.stock}</p>
-        </div>
-      </div>
-      `;
+  <img src="${p.imageURL || 'https://via.placeholder.com/80'}"
+  style="width:80px;height:80px;object-fit:cover;border-radius:6px;">
+
+  <div style="flex:1;">
+    <p><strong>${p.name}</strong></p>
+    <p>Price: R${p.price}</p>
+    <p>Stock: ${p.stock}</p>
+  </div>
+
+  <div>
+    <button onclick="editProduct('${doc.id}','${p.name}',${p.price},${p.stock})"
+    style="background:#1976d2;color:white;border:none;padding:6px 12px;border-radius:5px;margin-right:5px;">
+    Edit
+    </button>
+
+    <button onclick="deleteProduct('${doc.id}')"
+    style="background:#e53935;color:white;border:none;padding:6px 12px;border-radius:5px;">
+    Delete
+    </button>
+  </div>
+
+</div>
+`;
 
     });
 
