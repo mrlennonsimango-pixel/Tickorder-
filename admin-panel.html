@@ -338,39 +338,37 @@ html += `
   });
 }
 
-  const photoFile = document.getElementById("editEmpPhoto").files[0];
+  function updateEmployee(empId) {
+  const name = document.getElementById("editName").value;
+  const email = document.getElementById("editEmail").value;
+  const position = document.getElementById("editPosition").value;
+  const photoFile = document.getElementById("editPhoto").files[0];
 
-function saveUpdatedEmployee(photoURL = null) {
-  const updateData = {
-    name: name,
-    email: email,
-    position: position
-  };
-  if(photoURL) updateData.photoURL = photoURL;
+  function saveUpdate(photoURL = null) {
+    const updateData = { name, email, position };
+    if(photoURL) updateData.photoURL = photoURL;
 
-  db.collection("employees").doc(empId).update(updateData)
-    .then(() => {
-      alert("Employee updated successfully");
-      loadEmployeesSection();
-    })
-    .catch(error => {
-      console.error(error);
-      alert("Update failed");
+    db.collection("employees").doc(empId).update(updateData)
+      .then(() => {
+        alert("Employee updated successfully");
+        loadEmployeesSection();
+      }).catch(error => {
+        console.error(error);
+        alert("Update failed");
+      });
+  }
+
+  if(photoFile) {
+    const storageRef = storage.ref("employee_photos/" + Date.now() + "_" + photoFile.name);
+    storageRef.put(photoFile).then(snapshot => {
+      snapshot.ref.getDownloadURL().then(downloadURL => saveUpdate(downloadURL));
+    }).catch(error => {
+      console.error("Upload error:", error);
+      alert("Image upload failed.");
     });
-}
-
-if(photoFile) {
-  const storageRef = storage.ref("employee_photos/" + Date.now() + "_" + photoFile.name);
-  storageRef.put(photoFile).then(snapshot => {
-    snapshot.ref.getDownloadURL().then(downloadURL => {
-      saveUpdatedEmployee(downloadURL);
-    });
-  }).catch(error => {
-    console.error("Upload error:", error);
-    alert("Image upload failed.");
-  });
-} else {
-  saveUpdatedEmployee();
+  } else {
+    saveUpdate();
+  }
 }
   function toggleEmployeeStatus(empId, currentStatus) {
   const newStatus = currentStatus === "active" ? "inactive" : "active";
