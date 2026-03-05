@@ -157,11 +157,25 @@ function showSection(section) {
   content.innerHTML = `
     <h2>Orders</h2>
     <div style="margin-bottom:20px;">
-  <button onclick="loadOrders('all')">All</button>
-  <button onclick="loadOrders('pendingconfirmation')">Pending Confirmation</button>
-  <button onclick="loadOrders('confirmed')">Confirmed</button>
-  <button onclick="loadOrders('shipped')">Shipped</button>
-  <button onclick="loadOrders('delivered')">Delivered</button>
+
+<button class="filterBtn" onclick="setFilter(this,'all')">All</button>
+
+<button class="filterBtn" onclick="setFilter(this,'pendingconfirmation')">
+Pending Confirmation
+</button>
+
+<button class="filterBtn" onclick="setFilter(this,'confirmed')">
+Confirmed
+</button>
+
+<button class="filterBtn" onclick="setFilter(this,'shipped')">
+Shipped
+</button>
+
+<button class="filterBtn" onclick="setFilter(this,'delivered')">
+Delivered
+</button>
+
 </div>
 
 <div style="margin-bottom:10px;">
@@ -409,6 +423,19 @@ function exportEmployees(filter) {
   }
 
   return "";
+}
+
+  function setFilter(button, filter){
+
+  document.querySelectorAll(".filterBtn").forEach(btn=>{
+    btn.style.background="#ffffff";
+    btn.style.color="#333";
+  });
+
+  button.style.background="#0bbf63";
+  button.style.color="white";
+
+  loadOrders(filter);
 }
   // ===============================
 // ORDERS SYSTEM
