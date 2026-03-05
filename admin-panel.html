@@ -574,7 +574,7 @@ function updateOrderStatus(orderId, newStatus) {
   db.collection("orders").doc(orderId).update({
     status: newStatus
   }).then(() => {
-    loadOrders("all");
+    loadOrders(currentFilter);
   }).catch(error => {
     console.error("Error updating order:", error);
   });
