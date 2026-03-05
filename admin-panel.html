@@ -652,6 +652,24 @@ function deliverOrder(orderId) {
     deliveredAt: firebase.firestore.FieldValue.serverTimestamp()
   }).then(() => loadOrdersSection());
 }
+
+  function searchEmployees() {
+  const query = document.getElementById("empSearch").value.toLowerCase();
+  const employeesDiv = document.getElementById("employeesList");
+  const allEmployees = employeesDiv.querySelectorAll("div[onclick^='openEmployee']");
+
+  allEmployees.forEach(empDiv => {
+    const name = empDiv.querySelector("p strong").textContent.toLowerCase();
+    const email = empDiv.querySelectorAll("p")[1].textContent.toLowerCase();
+    const position = empDiv.querySelectorAll("p")[2].textContent.toLowerCase();
+
+    if(name.includes(query) || email.includes(query) || position.includes(query)) {
+      empDiv.style.display = "flex";
+    } else {
+      empDiv.style.display = "none";
+    }
+  });
+    }
 </script>
 
 </body>
