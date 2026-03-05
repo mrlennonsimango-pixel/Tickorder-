@@ -155,6 +155,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
   const storage = firebase.storage();
+  const stockSettingsRef = db.collection("settings").doc("stock");
 // Function to load a full page inside the main panel
 function loadPage(url) {
   const content = document.getElementById("content");
@@ -170,6 +171,36 @@ function showSection(section) {
 
     content.innerHTML = `
       <h2 style="color:#0bbf63;">Stock Management</h2>
+
+<div style="margin-bottom:20px; padding:15px; background:#e8f7ef; border-radius:8px;">
+  <h3 style="color:#0bbf63;">Stock Settings</h3>
+  
+  <label>Low Stock Threshold:</label>
+  <input type="number" id="lowStockThreshold" style="padding:6px; width:80px;" value="5">
+
+  <label style="margin-left:15px;">Out-of-Stock Behavior:</label>
+  <select id="outOfStockBehavior" style="padding:6px;">
+    <option value="hide">Hide from store</option>
+    <option value="show">Show as Out of Stock</option>
+  </select>
+
+  <label style="margin-left:15px;">
+    <input type="checkbox" id="notifyAdmin"> Notify Admin on Low Stock
+  </label>
+
+  <label style="margin-left:15px;">
+    <input type="checkbox" id="displayStock" checked> Display Stock on Product Page
+  </label>
+
+  <label style="margin-left:15px;">
+    <input type="checkbox" id="enableStockTracking" checked> Enable Stock Tracking
+  </label>
+
+  <button style="margin-left:15px; background:#0bbf63; color:white; border:none; padding:6px 12px; border-radius:5px;" 
+          onclick="saveStockSettings()">
+    Save Settings
+  </button>
+</div>
 
       <div style="margin-bottom:15px;">
         <input id="stockSearch" placeholder="Search product..."
@@ -888,7 +919,17 @@ function deliverOrder(orderId) {
   });
 
   }
-  
+
+  stockSettingsRef.set({
+    lowStockQty: lowStockQty,
+    showStockQty: showStockQty
+  }).then(() => {
+    alert("Stock settings saved successfully!");
+  }).catch(err => {
+    console.error(err);
+    alert("Error saving stock settings");
+  });
+  }
 </script>
 
 </body>
