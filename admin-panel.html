@@ -761,17 +761,6 @@ function deliverOrder(orderId) {
   });
     }
 
-  function previewEmployeePhoto() {
-  const file = document.getElementById("editEmpPhoto").files[0];
-  if(file) {
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      document.getElementById("editEmpPhotoPreview").src = e.target.result;
-    }
-    reader.readAsDataURL(file);
-  }
-    }
-
   function addProduct(){
 
   const name = document.getElementById("productName").value;
