@@ -170,8 +170,11 @@ function showSection(section) {
   function loadOrdersSection() {
   const ordersDiv = document.getElementById("ordersList");
 loadOrders("all"); // default load all orders
-
+// Hook the Export Orders button
+    
+document.getElementById("exportOrdersBtn").onclick = () => exportFilteredOrders(currentFilter);
 // ✅ Step 2 — Highlight active button
+    
 const filterButtons = document.querySelectorAll(".filterBtn");
 filterButtons.forEach(button => {
   button.addEventListener("click", () => {
@@ -580,28 +583,33 @@ function exportFilteredOrders(filter) {
   if(filter !== "all") query = query.where("status", "==", filter);
 
   query.get().then(snapshot => {
-    if(snapshot.empty){ alert("No orders to export"); return; }
+    if(snapshot.empty){ 
+      alert("No orders to export"); 
+      return; 
+    }
 
     const rows = [];
     snapshot.forEach(doc => {
       const order = doc.data();
       rows.push({
         "Order ID": doc.id,
-        "Customer": order.name,
-        "Email": order.email,
-        "Address": order.address,
-        "Total": order.total,
-        "Payment": order.paymentStatus,
-        "Status": order.status,
+        "Customer": order.name || "",
+        "Email": order.email || "",
+        "Address": order.address || "",
+        "Total": order.total || 0,
+        "Payment": order.paymentStatus || "",
+        "Status": order.status || "",
         "Ordered At": order.createdAt ? order.createdAt.toDate().toLocaleString() : "N/A"
       });
     });
 
+    // Build CSV string
     const csvContent = [
       Object.keys(rows[0]).join(","), // header
-      ...rows.map(r => Object.values(r).join(","))
+      ...rows.map(r => Object.values(r).map(v => `"${v}"`).join(",")) // quote values
     ].join("\n");
 
+    // Trigger download
     const blob = new Blob([csvContent], {type:"text/csv"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
