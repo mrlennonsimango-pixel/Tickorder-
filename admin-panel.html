@@ -336,21 +336,16 @@ function loadEmployees(filter) {
       const photo = emp.photoURL ? emp.photoURL : "https://via.placeholder.com/80"; // placeholder if no photo
 
 html += `
-  <div onclick="openEmployee('${doc.id}')" 
-     style="background:${bgColor}; padding:15px; margin-bottom:10px; border-radius:8px; display:flex; align-items:center; cursor:pointer;">
+  <div class="employee-card" data-id="${doc.id}" data-status="${emp.status}" style="background:${bgColor}; padding:15px; margin-bottom:10px; border-radius:8px; display:flex; align-items:center; cursor:pointer;">
     <img src="${photo}" alt="Profile" style="width:80px; height:80px; border-radius:50%; margin-right:15px; object-fit:cover; border:2px solid #0bbf63;" />
     <div style="flex:1;">
-      <p><strong>Name:</strong> ${emp.name}</p>
-      <p><strong>Email:</strong> ${emp.email}</p>
-      <p><strong>Position:</strong> ${emp.position}</p>
-      <p><strong>Joined:</strong> ${
-  emp.joinedAt ? emp.joinedAt.toDate().toLocaleDateString() : "Pending..."
-}</p>
+      <p><strong>${emp.name}</strong></p>
+      <p>${emp.email}</p>
+      <p>${emp.position}</p>
+      <p>${emp.joinedAt ? emp.joinedAt.toDate().toLocaleDateString() : "Pending..."}</p>
     </div>
     <div style="text-align:right;">
-      <button 
-        style="background:${emp.status === 'active' ? '#f44336' : '#0bbf63'}; color:white; border:none; padding:8px 12px; border-radius:5px; cursor:pointer;"
-        onclick="toggleEmployeeStatus('${doc.id}', '${emp.status}')">
+      <button class="toggle-btn" style="background:${emp.status === 'active' ? '#f44336' : '#0bbf63'}; color:white; border:none; padding:8px 12px; border-radius:5px; cursor:pointer;">
         ${emp.status === 'active' ? 'Deactivate' : 'Activate'}
       </button>
     </div>
@@ -364,6 +359,21 @@ html += `
     employeesDiv.innerHTML = "<p>Error loading employees. Check console.</p>";
   });
 }
+
+  const cards = employeesDiv.querySelectorAll(".employee-card");
+cards.forEach(card => {
+  const empId = card.dataset.id;
+  const status = card.dataset.status;
+
+  card.querySelector(".toggle-btn").addEventListener("click", e => {
+    e.stopPropagation(); // prevents triggering openEmployee
+    toggleEmployeeStatus(empId, status);
+  });
+
+  card.addEventListener("click", () => {
+    openEmployee(empId);
+  });
+});
 
   function openEmployee(empId) {
 
@@ -633,15 +643,21 @@ function openOrder(orderId) {
       <h3>Items</h3>
       ${itemsHTML}
       <div style="margin-top:10px;">
-        <button onclick="updateOrderStatus('${orderId}','confirmed')">Confirm</button>
-        <button onclick="updateOrderStatus('${orderId}','shipped')">Shipped</button>
-        <button onclick="updateOrderStatus('${orderId}','delivered')">Delivered</button>
+        <button class="order-btn" data-id="${orderId}" data-status="confirmed">Confirm</button>
+<button class="order-btn" data-id="${orderId}" data-status="shipped">Shipped</button>
+<button class="order-btn" data-id="${orderId}" data-status="delivered">Delivered</button>
       </div>
       <button style="margin-top:10px;" onclick="loadOrdersSection()">Back to Orders</button>
     `;
   });
 }
-
+document.querySelectorAll(".order-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const id = btn.dataset.id;
+    const status = btn.dataset.status;
+    updateOrderStatus(id, status);
+  });
+});
 // Export orders respecting current filter
 function exportFilteredOrders(filter) {
   let query = db.collection("orders");
@@ -807,32 +823,28 @@ function deliverOrder(orderId) {
 
   }
 
-  function loadStock(){
-
+  function loadStock() {
   const stockDiv = document.getElementById("stockList");
-
-  if(!stockDiv) return;
+  if (!stockDiv) return;
 
   stockDiv.innerHTML = "Loading products...";
 
-  db.collection("products").get().then(snapshot=>{
-
-    if(snapshot.empty){
+  db.collection("products").get().then(snapshot => {
+    if (snapshot.empty) {
       stockDiv.innerHTML = "No products added yet.";
       return;
     }
 
-    let html="";
+    let html = "";
 
-    snapshot.forEach(doc=>{
-
+    snapshot.forEach(doc => {
       const p = doc.data();
 
+      // Add data attributes instead of inline onclick
       html += `
 <div style="background:white;padding:15px;margin-bottom:10px;border-radius:8px;display:flex;align-items:center;gap:15px;">
-
   <img src="${p.imageURL || 'https://via.placeholder.com/80'}"
-  style="width:80px;height:80px;object-fit:cover;border-radius:6px;">
+       style="width:80px;height:80px;object-fit:cover;border-radius:6px;">
 
   <div style="flex:1;">
     <p><strong>${p.name}</strong></p>
@@ -841,27 +853,50 @@ function deliverOrder(orderId) {
   </div>
 
   <div>
-    <button onclick="editProduct('${doc.id}','${p.name}',${p.price},${p.stock})"
-    style="background:#1976d2;color:white;border:none;padding:6px 12px;border-radius:5px;margin-right:5px;">
-    Edit
+    <button class="edit-btn"
+            data-id="${doc.id}" 
+            data-name="${p.name}" 
+            data-price="${p.price}" 
+            data-stock="${p.stock}"
+            style="background:#1976d2;color:white;border:none;padding:6px 12px;border-radius:5px;margin-right:5px;">
+      Edit
     </button>
 
-    <button onclick="deleteProduct('${doc.id}')"
-    style="background:#e53935;color:white;border:none;padding:6px 12px;border-radius:5px;">
-    Delete
+    <button class="delete-btn"
+            data-id="${doc.id}"
+            style="background:#e53935;color:white;border:none;padding:6px 12px;border-radius:5px;">
+      Delete
     </button>
   </div>
-
 </div>
 `;
-
     });
 
     stockDiv.innerHTML = html;
 
-  });
+    // Attach listeners AFTER the HTML is in the page
+    document.querySelectorAll(".edit-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        editProduct(
+          btn.dataset.id,
+          btn.dataset.name,
+          btn.dataset.price,
+          btn.dataset.stock
+        );
+      });
+    });
 
-    }
+    document.querySelectorAll(".delete-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        deleteProduct(btn.dataset.id);
+      });
+    });
+
+  }).catch(err => {
+    console.error("Error loading stock:", err);
+    stockDiv.innerHTML = "Failed to load products.";
+  });
+  }
 
   function searchStock(){
 
