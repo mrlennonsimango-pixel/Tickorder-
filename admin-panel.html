@@ -414,7 +414,8 @@ function exportEmployees(filter) {
 // ORDERS SYSTEM
 // ===============================
 
-
+let currentFilter = "all";
+  
 function loadOrders(filter) {
   currentFilter = filter; // update global filter
   const ordersDiv = document.getElementById("ordersList");
