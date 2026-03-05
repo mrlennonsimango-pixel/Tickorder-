@@ -168,53 +168,37 @@ function showSection(section) {
 }
 
   function loadOrdersSection() {
-  const ordersDiv = document.getElementById("ordersList");
-loadOrders("all"); // default load all orders
-// Hook the Export Orders button
-    
-document.getElementById("exportOrdersBtn").onclick = () => exportFilteredOrders(currentFilter);
-// ✅ Step 2 — Highlight active button
-    
-const filterButtons = document.querySelectorAll(".filterBtn");
-filterButtons.forEach(button => {
-  button.addEventListener("click", () => {
-    filterButtons.forEach(btn => btn.classList.remove("active"));
-    button.classList.add("active");
-  });
-});
+  const content = document.getElementById("content");
 
   content.innerHTML = `
     <h2>Orders</h2>
     <div style="margin-bottom:20px;">
+      <button class="filterBtn" onclick="setFilter(this,'all')">All</button>
+      <button class="filterBtn" onclick="setFilter(this,'pendingconfirmation')">Pending Confirmation</button>
+      <button class="filterBtn" onclick="setFilter(this,'confirmed')">Confirmed</button>
+      <button class="filterBtn" onclick="setFilter(this,'shipped')">Shipped</button>
+      <button class="filterBtn" onclick="setFilter(this,'delivered')">Delivered</button>
+    </div>
 
-<button class="filterBtn" onclick="setFilter(this,'all')">All</button>
-
-<button class="filterBtn" onclick="setFilter(this,'pendingconfirmation')">
-Pending Confirmation
-</button>
-
-<button class="filterBtn" onclick="setFilter(this,'confirmed')">
-Confirmed
-</button>
-
-<button class="filterBtn" onclick="setFilter(this,'shipped')">
-Shipped
-</button>
-
-<button class="filterBtn" onclick="setFilter(this,'delivered')">
-Delivered
-</button>
-
-</div>
-
-<div style="margin-bottom:10px;">
-  <button id="exportOrdersBtn">Export Orders</button>
-</div>
+    <div style="margin-bottom:10px;">
+      <button id="exportOrdersBtn">Export Orders</button>
+    </div>
 
     <div id="ordersList"></div>
   `;
 
-  loadOrders("all"); // default load all orders
+  // Now the elements exist, safe to query them
+  document.getElementById("exportOrdersBtn").onclick = () => exportFilteredOrders(currentFilter);
+
+  const filterButtons = document.querySelectorAll(".filterBtn");
+  filterButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      filterButtons.forEach(btn => btn.classList.remove("active"));
+      button.classList.add("active");
+    });
+  });
+
+  loadOrders("all"); // load default
 }
 
  function loadEmployeesSection() {
