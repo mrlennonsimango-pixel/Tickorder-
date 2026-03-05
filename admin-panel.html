@@ -207,6 +207,12 @@ function showSection(section) {
   content.innerHTML = `
     <h2 style="color:#0bbf63;">Employees</h2>
 
+<div style="margin-bottom:15px;">
+  <input id="empSearch" placeholder="Search employees..." 
+         style="padding:8px; width:300px; margin-right:10px;" 
+         onkeyup="searchEmployees()" />
+</div>
+
      <div style="margin:20px 0; padding:15px; background:#f4f6f5; border-radius:8px;">
   <input id="empName" placeholder="Full Name" style="padding:8px; margin-right:5px;" />
   <input id="empEmail" placeholder="Email" style="padding:8px; margin-right:5px;" />
