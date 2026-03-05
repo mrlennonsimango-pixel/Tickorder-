@@ -853,6 +853,42 @@ function deliverOrder(orderId) {
   });
 
   }
+
+  function deleteProduct(id){
+
+  if(!confirm("Delete this product?")) return;
+
+  db.collection("products").doc(id).delete()
+  .then(()=>{
+    alert("Product deleted");
+    loadStock();
+  });
+
+        }
+
+        function editProduct(id,name,price,stock){
+
+  const newName = prompt("Edit product name", name);
+  if(newName === null) return;
+
+  const newPrice = prompt("Edit price", price);
+  if(newPrice === null) return;
+
+  const newStock = prompt("Edit stock", stock);
+  if(newStock === null) return;
+
+  db.collection("products").doc(id).update({
+    name:newName,
+    price:parseFloat(newPrice),
+    stock:parseInt(newStock)
+  })
+  .then(()=>{
+    alert("Product updated");
+    loadStock();
+  });
+
+  }
+  
 </script>
 
 </body>
