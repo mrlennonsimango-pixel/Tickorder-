@@ -569,6 +569,7 @@ if (filter === "all") {
 
     let html = "";
 
+    console.log("Orders found:", snapshot.size);
     snapshot.forEach(doc => {
       const order = doc.data();
       const createdAt = order.createdAt ? order.createdAt.toDate().toLocaleString() : "N/A";
