@@ -557,9 +557,8 @@ function loadOrders(filter) {
   let query = db.collection("orders");
 
   if (filter !== "all") {
-    query = query.where("status", "==", filter);
-  }
-
+  query = db.collection("orders").where("statusLower", "==", filter.toLowerCase());
+}
   query.get().then(snapshot => {
     if (snapshot.empty) {
       ordersDiv.innerHTML = "<p>No orders found.</p>";
