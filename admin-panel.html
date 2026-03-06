@@ -556,7 +556,9 @@ function loadOrders(filter) {
 
   let query = db.collection("orders");
 
-if (filter !== "all") {
+if (filter === "all") {
+  query = db.collection("orders");
+} else {
   query = db.collection("orders").where("status", "==", filter);
 }
   query.get().then(snapshot => {
