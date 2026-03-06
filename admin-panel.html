@@ -549,18 +549,17 @@ let currentFilter = "all";
 function loadOrders(filter) {
   currentFilter = filter; // update global filter
   const ordersDiv = document.getElementById("ordersList");
-
   if (!ordersDiv) return;
 
   ordersDiv.innerHTML = `<p>Loading ${filter} orders...</p>`;
 
   let query = db.collection("orders");
 
-if (filter === "all") {
-  query = db.collection("orders");
-} else {
-  query = db.collection("orders").where("status", "==", filter);
-}
+  if (filter !== "all") {
+    // normalize to lowercase
+    query = query.where("status", "==", filter.toLowerCase());
+  }
+
   query.get().then(snapshot => {
     if (snapshot.empty) {
       ordersDiv.innerHTML = "<p>No orders found.</p>";
@@ -568,18 +567,15 @@ if (filter === "all") {
     }
 
     let html = "";
-
-    console.log("Orders found:", snapshot.size);
     snapshot.forEach(doc => {
       const order = doc.data();
       const createdAt = order.createdAt ? order.createdAt.toDate().toLocaleString() : "N/A";
 
-      // Status colors
       let bgColor = "#ffffff";
-      if(order.status === "pendingConfirmation") bgColor = "#f8d7da";
-      else if(order.status === "confirmed") bgColor = "#fff3cd";
-      else if(order.status === "shipped") bgColor = "#d1ecf1";
-      else if(order.status === "delivered") bgColor = "#d4edda";
+      if(order.status.toLowerCase() === "pendingconfirmation") bgColor = "#f8d7da";
+      else if(order.status.toLowerCase() === "confirmed") bgColor = "#fff3cd";
+      else if(order.status.toLowerCase() === "shipped") bgColor = "#d1ecf1";
+      else if(order.status.toLowerCase() === "delivered") bgColor = "#d4edda";
 
       html += `
         <div style="background:${bgColor}; padding:15px; margin-bottom:12px; border:1px solid #ddd; border-radius:8px; cursor:pointer;" onclick="openOrder('${doc.id}')">
