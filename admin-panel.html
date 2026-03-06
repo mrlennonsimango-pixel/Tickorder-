@@ -544,20 +544,22 @@ function exportEmployees(filter) {
 // ORDERS SYSTEM
 // ===============================
 
+// Global filter
 let currentFilter = "all";
-  
+
+// Load orders in admin panel
 function loadOrders(filter) {
-  currentFilter = filter; // update global filter
+  currentFilter = filter;
   const ordersDiv = document.getElementById("ordersList");
   if (!ordersDiv) return;
 
   ordersDiv.innerHTML = `<p>Loading ${filter} orders...</p>`;
 
-  let query = db.collection("orders");
+  // Query only paid orders
+  let query = db.collection("orders").where("paymentStatus", "==", "paid");
 
   if (filter !== "all") {
-    // normalize to lowercase
-    query = query.where("status", "==", filter.toLowerCase());
+    query = query.where("status", "==", filter);
   }
 
   query.get().then(snapshot => {
@@ -567,15 +569,17 @@ function loadOrders(filter) {
     }
 
     let html = "";
+
     snapshot.forEach(doc => {
       const order = doc.data();
       const createdAt = order.createdAt ? order.createdAt.toDate().toLocaleString() : "N/A";
 
+      // Background color based on status
       let bgColor = "#ffffff";
-      if(order.status.toLowerCase() === "pendingconfirmation") bgColor = "#f8d7da";
-      else if(order.status.toLowerCase() === "confirmed") bgColor = "#fff3cd";
-      else if(order.status.toLowerCase() === "shipped") bgColor = "#d1ecf1";
-      else if(order.status.toLowerCase() === "delivered") bgColor = "#d4edda";
+      if(order.status === "pendingConfirmation") bgColor = "#f8d7da";
+      else if(order.status === "confirmed") bgColor = "#fff3cd";
+      else if(order.status === "shipped") bgColor = "#d1ecf1";
+      else if(order.status === "delivered") bgColor = "#d4edda";
 
       html += `
         <div style="background:${bgColor}; padding:15px; margin-bottom:12px; border:1px solid #ddd; border-radius:8px; cursor:pointer;" onclick="openOrder('${doc.id}')">
@@ -584,7 +588,7 @@ function loadOrders(filter) {
           <p><strong>Email:</strong> ${order.email || "N/A"}</p>
           <p><strong>Address:</strong> ${order.address || "N/A"}</p>
           <p><strong>Total:</strong> R${order.total || 0}</p>
-          <p><strong>Payment:</strong> ${order.paymentStatus || "N/A"}</p>
+          <p><strong>Payment:</strong> ${order.paymentStatus}</p>
           <p><strong>Status:</strong> ${order.status || "N/A"}</p>
           <p><strong>Ordered At:</strong> ${createdAt}</p>
         </div>
@@ -592,13 +596,11 @@ function loadOrders(filter) {
     });
 
     ordersDiv.innerHTML = html;
-
   }).catch(error => {
     console.error("Error loading orders:", error);
     ordersDiv.innerHTML = "<p>Error loading orders. Check console.</p>";
   });
 }
-
 // Open full order view with items and pictures
 function openOrder(orderId) {
   db.collection("orders").doc(orderId).get().then(doc => {
