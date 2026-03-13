@@ -179,6 +179,27 @@ checkoutContainer.insertBefore(summaryDiv, document.getElementById("checkout-for
     const email = e.target[1].value;
     const address = e.target[2].value;
 
+    // Step 2: Get selected delivery option
+const deliveryType = document.getElementById("delivery").value; // standard or express
+
+// Step 2a: Calculate total weight of items in cart
+// For now, assume each item has weight property; if not, default 1kg
+const totalWeight = cart.reduce((sum, item) => sum + (item.weight || 1), 0);
+
+// Step 2b: Determine package type based on weight
+let packageType = (totalWeight <= 5) ? "standard" : "large";
+
+// Step 2c: Determine PAXI cost (rounded amounts)
+let deliveryCost = 0;
+if (packageType === "standard") {
+  deliveryCost = (deliveryType === "standard") ? 60 : 110;
+} else {
+  deliveryCost = (deliveryType === "standard") ? 110 : 140;
+}
+
+// Step 2d: Calculate total including delivery
+const totalCost = cart.reduce((sum, item) => sum + item.price, 0) + deliveryCost;
+    
     db.collection("orders").add({
       name,
       email,
