@@ -5,6 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cart - TickOrder</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    .cart-product {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      border-radius: 10px;
+      padding: 10px 15px;
+      margin: 10px auto;
+      max-width: 400px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+
+    .cart-product img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-right: 10px;
+    }
+
+    .cart-product button {
+      background: #0f9d58;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #total {
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 20px;
+      color: #0f9d58;
+    }
+
+    #checkoutBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 25px;
+      background: #0f9d58;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
@@ -13,58 +63,68 @@
   <nav>
     <a href="index.html">Home</a>
     <a href="cart.html">Cart</a>
+    <span id="cart-counter">Cart: 0</span>
   </nav>
 </header>
 
-<section class="products" id="cart-items"></section>
+<section id="cart-items"></section>
+<h2 id="total"></h2>
+<button id="checkoutBtn">Proceed to Checkout</button>
 
-<h2 id="total" style="text-align:center;"></h2>
-<button onclick="goToCheckout()" style="display:block;margin:20px auto;padding:10px 20px;">
-  Proceed to Checkout
-</button>
-  
 <script>
-const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
+let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
 const cartContainer = document.getElementById("cart-items");
 const totalDisplay = document.getElementById("total");
+const cartCounter = document.getElementById("cart-counter");
 
-let total = 0;
+function updateCartCounter() {
+  cartCounter.textContent = `Cart: ${cart.length}`;
+}
 
-if (cart.length === 0) {
-  cartContainer.innerHTML = "<p style='text-align:center;'>Your cart is empty.</p>";
-} else {
+function renderCart() {
+  cartContainer.innerHTML = "";
+  if (cart.length === 0) {
+    cartContainer.innerHTML = "<p style='text-align:center;'>Your cart is empty.</p>";
+    totalDisplay.textContent = "Total: R0";
+    return;
+  }
+
+  let total = 0;
   cart.forEach((item, index) => {
     total += item.price;
+    const div = document.createElement("div");
+    div.classList.add("cart-product");
 
-    const card = document.createElement("div");
-    card.classList.add("product-card");
-
-    card.innerHTML = `
-      <h3>${item.name}</h3>
-      <p>$${item.price}</p>
+    div.innerHTML = `
+      <img src="${item.image}" alt="${item.name}" />
+      <span>${item.name} - R${item.price}</span>
       <button onclick="removeItem(${index})">Remove</button>
     `;
 
-    cartContainer.appendChild(card);
+    cartContainer.appendChild(div);
   });
-}
 
-totalDisplay.textContent = "Total: $" + total;
+  totalDisplay.textContent = `Total: R${total}`;
+}
 
 function removeItem(index) {
   cart.splice(index, 1);
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
-  location.reload();
+  renderCart();
+  updateCartCounter();
 }
 
-function goToCheckout() {
+document.getElementById("checkoutBtn").addEventListener("click", () => {
   if (cart.length === 0) {
     alert("Your cart is empty!");
     return;
   }
   window.location.href = "checkout.html";
-}
+});
+
+renderCart();
+updateCartCounter();
 </script>
 
 </body>
-</html>
+  </html>
