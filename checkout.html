@@ -101,18 +101,23 @@
   <form id="checkout-form">
     <input type="text" placeholder="Full Name" required>
     <input type="email" placeholder="Email" required>
-    <input type="text" placeholder="Address" required>
 
-<!-- Delivery Option -->
-<select id="delivery" required>
-  <option value="">Select Delivery Speed</option>
-  <option value="standard">Standard (7–9 days)</option>
-  <option value="express">Express (3–5 days)</option>
-</select>
-    
-<div id="final-total" style="margin:10px 0; font-weight:bold;"></div>
-    
-<button type="submit">Place Order</button>
+    <!-- PAXI Store Input / Locator -->
+    <input type="text" id="paxi-store" placeholder="Enter PEP Store (town + plaza or store name)">
+    <button type="button" id="locate-me">Locate Me</button>
+    <div id="map" style="width:100%;height:300px;margin-top:10px;display:none;"></div>
+
+    <!-- Delivery Option -->
+    <select id="delivery" required>
+      <option value="">Select Delivery Speed</option>
+      <option value="standard">Standard (7–9 days)</option>
+      <option value="express">Express (3–5 days)</option>
+    </select>
+
+    <!-- Total Display -->
+    <div id="final-total" style="margin:10px 0; font-weight:bold;"></div>
+
+    <button type="submit">Place Order</button>
   </form>
   <div id="order-status"></div>
 </section>
