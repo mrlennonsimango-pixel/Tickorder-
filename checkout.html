@@ -5,6 +5,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout - TickOrder</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f2f2f2;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0f9d58;
+      color: white;
+      padding: 15px 20px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 15px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      opacity: 0.8;
+    }
+
+    section.checkout-container {
+      max-width: 500px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    section.checkout-container h2 {
+      text-align: center;
+      color: #0f9d58;
+      margin-bottom: 20px;
+    }
+
+    section.checkout-container input {
+      width: 100%;
+      padding: 12px 15px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    section.checkout-container button {
+      width: 100%;
+      background: #0f9d58;
+      color: white;
+      padding: 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: opacity 0.2s;
+    }
+
+    section.checkout-container button:hover {
+      opacity: 0.9;
+    }
+
+    #order-status {
+      text-align: center;
+      margin-top: 20px;
+      color: #0f9d58;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
@@ -12,29 +92,26 @@
   <h1>TickOrder</h1>
   <nav>
     <a href="index.html">Home</a>
-    <a href="cart.html">Cart</a>
+    <a href="cart.html">🛒 Cart</a>
   </nav>
 </header>
 
-<section style="padding:20px; max-width:500px; margin:auto;">
+<section class="checkout-container">
   <h2>Checkout</h2>
-
   <form id="checkout-form">
-    <input type="text" placeholder="Full Name" required><br><br>
-    <input type="email" placeholder="Email" required><br><br>
-    <input type="text" placeholder="Address" required><br><br>
+    <input type="text" placeholder="Full Name" required>
+    <input type="email" placeholder="Email" required>
+    <input type="text" placeholder="Address" required>
     <button type="submit">Place Order</button>
   </form>
-
-  <h3 id="order-status" style="margin-top:20px;"></h3>
+  <div id="order-status"></div>
 </section>
 
-  <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script>
-  // Firebase config — copy exactly from your Firebase console
+  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyBhDQeyV9_REmBi0zjQQyawkDoaX7Ho544",
     authDomain: "tickorder-13b84.firebaseapp.com",
@@ -44,46 +121,44 @@
     appId: "1:288232701324:web:ae43423dacecd9508f6aa9"
   };
 
-  // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
-</script>
-  
-<script>
-const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
 
-document.getElementById("checkout-form").addEventListener("submit", function(e) {
-  e.preventDefault();
+  const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
+  const orderStatus = document.getElementById("order-status");
 
-  if (cart.length === 0) {
-    alert("Cart is empty!");
-    return;
-  }
+  document.getElementById("checkout-form").addEventListener("submit", function(e) {
+    e.preventDefault();
 
-  const name = e.target[0].value;
-  const email = e.target[1].value;
-  const address = e.target[2].value;
+    if (cart.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
 
-  db.collection("orders").add({
-  name: name,
-  email: email,
-  address: address,
-  items: cart,
-  total: cart.reduce((sum, item) => sum + item.price, 0),
-  status: "pending",
-  paymentStatus: "unpaid",
-  createdAt: firebase.firestore.FieldValue.serverTimestamp()
-})
-  .then(() => {
-    localStorage.removeItem("tickorderCart");
-    document.getElementById("order-status").textContent = "Order placed successfully!";
-  })
-  .catch((error) => {
-    console.error("Error adding order: ", error);
-    alert("Failed to place order. Try again.");
+    const name = e.target[0].value;
+    const email = e.target[1].value;
+    const address = e.target[2].value;
+
+    db.collection("orders").add({
+      name,
+      email,
+      address,
+      items: cart,
+      total: cart.reduce((sum, item) => sum + item.price, 0),
+      status: "pending",
+      paymentStatus: "unpaid",
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+      localStorage.removeItem("tickorderCart");
+      orderStatus.textContent = "Order placed successfully!";
+    })
+    .catch((error) => {
+      console.error("Error placing order: ", error);
+      orderStatus.textContent = "Failed to place order. Try again.";
+    });
   });
-});
 </script>
 
 </body>
-                                                              </html>
+</html>
