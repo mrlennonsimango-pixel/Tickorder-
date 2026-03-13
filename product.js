@@ -30,3 +30,19 @@ const products = [
     image: "https://media.githubusercontent.com/media/mrlennonsimango-pixel/Product-images/refs/heads/main/485981364_606574485728081_623662241798890125_n.jpg?token=B6YFZEWX5MRIWLZH3A6T3KTJWP6I4"
   }
 ];
+
+const container = document.getElementById("productContainer");
+
+products.forEach(product => {
+  const productBox = document.createElement("div");
+  productBox.classList.add("product");
+
+  productBox.innerHTML = `
+    <img src="${product.image}" alt="${product.name}" />
+    <h3>${product.name}</h3>
+    <p>R${product.price}</p>
+    <button>Add to Cart</button>
+  `;
+
+  container.appendChild(productBox);
+});
