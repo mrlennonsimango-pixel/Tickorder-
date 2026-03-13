@@ -107,14 +107,7 @@ function renderCart() {
   totalDisplay.textContent = `Total: R${total}`;
 }
 
-  function addToCart(id) {
-  const product = products.find(p => p.id === id);
-  cart.push(product);
-  localStorage.setItem("tickorderCart", JSON.stringify(cart));
-  updateCartCount(); // <-- updates the badge on all pages
-  alert(`${product.name} added to cart!`);
-  }
-  
+   
 function removeItem(index) {
   cart.splice(index, 1);
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
