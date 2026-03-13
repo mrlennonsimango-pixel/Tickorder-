@@ -1,23 +1,8 @@
 const products = [
   {
-    id: "p001",
-    name: "Men's T-Shirt",
-    price: 199,
-    stock: 10,
-    image: "assets/images/product1.jpg"
-  },
-  {
-    id: "p002",
-    name: "PU Leather Handbag",
-    price: 499,
-    stock: 5,
-    image: "assets/images/product2.jpg"
-  },
-  {
-    id: "p003",
-    name: "Wireless Earbuds",
-    price: 899,
-    stock: 0,
-    image: "assets/images/product3.jpg"
+    id: 1,
+    name: "Brown Handbag",
+    price: 120,
+    image: "https://media.githubusercontent.com/media/mrlennonsimango-pixel/Product-images/refs/heads/main/485375881_606578475727682_5818465179071814883_n.jpg?token=B6YFZEV75377CN6LBRFBBRLJWP45A"
   }
 ];
