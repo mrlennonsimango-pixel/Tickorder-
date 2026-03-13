@@ -1,23 +1,25 @@
+/* Base styles */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: #f2f2f2;
 }
 
-header {
+/* Header */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #0f9d58;
+  background: #0f9d58; /* brand green */
   color: white;
-  padding: 15px 25px;
+  padding: 10px 15px;
+  border-radius: 0 0 8px 8px;
 }
 
 nav a {
   color: white;
   text-decoration: none;
-  margin-right: 15px;
+  margin-right: 10px;
   font-weight: 500;
 }
 
@@ -25,78 +27,82 @@ nav a:hover {
   opacity: 0.8;
 }
 
+/* Hero section */
 .hero {
   background: linear-gradient(135deg, #0f9d58, #0a6f3c);
   color: white;
   text-align: center;
-  padding: 70px 20px;
+  padding: 40px 15px; /* smaller height for mobile */
+  border-radius: 8px;
 }
 
 .hero h2 {
-  font-size: 32px;
-  margin-bottom: 10px;
+  font-size: 22px; /* smaller font */
+  margin-bottom: 8px;
 }
 
 .hero p {
-  font-size: 18px;
-  margin-bottom: 20px;
+  font-size: 14px; /* smaller font */
+  margin-bottom: 12px;
 }
 
 .hero button {
   background: white;
   color: #0f9d58;
   border: none;
-  padding: 12px 22px;
-  font-size: 16px;
+  padding: 10px 18px;
+  font-size: 14px;
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
 }
+
+/* Products grid */
 .products {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  padding: 20px;
-}
-
-.product-card {
-  background: white;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* smaller width for phone */
+  gap: 12px;
   padding: 15px;
-  border-radius: 10px;
-}
-
-#products {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 20px;
 }
 
 .product {
   background: white;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  padding: 15px;
+  border-radius: 8px;
+  padding: 10px;
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-
 .product img {
   max-width: 100%;
-  height: auto;
+  height: 100px; /* consistent small height */
+  object-fit: contain;
+  margin-bottom: 8px;
 }
 
-.product:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+.product h3 {
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.product p {
+  font-size: 12px;
+  color: #0f9d58; /* brand green */
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
 .product button {
   background: #0f9d58;
   color: white;
   border: none;
-  padding: 8px 16px;
+  padding: 6px 12px;
+  font-size: 12px;
   border-radius: 5px;
   cursor: pointer;
-    }
+}
+
+.product:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
