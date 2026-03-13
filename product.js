@@ -33,6 +33,9 @@ const products = [
 
 const container = document.getElementById("products");
 
+// Load current cart or start empty
+let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
+
 products.forEach(product => {
   const productBox = document.createElement("div");
   productBox.classList.add("product");
@@ -43,6 +46,18 @@ products.forEach(product => {
     <p>R${product.price}</p>
     <button>Add to Cart</button>
   `;
+
+  // Add click listener for "Add to Cart"
+  const btn = productBox.querySelector("button");
+  btn.addEventListener("click", () => {
+    cart.push(product); // add product to cart array
+    localStorage.setItem("tickorderCart", JSON.stringify(cart)); // save cart
+    alert(`${product.name} added to cart!`);
+    
+    // Optional: update cart counter if you have one
+    const counter = document.getElementById("cart-counter");
+    if (counter) counter.textContent = `Cart: ${cart.length}`;
+  });
 
   container.appendChild(productBox);
 });
