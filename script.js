@@ -14,7 +14,7 @@ const cartCounter = document.getElementById("cart-counter");
 
 // --- Update Cart Counter ---
 function updateCartCounter() {
-  cartCounter.textContent = `Cart: ${cart.length}`;
+  cartCounter.textContent = cart.length;
 }
 
 // --- Add Product Cards ---
