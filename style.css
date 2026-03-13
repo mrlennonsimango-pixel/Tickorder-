@@ -510,20 +510,28 @@ nav span {
   }
   }
 
-/* Cart Icon Styling */
+header nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Cart link styling */
 #cart-link {
   position: relative;
-  display: inline-block;
-  font-size: 24px; /* size of the cart icon */
+  display: inline-flex;
+  align-items: center;
+  font-size: 24px;      /* size of icon */
   color: white;
   text-decoration: none;
 }
 
+/* Cart counter badge */
 #cart-count {
   position: absolute;
-  top: -8px;       /* moves the number up a bit */
-  right: -10px;    /* moves the number slightly to the right */
-  background: red; /* red badge */
+  top: -8px;           /* moves the badge above the icon */
+  right: -12px;        /* moves the badge to the right */
+  background: red;
   color: white;
   font-size: 14px;
   font-weight: bold;
