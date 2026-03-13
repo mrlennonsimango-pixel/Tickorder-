@@ -136,7 +136,36 @@
 
   const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
   const orderStatus = document.getElementById("order-status");
-// --- Cart Summary ---
+
+const deliverySelect = document.getElementById("delivery");
+const finalTotalDisplay = document.getElementById("final-total");
+
+function updateTotal() {
+
+  const deliveryType = deliverySelect.value;
+  const itemsTotal = cart.reduce((sum, item) => sum + item.price, 0);
+
+  const totalWeight = cart.length; // each product = 1kg
+  let packageType = (totalWeight <= 5) ? "standard" : "large";
+
+  let deliveryCost = 0;
+
+  if (packageType === "standard") {
+    deliveryCost = (deliveryType === "standard") ? 60 : 110;
+  } else {
+    deliveryCost = (deliveryType === "standard") ? 110 : 140;
+  }
+
+  const totalCost = itemsTotal + deliveryCost;
+
+  finalTotalDisplay.textContent =
+  `Items: R${itemsTotal} | Delivery: R${deliveryCost} | Total: R${totalCost}`;
+}
+
+deliverySelect.addEventListener("change", updateTotal);
+updateTotal();
+  
+  // --- Cart Summary ---
 const checkoutContainer = document.querySelector(".checkout-container");
 const summaryDiv = document.createElement("div");
 summaryDiv.style.background = "#f0f0f0";
