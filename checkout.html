@@ -126,7 +126,39 @@
 
   const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
   const orderStatus = document.getElementById("order-status");
+// --- Cart Summary ---
+const checkoutContainer = document.querySelector(".checkout-container");
+const summaryDiv = document.createElement("div");
+summaryDiv.style.background = "#f0f0f0";
+summaryDiv.style.padding = "15px";
+summaryDiv.style.borderRadius = "8px";
+summaryDiv.style.marginBottom = "20px";
 
+if (cart.length === 0) {
+  summaryDiv.innerHTML = "<p>Your cart is empty.</p>";
+} else {
+  let total = 0;
+  cart.forEach(item => {
+    total += item.price;
+    const itemDiv = document.createElement("div");
+    itemDiv.style.display = "flex";
+    itemDiv.style.justifyContent = "space-between";
+    itemDiv.style.marginBottom = "5px";
+    itemDiv.textContent = `${item.name} - R${item.price}`;
+    summaryDiv.appendChild(itemDiv);
+  });
+
+  const totalDiv = document.createElement("div");
+  totalDiv.style.textAlign = "right";
+  totalDiv.style.fontWeight = "bold";
+  totalDiv.style.marginTop = "10px";
+  totalDiv.textContent = `Total: R${total}`;
+  summaryDiv.appendChild(totalDiv);
+}
+
+// Insert cart summary above form
+checkoutContainer.insertBefore(summaryDiv, document.getElementById("checkout-form"));
+  
   document.getElementById("checkout-form").addEventListener("submit", function(e) {
     e.preventDefault();
 
