@@ -510,31 +510,21 @@ nav span {
   }
   }
 
-header nav {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
-/* Cart link styling */
 #cart-link {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  font-size: 24px;      /* size of icon */
   color: white;
   text-decoration: none;
+  font-weight: bold;
+  font-size: 16px; /* Controls overall size */
+  display: flex;
+  align-items: center;
+  gap: 5px; /* space between icon and number */
 }
 
-/* Cart counter badge */
 #cart-count {
-  position: absolute;
-  top: -8px;           /* moves the badge above the icon */
-  right: -12px;        /* moves the badge to the right */
-  background: red;
-  color: white;
-  font-size: 14px;
-  font-weight: bold;
+  background: white;       /* optional: small bubble effect */
+  color: #0f9d58;         /* brand color for number */
   padding: 2px 6px;
-  border-radius: 50%;
+  border-radius: 12px;
+  font-size: 14px;         /* smaller number */
+  font-weight: bold;
 }
