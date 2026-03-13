@@ -31,8 +31,7 @@ const products = [
   }
 ];
 
-const container = document.getElementById("productContainer");
-
+const container = document.getElementById("products");
 products.forEach(product => {
   const productBox = document.createElement("div");
   productBox.classList.add("product");
