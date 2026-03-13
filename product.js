@@ -37,7 +37,11 @@ products.forEach(product => {
 const productBox = document.createElement("div");
 productBox.classList.add("product");
 
-productBox.innerHTML =   <img src="${product.image}" alt="${product.name}" />   <h3>${product.name}</h3>   <p>R${product.price}</p>   <button>Add to Cart</button>  ;
-
+productBox.innerHTML = `
+  <img src="${product.image}" alt="${product.name}" />
+  <h3>${product.name}</h3>
+  <p>R${product.price}</p>
+  <button>Add to Cart</button>
+`;
 container.appendChild(productBox);
 });
