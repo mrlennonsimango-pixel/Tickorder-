@@ -221,6 +221,14 @@ db.collection("orders").add({
   console.error("Error placing order: ", error);
   orderStatus.textContent = "Failed to place order. Try again.";
 });
+.then(() => {
+  localStorage.removeItem("tickorderCart");
+  orderStatus.textContent = `Order placed successfully! Delivery: R${deliveryCost}`;
+})
+.catch((error) => {
+  console.error("Error placing order: ", error);
+  orderStatus.textContent = "Failed to place order. Try again.";
+});
     .then(() => {
       localStorage.removeItem("tickorderCart");
       orderStatus.textContent = "Order placed successfully!";
