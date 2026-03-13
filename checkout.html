@@ -200,16 +200,27 @@ if (packageType === "standard") {
 // Step 2d: Calculate total including delivery
 const totalCost = cart.reduce((sum, item) => sum + item.price, 0) + deliveryCost;
     
-    db.collection("orders").add({
-      name,
-      email,
-      address,
-      items: cart,
-      total: cart.reduce((sum, item) => sum + item.price, 0),
-      status: "pending",
-      paymentStatus: "unpaid",
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    })
+db.collection("orders").add({
+  name,
+  email,
+  address,
+  items: cart,
+  total: totalCost,           // includes delivery
+  deliveryType: deliveryType, // "standard" or "express"
+  packageType: packageType,   // "standard" or "large"
+  deliveryCost: deliveryCost, // the amount for PAXI
+  status: "pending",
+  paymentStatus: "unpaid",
+  createdAt: firebase.firestore.FieldValue.serverTimestamp()
+})
+.then(() => {
+  localStorage.removeItem("tickorderCart");
+  orderStatus.textContent = `Order placed successfully! Delivery: R${deliveryCost}`;
+})
+.catch((error) => {
+  console.error("Error placing order: ", error);
+  orderStatus.textContent = "Failed to place order. Try again.";
+});
     .then(() => {
       localStorage.removeItem("tickorderCart");
       orderStatus.textContent = "Order placed successfully!";
