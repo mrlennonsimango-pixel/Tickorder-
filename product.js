@@ -31,7 +31,7 @@ image: "https://media.githubusercontent.com/media/mrlennonsimango-pixel/Product-
 }
 ];
 
-const container = document.getElementById("productContainer");
+const container = document.getElementById("products");
 
 products.forEach(product => {
 const productBox = document.createElement("div");
