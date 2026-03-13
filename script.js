@@ -48,16 +48,4 @@ function addToCart(id) {
 // --- Initialize Counter ---
 updateCartCounter();
 
-// Get cart from localStorage
-let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
 
-// Update the cart count badge
-function updateCartCount() {
-  const cartCount = document.getElementById("cart-count");
-  if (cartCount) {
-    cartCount.textContent = cart.length;
-  }
-}
-
-// Run on page load
-updateCartCount();
