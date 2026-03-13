@@ -236,14 +236,24 @@ db.collection("orders").add({
   email,
   address,
   items: cart,
-  total: totalCost,           // includes delivery
-  deliveryType: deliveryType, // "standard" or "express"
-  packageType: packageType,   // "standard" or "large"
-  deliveryCost: deliveryCost, // the amount for PAXI
+  total: totalCost,
+  deliveryType: deliveryType,
+  packageType: packageType,
+  deliveryCost: deliveryCost,
   status: "pending",
   paymentStatus: "unpaid",
   createdAt: firebase.firestore.FieldValue.serverTimestamp()
 })
+.then(() => {
+  localStorage.removeItem("tickorderCart");
+  orderStatus.textContent = "Order placed successfully!";
+})
+.catch((error) => {
+  console.error("Error placing order:", error);
+  orderStatus.textContent = "Failed to place order. Try again.";
+});
+
+});
 </script>
 
 </body>
