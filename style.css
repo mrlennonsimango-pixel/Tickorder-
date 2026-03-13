@@ -509,3 +509,17 @@ nav span {
     padding: 5px 10px;
   }
   }
+
+/* Cart Icon Styling */
+#cart-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;       /* Space between icon and number */
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+#cart-link i {
+  font-size: 20px; /* Cart icon size */
+     }
