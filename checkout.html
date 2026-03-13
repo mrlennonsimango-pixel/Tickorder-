@@ -244,31 +244,6 @@ db.collection("orders").add({
   paymentStatus: "unpaid",
   createdAt: firebase.firestore.FieldValue.serverTimestamp()
 })
-.then(() => {
-  localStorage.removeItem("tickorderCart");
-  orderStatus.textContent = `Order placed successfully! Delivery: R${deliveryCost}`;
-})
-.catch((error) => {
-  console.error("Error placing order: ", error);
-  orderStatus.textContent = "Failed to place order. Try again.";
-});
-.then(() => {
-  localStorage.removeItem("tickorderCart");
-  orderStatus.textContent = `Order placed successfully! Delivery: R${deliveryCost}`;
-})
-.catch((error) => {
-  console.error("Error placing order: ", error);
-  orderStatus.textContent = "Failed to place order. Try again.";
-});
-    .then(() => {
-      localStorage.removeItem("tickorderCart");
-      orderStatus.textContent = "Order placed successfully!";
-    })
-    .catch((error) => {
-      console.error("Error placing order: ", error);
-      orderStatus.textContent = "Failed to place order. Try again.";
-    });
-  });
 </script>
 
 </body>
