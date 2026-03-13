@@ -1,41 +1,25 @@
+// --- Products ---
 const products = [
-  {
-    id: 1,
-    name: "Brown Handbag",
-    price: 120,
-    image: "assets/Images/brownhandbag.jpg"
-  },
-  {
-    id: 2,
-    name: "Red Handbag",
-    price: 150,
-    image: "assets/Images/redhandbag.jpg"
-  },
-  {
-    id: 3,
-    name: "Pestal Green Handbag",
-    price: 130,
-    image: "assets/Images/greenhandbag.jpg"
-  },
-  {
-    id: 4,
-    name: "Black Handbag",
-    price: 140,
-    image: "assets/Images/blackhandbag.jpg"
-  },
-  {
-    id: 5,
-    name: "White Handbag",
-    price: 135,
-    image: "assets/Images/whitehandbag.jpg"
-  }
+  { id: 1, name: "Brown Handbag", price: 120, image: "assets/Images/brownhandbag.jpg" },
+  { id: 2, name: "Red Handbag", price: 150, image: "assets/Images/redhandbag.jpg" },
+  { id: 3, name: "Pestal Green Handbag", price: 130, image: "assets/Images/greenhandbag.jpg" },
+  { id: 4, name: "Black Handbag", price: 140, image: "assets/Images/blackhandbag.jpg" },
+  { id: 5, name: "White Handbag", price: 135, image: "assets/Images/whitehandbag.jpg" }
 ];
 
-const container = document.getElementById("products");
-
-// Load current cart or start empty
+// --- Cart ---
 let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
 
+// --- DOM Elements ---
+const container = document.getElementById("products");
+const cartCounter = document.getElementById("cart-count"); // updated to match your HTML
+
+// --- Update Cart Counter ---
+function updateCartCounter() {
+  cartCounter.textContent = cart.length;
+}
+
+// --- Add Product Cards ---
 products.forEach(product => {
   const productBox = document.createElement("div");
   productBox.classList.add("product");
@@ -47,17 +31,20 @@ products.forEach(product => {
     <button>Add to Cart</button>
   `;
 
-  // Add click listener for "Add to Cart"
-  const btn = productBox.querySelector("button");
-  btn.addEventListener("click", () => {
-    cart.push(product); // add product to cart array
-    localStorage.setItem("tickorderCart", JSON.stringify(cart)); // save cart
-    alert(`${product.name} added to cart!`);
-    
-    // Optional: update cart counter if you have one
-    const counter = document.getElementById("cart-counter");
-    if (counter) counter.textContent = `Cart: ${cart.length}`;
-  });
+  const button = productBox.querySelector("button");
+  button.addEventListener("click", () => addToCart(product.id));
 
   container.appendChild(productBox);
 });
+
+// --- Add to Cart Function ---
+function addToCart(id) {
+  const product = products.find(p => p.id === id);
+  cart.push(product);
+  localStorage.setItem("tickorderCart", JSON.stringify(cart));
+  updateCartCounter();
+  alert(`${product.name} added to cart!`);
+}
+
+// --- Initialize Counter ---
+updateCartCounter();
