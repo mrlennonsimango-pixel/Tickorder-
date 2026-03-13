@@ -512,14 +512,21 @@ nav span {
 
 /* Cart Icon Styling */
 #cart-link {
-  display: flex;
-  align-items: center;
-  gap: 5px;       /* Space between icon and number */
+  position: relative;
+  display: inline-block;
+  font-size: 24px; /* size of the cart icon */
   color: white;
-  font-weight: bold;
-  font-size: 16px;
+  text-decoration: none;
 }
 
-#cart-link i {
-  font-size: 20px; /* Cart icon size */
-     }
+#cart-count {
+  position: absolute;
+  top: -8px;       /* moves the number up a bit */
+  right: -10px;    /* moves the number slightly to the right */
+  background: red; /* red badge */
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
