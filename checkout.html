@@ -218,9 +218,9 @@ checkoutContainer.insertBefore(summaryDiv, document.getElementById("checkout-for
       return;
     }
 
-    const name = e.target[0].value;
-const email = e.target[1].value;
-const phone = e.target[2].value;
+const name = document.getElementById("name").value;
+const email = document.getElementById("email").value;
+const phone = document.getElementById("phone").value;
 const paxiStore = document.getElementById("paxi-store").value;
 
     // Step 2: Get selected delivery option
