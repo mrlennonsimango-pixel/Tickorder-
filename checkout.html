@@ -102,7 +102,7 @@
   <form id="checkout-form">
     <input type="text" placeholder="Full Name" required>
     <input type="email" placeholder="Email" required>
-    <input type="tel" id="phone" />
+    <input type="tel" id="phone" placeholder="Phone Number" required style="padding-left: 50px;">
 
     <!-- PAXI Store -->
     <input type="text" id="paxi-store" placeholder="Enter PEP PAXI pickup store (e.g., PEP Tzaneen Crossing)" required>
@@ -274,13 +274,20 @@ db.collection("orders").add({
   const phoneInput = document.querySelector("#phone");
 
   const iti = window.intlTelInput(phoneInput, {
-    initialCountry: "za",      // South Africa
-    separateDialCode: true,    // Shows +27 separately
-    onlyCountries: ["za"],     // Only South Africa available
-    autoHideDialCode: false,   // Keeps +27 visible always
-    nationalMode: true,        // User types local number only (without +27)
-    placeholderNumberType: "MOBILE",
+    initialCountry: "za",     // South Africa
+    separateDialCode: true,   // Small +27
+    onlyCountries: ["za"],    // Only South Africa
+    nationalMode: true,       // User types local number only
     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
+  });
+
+  // Optional: get full number when submitting
+  const form = document.getElementById("checkout-form");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const fullNumber = iti.getNumber(); // +27812345678
+    console.log("SA number:", fullNumber);
+    // Replace your 'address' or 'phone' variable in Firebase submission here
   });
 </script>
 </body>
