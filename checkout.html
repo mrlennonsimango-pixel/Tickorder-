@@ -273,9 +273,11 @@ db.collection("orders").add({
 <script>
   const phoneInput = document.querySelector("#phone");
   const iti = window.intlTelInput(phoneInput, {
-    initialCountry: "za",        // Default: South Africa
-    separateDialCode: true,      // Shows +27 separately
-    onlyCountries: ["za"],       // Restrict dropdown to South Africa only
+    initialCountry: "za",       // South Africa
+    separateDialCode: true,     // Shows +27 separately
+    onlyCountries: ["za"],      // Only SA in the dropdown
+    autoHideDialCode: false,    // Keeps +27 visible
+    nationalMode: false,        // Ensures the user sees full international number
     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
   });
 </script>
