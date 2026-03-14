@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.min.css"/>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Checkout - TickOrder</title>
@@ -269,26 +268,6 @@ db.collection("orders").add({
 
 });
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
-<script>
-  const phoneInput = document.querySelector("#phone");
 
-  const iti = window.intlTelInput(phoneInput, {
-    initialCountry: "za",     // South Africa
-    separateDialCode: true,   // Small +27
-    onlyCountries: ["za"],    // Only South Africa
-    nationalMode: true,       // User types local number only
-    utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
-  });
-
-  // Optional: get full number when submitting
-  const form = document.getElementById("checkout-form");
-  form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const fullNumber = iti.getNumber(); // +27812345678
-    console.log("SA number:", fullNumber);
-    // Replace your 'address' or 'phone' variable in Firebase submission here
-  });
-</script>
 </body>
 </html>
