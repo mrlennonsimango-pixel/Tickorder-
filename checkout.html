@@ -243,8 +243,10 @@ if (packageType === "standard") {
 
 // Step 2d: Calculate total including delivery
 const totalCost = cart.reduce((sum, item) => sum + item.price, 0) + deliveryCost;
+const orderID = "TR#" + Date.now();
     
 db.collection("orders").add({
+  orderID,
   name,
   email,
   phone,
