@@ -102,7 +102,7 @@
   <form id="checkout-form">
     <input type="text" placeholder="Full Name" required>
     <input type="email" placeholder="Email" required>
-    <input type="tel" id="phone" placeholder="Phone Number" required>
+    <input type="tel" id="phone" />
 
     <!-- PAXI Store -->
     <input type="text" id="paxi-store" placeholder="Enter PEP PAXI pickup store (e.g., PEP Tzaneen Crossing)" required>
@@ -272,12 +272,14 @@ db.collection("orders").add({
 <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
 <script>
   const phoneInput = document.querySelector("#phone");
+
   const iti = window.intlTelInput(phoneInput, {
-    initialCountry: "za",       // South Africa
-    separateDialCode: true,     // Shows +27 separately
-    onlyCountries: ["za"],      // Only SA in the dropdown
-    autoHideDialCode: false,    // Keeps +27 visible
-    nationalMode: false,        // Ensures the user sees full international number
+    initialCountry: "za",      // South Africa
+    separateDialCode: true,    // Shows +27 separately
+    onlyCountries: ["za"],     // Only South Africa available
+    autoHideDialCode: false,   // Keeps +27 visible always
+    nationalMode: true,        // User types local number only (without +27)
+    placeholderNumberType: "MOBILE",
     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
   });
 </script>
