@@ -275,6 +275,7 @@ db.collection("orders").add({
   const iti = window.intlTelInput(phoneInput, {
     initialCountry: "za",        // Default: South Africa
     separateDialCode: true,      // Shows +27 separately
+    onlyCountries: ["za"],       // Restrict dropdown to South Africa only
     utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js"
   });
 </script>
