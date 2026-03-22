@@ -84,13 +84,13 @@ nav span {
   border-radius: 5px;
   cursor: pointer;
   font-weight: bold;
-  transition: 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .hero button:hover {
-  background-color: #f0f0f0;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
-
 /* Products Grid */
 .products {
   display: grid;
@@ -105,7 +105,7 @@ nav span {
   border-radius: 8px;
   padding: 10px;
   text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .product img {
@@ -143,10 +143,9 @@ nav span {
 }
 
 .product:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
-
 /* Responsive tweaks for very small screens */
 @media (max-width: 360px) {
   .hero h2 {
@@ -544,3 +543,9 @@ nav span {
   font-size: 14px;
    }
 
+.shop-controls input:focus,
+.shop-controls select:focus {
+  outline: none;
+  border-color: var(--brand-green);
+  box-shadow: 0 0 5px rgba(15,157,88,0.5);
+}
