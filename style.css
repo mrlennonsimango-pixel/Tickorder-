@@ -528,3 +528,19 @@ nav span {
   font-size: 14px;         /* smaller number */
   font-weight: bold;
 }
+
+.shop-controls {
+  display: flex;
+  gap: 10px;
+  padding: 15px;
+}
+
+.shop-controls input,
+.shop-controls select {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+   }
+
