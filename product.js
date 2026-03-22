@@ -43,28 +43,56 @@ let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
 // --- DOM Elements ---
 const container = document.getElementById("products");
 const cartCounter = document.getElementById("cart-count"); // updated to match your HTML
+// --- Step 3: Search & Sort Elements ---
+const searchInput = document.getElementById("search-input");
+const sortSelect = document.getElementById("sort-select");
+let filteredProducts = [...products]; // start with all products
 
 // --- Update Cart Counter ---
 function updateCartCounter() {
   cartCounter.textContent = cart.length;
 }
 
-// --- Add Product Cards ---
-products.forEach(product => {
-  const productBox = document.createElement("div");
-  productBox.classList.add("product");
+// --- Display Products Function ---
+function displayProducts(productsList) {
+  container.innerHTML = ""; // clear previous products
 
-  productBox.innerHTML = `
-    <img src="${product.image}" alt="${product.name}" />
-    <h3>${product.name}</h3>
-    <p>R${product.price}</p>
-    <button>Add to Cart</button>
-  `;
+  productsList.forEach(product => {
+    const productBox = document.createElement("div");
+    productBox.classList.add("product");
 
-  const button = productBox.querySelector("button");
-  button.addEventListener("click", () => addToCart(product.id));
+    productBox.innerHTML = `
+      <img src="${product.image}" alt="${product.name}" />
+      <h3>${product.name}</h3>
+      <p>R${product.price}</p>
+      <button>Add to Cart</button>
+    `;
 
-  container.appendChild(productBox);
+    const button = productBox.querySelector("button");
+    button.addEventListener("click", () => addToCart(product.id));
+
+    container.appendChild(productBox);
+  });
+}
+
+// --- Initial Display ---
+displayProducts(filteredProducts);
+
+// --- Search Filter ---
+searchInput.addEventListener("input", () => {
+  const value = searchInput.value.toLowerCase();
+  filteredProducts = products.filter(p => p.name.toLowerCase().includes(value));
+  displayProducts(filteredProducts);
+});
+
+// --- Sort Products ---
+sortSelect.addEventListener("change", () => {
+  const value = sortSelect.value;
+  if (value === "low") filteredProducts.sort((a,b) => a.price - b.price);
+  else if (value === "high") filteredProducts.sort((a,b) => b.price - a.price);
+  else if (value === "new") filteredProducts.sort((a,b) => b.id - a.id);
+
+  displayProducts(filteredProducts);
 });
 
 // --- Add to Cart Function ---
