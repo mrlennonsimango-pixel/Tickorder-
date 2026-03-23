@@ -67,13 +67,22 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- Add to Cart ---
-  function addToCart(id) {
-    const product = products.find(p => p.id === id);
-    cart.push(product);
-    localStorage.setItem("tickorderCart", JSON.stringify(cart));
-    updateCartCounter();
-    alert(`${product.name} added to cart!`);
-  }
+function addToCart(id) {
+  const product = products.find(p => p.id === id);
+  cart.push(product);
+  localStorage.setItem("tickorderCart", JSON.stringify(cart));
+  updateCartCounter();
+
+  // 🔥 Animate cart icon
+  const cartLink = document.getElementById("cart-link");
+  cartLink.classList.add("cart-animate");
+
+  setTimeout(() => {
+    cartLink.classList.remove("cart-animate");
+  }, 400);
+
+  alert(`${product.name} added to cart!`);
+}
 
   // --- Initialize Counter ---
   updateCartCounter();
