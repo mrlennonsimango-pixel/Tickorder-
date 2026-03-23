@@ -81,8 +81,14 @@ function addToCart(id) {
     cartLink.classList.remove("cart-animate");
   }, 400);
 
-  alert(`${product.name} added to cart!`);
-}
+  // Show toast notification
+const toast = document.getElementById("toast");
+toast.textContent = `${product.name} added to cart`;
+toast.classList.add("show");
+
+setTimeout(() => {
+  toast.classList.remove("show");
+}, 2000);
 
   // --- Initialize Counter ---
   updateCartCounter();
