@@ -1,9 +1,4 @@
-// --- Products ---
-const products = [
-  { id: 1, name: "Wireless Earbuds", price: 49 },
-  { id: 2, name: "Smart Watch", price: 89 },
-  { id: 3, name: "Portable Speaker", price: 39 }
-];
+
 
 // --- Cart ---
 let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
