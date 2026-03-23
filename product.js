@@ -66,31 +66,34 @@ document.addEventListener("DOMContentLoaded", () => {
     displayProducts(filteredProducts);
   });
 
-  // --- Add to Cart ---
-function addToCart(id) {
-  const product = products.find(p => p.id === id);
-  cart.push(product);
-  localStorage.setItem("tickorderCart", JSON.stringify(cart));
+// --- Add to Cart ---
+  function addToCart(id) {
+    const product = products.find(p => p.id === id);
+    cart.push(product);
+    localStorage.setItem("tickorderCart", JSON.stringify(cart));
+    updateCartCounter();
+
+    // Animate cart icon
+    const cartLink = document.getElementById("cart-link");
+    cartLink.classList.add("cart-animate");
+
+    setTimeout(() => {
+      cartLink.classList.remove("cart-animate");
+    }, 400);
+
+    // Toast notification
+    const toast = document.getElementById("toast");
+    toast.textContent = `${product.name} added to cart`;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2000);
+  }
+
+  // ✅ These must be OUTSIDE the function
   updateCartCounter();
 
-  // 🔥 Animate cart icon
-  const cartLink = document.getElementById("cart-link");
-  cartLink.classList.add("cart-animate");
+}); // <-- closes DOMContentLoaded
 
-  setTimeout(() => {
-    cartLink.classList.remove("cart-animate");
-  }, 400);
-
-  // Show toast notification
-const toast = document.getElementById("toast");
-toast.textContent = `${product.name} added to cart`;
-toast.classList.add("show");
-
-setTimeout(() => {
-  toast.classList.remove("show");
-}, 2000);
-
-  // --- Initialize Counter ---
-  updateCartCounter();
-
-});
+  
