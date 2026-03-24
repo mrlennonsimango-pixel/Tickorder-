@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-// --- Cart ---
+  // --- Cart ---
   let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
 
   // --- DOM Elements ---
@@ -8,7 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const cartCounter = document.getElementById("cart-count");
   const searchInput = document.getElementById("search-input");
   const sortSelect = document.getElementById("sort-select");
+  const toast = document.getElementById("toast");
 
+  // --- Products should already be loaded from product.js ---
   let filteredProducts = [...products];
 
   // --- Update Cart Counter ---
@@ -30,34 +32,13 @@ document.addEventListener("DOMContentLoaded", () => {
         <button>Add to Cart</button>
       `;
 
-      const button = productBox.querySelector("button");
-      button.addEventListener("click", () => addToCart(product.id));
+      productBox.querySelector("button").addEventListener("click", () => addToCart(product.id));
 
       container.appendChild(productBox);
     });
   }
 
-  // --- Initial Display ---
-  displayProducts(filteredProducts);
-
-  // --- Search Filter ---
-  searchInput.addEventListener("input", () => {
-    const value = searchInput.value.toLowerCase();
-    filteredProducts = products.filter(p => p.name.toLowerCase().includes(value));
-    displayProducts(filteredProducts);
-  });
-
-  // --- Sort Products ---
-  sortSelect.addEventListener("change", () => {
-    const value = sortSelect.value;
-    if (value === "low") filteredProducts.sort((a,b) => a.price - b.price);
-    else if (value === "high") filteredProducts.sort((a,b) => b.price - a.price);
-    else if (value === "new") filteredProducts.sort((a,b) => b.id - a.id);
-
-    displayProducts(filteredProducts);
-  });
-
-// --- Add to Cart ---
+  // --- Add to Cart ---
   function addToCart(id) {
     const product = products.find(p => p.id === id);
     cart.push(product);
@@ -67,25 +48,16 @@ document.addEventListener("DOMContentLoaded", () => {
     // Animate cart icon
     const cartLink = document.getElementById("cart-link");
     cartLink.classList.add("cart-animate");
-
-    setTimeout(() => {
-      cartLink.classList.remove("cart-animate");
-    }, 400);
+    setTimeout(() => cartLink.classList.remove("cart-animate"), 400);
 
     // Toast notification
-    const toast = document.getElementById("toast");
     toast.textContent = `${product.name} added to cart`;
     toast.classList.add("show");
-
-    setTimeout(() => {
-      toast.classList.remove("show");
-    }, 2000);
+    setTimeout(() => toast.classList.remove("show"), 2000);
   }
 
-  // ✅ These must be OUTSIDE the function
+  // --- Initial Display ---
+  displayProducts(filteredProducts);
   updateCartCounter();
 
-}); // <-- closes DOMContentLoaded
-
-  
-
+});
