@@ -37,16 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
       container.appendChild(productBox);
     });
   }
-function addToCart(id) {
+function addToCart(id, productBox) {
   const product = products.find(p => p.id === id);
   cart.push(product);
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
   updateCartCounter();
 
   // --- Fly-to-cart animation ---
-  const productBox = Array.from(document.querySelectorAll(".product")).find(box => {
-    return box.querySelector("button").onclick?.toString().includes(`${id}`);
-  });
   const productImg = productBox.querySelector("img");
 
   const imgClone = productImg.cloneNode(true);
@@ -55,7 +52,6 @@ function addToCart(id) {
   const cartLink = document.getElementById("cart-link");
   const cartRect = cartLink.getBoundingClientRect();
 
-  // Set initial position
   imgClone.style.top = `${imgRect.top}px`;
   imgClone.style.left = `${imgRect.left}px`;
   imgClone.style.width = `${imgRect.width}px`;
@@ -63,7 +59,6 @@ function addToCart(id) {
 
   document.body.appendChild(imgClone);
 
-  // Animate to cart
   requestAnimationFrame(() => {
     imgClone.style.top = `${cartRect.top}px`;
     imgClone.style.left = `${cartRect.left}px`;
@@ -72,7 +67,6 @@ function addToCart(id) {
     imgClone.style.opacity = 0.5;
   });
 
-  // Remove after animation ends
   imgClone.addEventListener("transitionend", () => imgClone.remove());
 
   // --- Animate cart icon ---
