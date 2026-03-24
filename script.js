@@ -1,4 +1,6 @@
-  // --- Cart ---
+document.addEventListener("DOMContentLoaded", () => {
+
+// --- Cart ---
   let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
 
   // --- DOM Elements ---
