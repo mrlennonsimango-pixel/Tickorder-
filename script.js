@@ -32,8 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <button>Add to Cart</button>
       `;
 
-      productBox.querySelector("button").addEventListener("click", () => addToCart(product.id));
-
+      productBox.querySelector("button").addEventListener("click", () => addToCart(product.id, productBox));
       container.appendChild(productBox);
     });
   }
