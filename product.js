@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
       productBox.classList.add("product");
 
       productBox.innerHTML = `
-        <img src="${product.image}" alt="${product.name}" />
+        <img class="product-img" src="${product.image}" alt="${product.name}" />
         <h3>${product.name}</h3>
         <p>R${product.price}</p>
         <button>Add to Cart</button>
