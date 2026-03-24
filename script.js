@@ -37,8 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       container.appendChild(productBox);
     });
   }
-
-  function addToCart(id) {
+function addToCart(id) {
   const product = products.find(p => p.id === id);
   cart.push(product);
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
@@ -51,19 +50,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const productImg = productBox.querySelector("img");
 
   const imgClone = productImg.cloneNode(true);
+  imgClone.classList.add("flying-img"); // CSS we added earlier
   const imgRect = productImg.getBoundingClientRect();
   const cartLink = document.getElementById("cart-link");
   const cartRect = cartLink.getBoundingClientRect();
 
-  imgClone.style.position = "fixed";
+  // Set initial position
   imgClone.style.top = `${imgRect.top}px`;
   imgClone.style.left = `${imgRect.left}px`;
   imgClone.style.width = `${imgRect.width}px`;
   imgClone.style.height = `${imgRect.height}px`;
-  imgClone.style.transition = "all 0.8s ease-in-out";
-  imgClone.style.zIndex = "1000";
+
   document.body.appendChild(imgClone);
 
+  // Animate to cart
   requestAnimationFrame(() => {
     imgClone.style.top = `${cartRect.top}px`;
     imgClone.style.left = `${cartRect.left}px`;
@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     imgClone.style.opacity = 0.5;
   });
 
+  // Remove after animation ends
   imgClone.addEventListener("transitionend", () => imgClone.remove());
 
   // --- Animate cart icon ---
