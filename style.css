@@ -594,3 +594,92 @@ nav span {
   border-radius: 8px;
   pointer-events: none;
    }
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #222;
+  color: #fff;
+  padding: 15px 10px;
+  z-index: 1000;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.3);
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.footer-section {
+  text-align: center;
+}
+
+.footer-section h4 {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* Quick links */
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: white;
+  text-decoration: none;
+  font-size: 13px;
+  margin-bottom: 5px;
+  transition: 0.3s;
+}
+
+.footer-section ul li a i {
+  color: #0f9d58;
+}
+
+.footer-section ul li a:hover {
+  color: #0f9d58;
+  transform: translateX(3px);
+}
+
+/* Contact text */
+.footer-section p {
+  font-size: 13px;
+  margin: 3px 0;
+}
+
+/* Social icons */
+.footer-section a {
+  margin: 0 6px;
+  font-size: 18px;
+  color: white;
+  transition: 0.3s;
+}
+
+.footer-section a:hover {
+  color: #0f9d58;
+  transform: scale(1.2);
+}
+
+/* Bottom text */
+.footer-bottom {
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 10px;
+  border-top: 1px solid #555;
+  padding-top: 5px;
+}
+
+/* Prevent overlap with products */
+.products {
+  padding-bottom: 120px;
+}
