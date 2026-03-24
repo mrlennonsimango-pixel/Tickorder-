@@ -1,5 +1,5 @@
 // product.js
-const products = [
+var products = [
   { id: 1, name: "Brown Handbag", price: 120, weight: 1, image: "assets/Images/brownhandbag.jpg" },
   { id: 2, name: "Red Handbag", price: 150, weight: 1, image: "assets/Images/redhandbag.jpg" },
   { id: 3, name: "Pestal Green Handbag", price: 130, weight: 1, image: "assets/Images/greenhandbag.jpg" },
