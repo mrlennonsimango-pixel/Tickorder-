@@ -770,76 +770,91 @@ transform: scale(1.1);
 }
 
 /* =========================
-   PRODUCT DETAILS PAGE
+   PRODUCT PAGE STRUCTURE
    ========================= */
 
-/* Main container for the product page */
+/* Product page main container */
 .product-details {
-  padding: 20px;
-}
-
-/* Layout: holds image + product info */
-.details-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-/* Product image styling */
-.image-section img {
-  width: 100%;
-  border-radius: 10px;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 10px;
 }
 
 /* Product title */
-.info-section h2 {
-  font-size: 22px;
+.product-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
-/* Price styling (brand highlight) */
+/* Product image */
+.image-section img {
+  width: 100%;
+  max-width: 400px; /* prevents huge image */
+  height: auto;
+  display: block;
+  margin-bottom: 20px;
+  border-radius: 10px;
+}
+
+/* Description */
+.description-section h3 {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.description-section p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+/* Price */
 .price {
   font-size: 20px;
   color: #00b050;
   font-weight: bold;
 }
 
-/* Product description text */
-.description {
-  margin-top: 10px;
-  color: #555;
+/* Reviews */
+.reviews-section h3 {
+  font-size: 20px;
+  margin-top: 20px;
 }
 
-/* Buttons container (Add to Cart + Buy Now) */
+.reviews-section p {
+  font-size: 16px;
+}
+
+/* Buttons */
 .buttons {
-  margin-top: 20px;
   display: flex;
   gap: 10px;
+  margin-top: 20px;
 }
 
-/* Add to Cart button */
+.cart-btn, .buy-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
 .cart-btn {
-  flex: 1;
-  padding: 10px;
   background: #00b050;
-  color: white;
-  border: none;
-  border-radius: 5px;
 }
 
-/* Buy Now button */
 .buy-btn {
-  flex: 1;
-  padding: 10px;
   background: black;
-  color: white;
-  border: none;
-  border-radius: 5px;
 }
 
-/* Back button (top navigation) */
+/* Back button */
 .back-btn {
   display: inline-block;
-  margin: 10px;
+  margin: 10px 0;
   text-decoration: none;
   color: black;
+  font-weight: bold;
 }
