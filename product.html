@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Product Details - TickOrder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
 
 <header>
@@ -8,7 +14,6 @@
 <div id="product-details" class="product-details"></div>
 
 <script src="product.js"></script>
-
 <script>
   const productId = localStorage.getItem("selectedProduct");
   const product = products.find(p => p.id == productId);
@@ -17,44 +22,54 @@
 
   if (product) {
     container.innerHTML = `
-      <div class="details-container">
-        <div class="image-section">
-          <img src="${product.image}" alt="${product.name}">
-        </div>
+      <!-- 1. Product Title -->
+      <h2 class="product-title">${product.name}</h2>
 
-        <div class="info-section">
-          <h2>${product.name}</h2>
-          <p class="price">R${product.price}</p>
-          <p class="description">${product.description}</p>
+      <!-- 2. Product Pictures -->
+      <div class="image-section">
+        <img src="${product.image}" alt="${product.name}">
+      </div>
 
-          <div class="buttons">
-            <button onclick="addToCart(${product.id})" class="cart-btn">Add to Cart</button>
-            <button onclick="buyNow(${product.id})" class="buy-btn">Buy Now</button>
-          </div>
-        </div>
+      <!-- 3. Description -->
+      <div class="description-section">
+        <h3>Description</h3>
+        <p>${product.description}</p>
+        <p class="price">Price: R${product.price}</p>
+      </div>
+
+      <!-- 4. Reviews -->
+      <div class="reviews-section">
+        <h3>Reviews</h3>
+        <p>⭐⭐⭐⭐☆</p>
+        <p>No reviews yet</p>
+      </div>
+
+      <!-- Buttons -->
+      <div class="buttons">
+        <button onclick="addToCart(${product.id})" class="cart-btn">Add to Cart</button>
+        <button onclick="buyNow(${product.id})" class="buy-btn">Buy Now</button>
       </div>
     `;
   } else {
     container.innerHTML = "<p>Product not found</p>";
   }
-</script>
 
-<script>
-function addToCart(id) {
-  let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
-  const product = products.find(p => p.id === id);
-  cart.push(product);
-  localStorage.setItem("tickorderCart", JSON.stringify(cart));
-  alert("Added to cart");
-}
+  function addToCart(id) {
+    let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
+    const product = products.find(p => p.id === id);
+    cart.push(product);
+    localStorage.setItem("tickorderCart", JSON.stringify(cart));
+    alert("Added to cart");
+  }
 
-function buyNow(id) {
-  let cart = [];
-  const product = products.find(p => p.id === id);
-  cart.push(product);
-  localStorage.setItem("tickorderCart", JSON.stringify(cart));
-  window.location.href = "checkout.html";
-}
+  function buyNow(id) {
+    let cart = [];
+    const product = products.find(p => p.id === id);
+    cart.push(product);
+    localStorage.setItem("tickorderCart", JSON.stringify(cart));
+    window.location.href = "checkout.html";
+  }
 </script>
 
 </body>
+</html>
