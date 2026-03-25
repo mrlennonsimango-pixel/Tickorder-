@@ -31,5 +31,15 @@
   }
 </script>
 
+  <script>
+function addToCart(id) {
+  let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
+  const product = products.find(p => p.id === id);
+  cart.push(product);
+  localStorage.setItem("tickorderCart", JSON.stringify(cart));
+  alert("Added to cart");
+}
+  </script>
+  
 </body>
 </html>
