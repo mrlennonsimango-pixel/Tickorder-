@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TickOrder - Refund Policy</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Header with Home button -->
+  <header class="terms-header">
+    <h1>TickOrder - Refund Policy</h1>
+    <a href="index.html" class="back-home-btn">
+      <i class="fa-solid fa-house"></i>
+    </a>
+  </header>
+
+  <main style="padding: 20px; max-width: 800px; margin: auto; line-height: 1.6;">
+    <section>
+      <h2>1. Returns & Refunds</h2>
+      <p>
+        At TickOrder, we strive to ensure you are satisfied with your purchase. If you are not completely happy with an item, you may request a refund or exchange under the following conditions:
+      </p>
+      <ul>
+        <li>Items must be returned within <strong>7 days</strong> of delivery.</li>
+        <li>Products must be unused, in the original packaging, and in the same condition as received.</li>
+        <li>Some items, such as perishable goods or personalized products, may not be eligible for a refund. This will be clearly indicated on the product page.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. How to Request a Refund</h2>
+      <p>
+        To request a refund, please contact us via email at <strong>tickorderstore@gmail.com</strong> or call <strong>0766506107</strong> with your order number and reason for the return. We will guide you through the return process.
+      </p>
+    </section>
+
+    <section>
+      <h2>3. Refund Process</h2>
+      <ul>
+        <li>Once we receive the returned item and confirm it meets our refund conditions, we will process your refund within <strong>5 business days</strong>.</li>
+        <li>Refunds will be made via the same payment method used for the original purchase.</li>
+        <li>Shipping fees are non-refundable, unless the return is due to a defect or error on our side.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. Exchanges</h2>
+      <p>
+        If you prefer an exchange, please contact us with the item details. Exchanges are subject to product availability.
+      </p>
+    </section>
+
+    <section>
+      <h2>5. Contact Us</h2>
+      <p>
+        For any questions regarding refunds or returns, reach out via <strong>tickorderstore@gmail.com</strong> or call <strong>0766506107</strong>.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+          <li><a href="terms-and-conditions.html">Terms & Conditions</a></li>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Contact Us</h4>
+        <p>Email: tickorderstore@gmail.com</p>
+        <p>Phone: 0766506107</p>
+      </div>
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+        <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+      </div>
+      <p class="footer-bottom">© 2026 TickOrder. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
