@@ -1,19 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Product Details</title>
-  <link rel="stylesheet" href="style.css">
-</head>
 <body>
 
 <header>
-  <h1>Product Details</h1>
-  <a href="index.html">⬅ Back</a>
+  <h1>TickOrder</h1>
+  <a href="index.html" class="back-btn">⬅ Back</a>
 </header>
 
-<div id="product-details"></div>
+<div id="product-details" class="product-details"></div>
 
 <script src="product.js"></script>
+
 <script>
   const productId = localStorage.getItem("selectedProduct");
   const product = products.find(p => p.id == productId);
@@ -22,16 +17,29 @@
 
   if (product) {
     container.innerHTML = `
-      <img src="${product.image}" style="width:100%">
-      <h2>${product.name}</h2>
-      <p>R${product.price}</p>
-      <p>${product.description}</p>
-      <button onclick="addToCart(${product.id})">Add to Cart</button>
+      <div class="details-container">
+        <div class="image-section">
+          <img src="${product.image}" alt="${product.name}">
+        </div>
+
+        <div class="info-section">
+          <h2>${product.name}</h2>
+          <p class="price">R${product.price}</p>
+          <p class="description">${product.description}</p>
+
+          <div class="buttons">
+            <button onclick="addToCart(${product.id})" class="cart-btn">Add to Cart</button>
+            <button onclick="buyNow(${product.id})" class="buy-btn">Buy Now</button>
+          </div>
+        </div>
+      </div>
     `;
+  } else {
+    container.innerHTML = "<p>Product not found</p>";
   }
 </script>
 
-  <script>
+<script>
 function addToCart(id) {
   let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
   const product = products.find(p => p.id === id);
@@ -39,7 +47,14 @@ function addToCart(id) {
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
   alert("Added to cart");
 }
-  </script>
-  
+
+function buyNow(id) {
+  let cart = [];
+  const product = products.find(p => p.id === id);
+  cart.push(product);
+  localStorage.setItem("tickorderCart", JSON.stringify(cart));
+  window.location.href = "checkout.html";
+}
+</script>
+
 </body>
-</html>
