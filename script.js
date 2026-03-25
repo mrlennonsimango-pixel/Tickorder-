@@ -23,29 +23,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 }
   // --- Display Products ---
-  function displayProducts(productsList) {
+function displayProducts(productsList) {
   container.innerHTML = "";
   productsList.forEach(product => {
     const productBox = document.createElement("div");
     productBox.classList.add("product");
 
+    // Use first color image & price by default
+    const firstColor = product.colors[0];
+
     productBox.innerHTML = `
-      <img class="product-img" src="${product.image}" alt="${product.name}" />
+      <img class="product-img" src="${firstColor.image}" alt="${product.name}" />
       <h3>${product.name}</h3>
-      <p>R${product.price}</p>
+      <p>R${firstColor.price}</p>
       <button>Add to Cart</button>
     `;
 
-    // ✅ CLICK PRODUCT TO VIEW DETAILS
+    // Click product to view details
     productBox.addEventListener("click", () => {
       localStorage.setItem("selectedProduct", product.id);
       window.location.href = "product.html";
     });
 
-    // ✅ PREVENT BUTTON CLICK FROM TRIGGERING PAGE OPEN
+    // Prevent button click from opening product page
     productBox.querySelector("button").addEventListener("click", (e) => {
       e.stopPropagation();
-      addToCart(product.id, productBox);
+      addToCart(product, firstColor, productBox);
     });
 
     container.appendChild(productBox);
@@ -53,46 +56,50 @@ document.addEventListener("DOMContentLoaded", () => {
 }
 
   // --- Add to Cart Function with Fly Animation ---
-  function addToCart(id, productBox) {
-    const product = products.find(p => p.id === id);
-    cart.push(product);
-    localStorage.setItem("tickorderCart", JSON.stringify(cart));
-    updateCartCounter();
+function addToCart(product, selectedColor, productBox) {
+  cart.push({
+    id: product.id,
+    name: product.name,
+    image: selectedColor.image,
+    price: selectedColor.price,
+    color: selectedColor.name
+  });
+  localStorage.setItem("tickorderCart", JSON.stringify(cart));
+  updateCartCounter();
 
-    // Fly-to-cart animation
-    const productImg = productBox.querySelector("img");
-    const imgClone = productImg.cloneNode(true);
-    imgClone.classList.add("flying-img"); // make sure this CSS exists
-    const imgRect = productImg.getBoundingClientRect();
-    const cartLink = document.getElementById("cart-link");
-    const cartRect = cartLink.getBoundingClientRect();
+  // Fly-to-cart animation
+  const productImg = productBox.querySelector("img");
+  const imgClone = productImg.cloneNode(true);
+  imgClone.classList.add("flying-img");
 
-    imgClone.style.top = `${imgRect.top}px`;
-    imgClone.style.left = `${imgRect.left}px`;
-    imgClone.style.width = `${imgRect.width}px`;
-    imgClone.style.height = `${imgRect.height}px`;
+  const imgRect = productImg.getBoundingClientRect();
+  const cartLink = document.getElementById("cart-link");
+  const cartRect = cartLink.getBoundingClientRect();
 
-    document.body.appendChild(imgClone);
+  imgClone.style.position = "absolute";
+  imgClone.style.top = `${imgRect.top}px`;
+  imgClone.style.left = `${imgRect.left}px`;
+  imgClone.style.width = `${imgRect.width}px`;
+  imgClone.style.height = `${imgRect.height}px`;
+  imgClone.style.transition = "all 0.7s ease";
 
-    requestAnimationFrame(() => {
-      imgClone.style.top = `${cartRect.top}px`;
-      imgClone.style.left = `${cartRect.left}px`;
-      imgClone.style.width = `20px`;
-      imgClone.style.height = `20px`;
-      imgClone.style.opacity = 0.5;
-    });
+  document.body.appendChild(imgClone);
 
-    imgClone.addEventListener("transitionend", () => imgClone.remove());
+  requestAnimationFrame(() => {
+    imgClone.style.top = `${cartRect.top}px`;
+    imgClone.style.left = `${cartRect.left}px`;
+    imgClone.style.width = "20px";
+    imgClone.style.height = "20px";
+    imgClone.style.opacity = 0.5;
+  });
 
-    // Animate cart icon
-    cartLink.classList.add("cart-animate");
-    setTimeout(() => cartLink.classList.remove("cart-animate"), 400);
+  imgClone.addEventListener("transitionend", () => imgClone.remove());
 
-    // Toast notification
-    toast.textContent = `${product.name} added to cart`;
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 2000);
-  }
+  // Toast notification
+  toast.textContent = `${product.name} (${selectedColor.name}) added to cart`;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
 
   // --- Search Filter ---
   searchInput.addEventListener("input", () => {
