@@ -15,9 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Update Cart Counter ---
   function updateCartCounter() {
-    cartCounter.textContent = cart.length;
-  }
+  cartCounter.textContent = cart.length;
 
+  const floatingCounter = document.getElementById("floating-cart-count");
+  if (floatingCounter) {
+    floatingCounter.textContent = cart.length;
+  }
+}
   // --- Display Products ---
   function displayProducts(productsList) {
     container.innerHTML = "";
