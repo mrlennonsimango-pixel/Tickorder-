@@ -712,3 +712,30 @@ footer {
   transform: scale(1.1);
   transition: 0.2s;
 }
+
+#scroll-up, #scroll-down {
+  position: fixed;
+  right: 15px;
+  padding: 10px 12px;
+  font-size: 18px;
+  background: #0f9d58;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  display: none;
+  z-index: 1000;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  transition: 0.3s;
+}
+
+#scroll-up {
+  bottom: 90px; /* above cart */
+}
+
+#scroll-down {
+  bottom: 30px;
+}
+
+#scroll-up:hover, #scroll-down:hover {
+  transform: scale(1.1);
+   }
