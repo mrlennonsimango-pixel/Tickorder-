@@ -678,3 +678,37 @@ footer {
 .products {
   padding-bottom: 120px;
 }
+
+#floating-cart {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #0f9d58;
+  border-radius: 50%;
+  padding: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+#floating-cart a {
+  color: white;
+  font-size: 20px;
+  position: relative;
+}
+
+#floating-cart-count {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: white;
+  color: #0f9d58;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+#floating-cart:hover {
+  transform: scale(1.1);
+  transition: 0.2s;
+}
