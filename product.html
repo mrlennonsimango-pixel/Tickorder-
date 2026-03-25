@@ -8,8 +8,22 @@
 
 <header>
   <h1>TickOrder</h1>
-  <a href="index.html" class="back-btn">⬅ Back</a>
+  <nav>
+    <a href="index.html" class="back-btn">⬅ Back</a>
+    <a href="cart.html" id="cart-link">🛒 <span id="cart-count">0</span></a>
+  </nav>
 </header>
+
+<!-- Floating cart -->
+<div id="floating-cart">
+  <a href="cart.html">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <span id="floating-cart-count">0</span>
+  </a>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
 
 <div id="product-details" class="product-details"></div>
 
@@ -17,29 +31,20 @@
 <script>
   const productId = localStorage.getItem("selectedProduct");
   const product = products.find(p => p.id == productId);
-
   const container = document.getElementById("product-details");
 
+  // Display product
   if (product) {
     container.innerHTML = `
-      <!-- 1. Product Title -->
       <h2 class="product-title">${product.name}</h2>
-
-      <!-- 2. Product Pictures -->
       <div class="image-section">
         <img src="${product.image}" alt="${product.name}">
       </div>
-
-      <!-- 3. Description -->
       <div class="description-section">
         <h3>Description</h3>
-        <p>${product.description}</p>
+        <p>${product.description || "No description available."}</p>
         <p class="price">Price: R${product.price}</p>
       </div>
-
-      
-
-      <!-- Buttons -->
       <div class="buttons">
         <button onclick="addToCart(${product.id})" class="cart-btn">Add to Cart</button>
         <button onclick="buyNow(${product.id})" class="buy-btn">Buy Now</button>
@@ -49,14 +54,53 @@
     container.innerHTML = "<p>Product not found</p>";
   }
 
+  // Add to Cart logic (like index.html)
   function addToCart(id) {
     let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
     const product = products.find(p => p.id === id);
     cart.push(product);
     localStorage.setItem("tickorderCart", JSON.stringify(cart));
-    alert("Added to cart");
+
+    // Update counters
+    const cartCounter = document.getElementById("cart-count");
+    const floatingCounter = document.getElementById("floating-cart-count");
+    if (cartCounter) cartCounter.textContent = cart.length;
+    if (floatingCounter) floatingCounter.textContent = cart.length;
+
+    // Toast notification
+    const toast = document.getElementById("toast");
+    toast.textContent = `${product.name} added to cart`;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2000);
+
+    // Optional: fly-to-cart animation
+    const productImg = document.querySelector(".image-section img");
+    const imgClone = productImg.cloneNode(true);
+    imgClone.classList.add("flying-img");
+    const imgRect = productImg.getBoundingClientRect();
+    const cartLink = document.getElementById("cart-link");
+    const cartRect = cartLink.getBoundingClientRect();
+
+    imgClone.style.top = `${imgRect.top}px`;
+    imgClone.style.left = `${imgRect.left}px`;
+    imgClone.style.width = `${imgRect.width}px`;
+    imgClone.style.height = `${imgRect.height}px`;
+    imgClone.style.position = "absolute";
+    imgClone.style.transition = "all 0.7s ease";
+    document.body.appendChild(imgClone);
+
+    requestAnimationFrame(() => {
+      imgClone.style.top = `${cartRect.top}px`;
+      imgClone.style.left = `${cartRect.left}px`;
+      imgClone.style.width = `20px`;
+      imgClone.style.height = `20px`;
+      imgClone.style.opacity = 0.5;
+    });
+
+    imgClone.addEventListener("transitionend", () => imgClone.remove());
   }
 
+  // Buy Now
   function buyNow(id) {
     let cart = [];
     const product = products.find(p => p.id === id);
@@ -64,7 +108,12 @@
     localStorage.setItem("tickorderCart", JSON.stringify(cart));
     window.location.href = "checkout.html";
   }
+
+  // Initialize cart counters on page load
+  const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
+  document.getElementById("cart-count").textContent = cart.length;
+  document.getElementById("floating-cart-count").textContent = cart.length;
 </script>
 
 </body>
-</html>
+  </html>
