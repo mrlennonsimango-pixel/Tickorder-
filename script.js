@@ -114,4 +114,34 @@ if (shopBtn) {
     productsSection.scrollIntoView({ behavior: "smooth" });
   });
                          }
+
+  // --- Scroll Buttons ---
+const scrollUp = document.getElementById("scroll-up");
+const scrollDown = document.getElementById("scroll-down");
+
+// Show buttons when scrolling
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 200) {
+    scrollUp.style.display = "block";
+  } else {
+    scrollUp.style.display = "none";
+  }
+
+  // Show scroll down only if not at bottom
+  if ((window.innerHeight + window.scrollY) < document.body.offsetHeight - 50) {
+    scrollDown.style.display = "block";
+  } else {
+    scrollDown.style.display = "none";
+  }
+});
+
+// Scroll to top
+scrollUp.addEventListener("click", () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// Scroll to products section
+scrollDown.addEventListener("click", () => {
+  document.getElementById("products").scrollIntoView({ behavior: "smooth" });
+});
 });
