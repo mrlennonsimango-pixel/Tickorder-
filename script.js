@@ -24,24 +24,33 @@ document.addEventListener("DOMContentLoaded", () => {
 }
   // --- Display Products ---
   function displayProducts(productsList) {
-    container.innerHTML = "";
-    productsList.forEach(product => {
-      const productBox = document.createElement("div");
-      productBox.classList.add("product");
+  container.innerHTML = "";
+  productsList.forEach(product => {
+    const productBox = document.createElement("div");
+    productBox.classList.add("product");
 
-      productBox.innerHTML = `
-        <img class="product-img" src="${product.image}" alt="${product.name}" />
-        <h3>${product.name}</h3>
-        <p>R${product.price}</p>
-        <button>Add to Cart</button>
-      `;
+    productBox.innerHTML = `
+      <img class="product-img" src="${product.image}" alt="${product.name}" />
+      <h3>${product.name}</h3>
+      <p>R${product.price}</p>
+      <button>Add to Cart</button>
+    `;
 
-      // Pass productBox for the fly-to-cart animation
-      productBox.querySelector("button").addEventListener("click", () => addToCart(product.id, productBox));
-
-      container.appendChild(productBox);
+    // ✅ CLICK PRODUCT TO VIEW DETAILS
+    productBox.addEventListener("click", () => {
+      localStorage.setItem("selectedProduct", product.id);
+      window.location.href = "product.html";
     });
-  }
+
+    // ✅ PREVENT BUTTON CLICK FROM TRIGGERING PAGE OPEN
+    productBox.querySelector("button").addEventListener("click", (e) => {
+      e.stopPropagation();
+      addToCart(product.id, productBox);
+    });
+
+    container.appendChild(productBox);
+  });
+}
 
   // --- Add to Cart Function with Fly Animation ---
   function addToCart(id, productBox) {
