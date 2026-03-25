@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TickOrder - Shipping Policy</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Header with Home button -->
+  <header class="terms-header">
+    <h1>TickOrder - Shipping Policy</h1>
+    <a href="index.html" class="back-home-btn">
+      <i class="fa-solid fa-house"></i>
+    </a>
+  </header>
+
+  <main style="padding: 20px; max-width: 800px; margin: auto; line-height: 1.6;">
+
+    <section>
+      <h2>1. Shipping Areas</h2>
+      <p>
+        TickOrder delivers to locations within South Africa. For areas outside our delivery zones, please contact us directly to confirm availability.
+      </p>
+    </section>
+
+    <section>
+      <h2>2. Processing Time</h2>
+      <p>
+        All orders are processed within <strong>1–2 business days</strong> after payment confirmation. Orders placed on weekends or public holidays will be processed the next business day.
+      </p>
+    </section>
+
+    <section>
+      <h2>3. Delivery Time</h2>
+      <p>
+        Standard delivery usually takes <strong>2–5 business days</strong> depending on your location. While we strive to deliver within this time, delays may occur due to unforeseen circumstances such as weather or courier delays.
+      </p>
+    </section>
+
+    <section>
+      <h2>4. Shipping Fees</h2>
+      <p>
+        Shipping fees are calculated at checkout based on the delivery location and weight of the order. Any applicable fees will be displayed before payment is completed.
+      </p>
+    </section>
+
+    <section>
+      <h2>5. Tracking Orders</h2>
+      <p>
+        Once your order is shipped, you will receive a tracking number via email or SMS. You can use this number to monitor the progress of your delivery.
+      </p>
+    </section>
+
+    <section>
+      <h2>6. Lost or Damaged Packages</h2>
+      <ul>
+        <li>Please inspect your package upon delivery.</li>
+        <li>If your package is lost or damaged, contact TickOrder immediately at <strong>tickorderstore@gmail.com</strong> or <strong>0766506107</strong>.</li>
+        <li>We will assist in filing a claim with the courier and arrange a replacement if applicable.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>7. Contact Us</h2>
+      <p>
+        For any shipping questions, contact us at <strong>tickorderstore@gmail.com</strong> or call <strong>0766506107</strong>.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+          <li><a href="terms-and-conditions.html">Terms & Conditions</a></li>
+          <li><a href="privacy-policy.html">Privacy Policy</a></li>
+          <li><a href="refund-policy.html">Refund Policy</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Contact Us</h4>
+        <p>Email: tickorderstore@gmail.com</p>
+        <p>Phone: 0766506107</p>
+      </div>
+      <div class="footer-section">
+        <h4>Follow Us</h4>
+        <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-facebook"></i></a>
+        <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+      </div>
+      <p class="footer-bottom">© 2026 TickOrder. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
