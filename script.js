@@ -105,5 +105,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Initial Display ---
   displayProducts(filteredProducts);
   updateCartCounter();
+// --- Shop Button Scroll ---
+const shopBtn = document.getElementById("shopBtn");
 
+if (shopBtn) {
+  shopBtn.addEventListener("click", () => {
+    const productsSection = document.getElementById("products");
+    productsSection.scrollIntoView({ behavior: "smooth" });
+  });
+                         }
 });
