@@ -749,15 +749,18 @@ transform: scale(1.1);
 }
 
 .back-home-btn {
-  padding: 8px 16px;
+  padding: 8px 12px;       /* smaller padding for icon only */
   background-color: #0f9d58;
   color: white;
   text-decoration: none;
   border-radius: 5px;
-  font-weight: bold;
+  font-size: 16px;         /* icon size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: 0.3s;
 }
 
 .back-home-btn:hover {
   background-color: #0b7a43;
-   }
+}
