@@ -37,19 +37,39 @@
   if (product) {
     container.innerHTML = `
       <h2 class="product-title">${product.name}</h2>
-      <div class="image-section">
-        <img src="${product.image}" alt="${product.name}">
-      </div>
-      <div class="description-section">
-        <h3>Description</h3>
-        <p>${product.description || "No description available."}</p>
-        <p class="price">Price: R${product.price}</p>
-      </div>
-      <div class="buttons">
-        <button onclick="addToCart(${product.id})" class="cart-btn">Add to Cart</button>
-        <button onclick="buyNow(${product.id})" class="buy-btn">Buy Now</button>
-      </div>
-    `;
+      let selectedColorIndex = 0;
+const color = product.colors[selectedColorIndex];
+
+container.innerHTML = `
+  <h2 class="product-title">${product.name}</h2>
+
+  <div class="image-section">
+    <img id="main-product-img" src="${color.image}" alt="${product.name}">
+
+    <!-- Vertical color selector -->
+    <div class="color-section-vertical">
+      ${product.colors.map((c, i) => `
+        <button class="color-btn ${i === 0 ? 'active' : ''}"
+          onclick="selectColor(${i})"
+          title="${c.name}"
+          style="background-color:${c.name.toLowerCase()}">
+        </button>
+      `).join('')}
+    </div>
+  </div>
+
+  <div class="description-section">
+    <h3>Description</h3>
+    <p>${product.description || "No description available."}</p>
+    <p class="price">Price: R<span id="product-price">${color.price}</span></p>
+  </div>
+
+  <div class="buttons">
+    <button onclick="addToCart(${product.id})" class="cart-btn">Add to Cart</button>
+    <button onclick="buyNow(${product.id})" class="buy-btn">Buy Now</button>
+  </div>
+`;
+      
   } else {
     container.innerHTML = "<p>Product not found</p>";
   }
