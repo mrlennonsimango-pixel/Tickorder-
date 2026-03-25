@@ -1,10 +1,24 @@
 const products = [
-  { id: 1, name: "Brown Handbag", price: 120, weight: 1, image: "assets/Images/brownhandbag.jpg", description: "Stylish brown handbag, perfect for daily use." },
-  { id: 2, name: "Red Handbag", price: 150, weight: 1, image: "assets/Images/redhandbag.jpg", description: "Elegant red handbag to match your outfit." },
-  { id: 3, name: "Pestal Green Handbag", price: 130, weight: 1, image: "assets/Images/greenhandbag.jpg", description: "Fresh pastel green handbag, light and roomy." },
-  { id: 4, name: "Black Handbag", price: 140, weight: 1, image: "assets/Images/blackhandbag.jpg", description: "Classic black handbag for all occasions." },
-  { id: 5, name: "White Handbag", price: 135, weight: 1, image: "assets/Images/whitehandbag.jpg", description: "Clean white handbag, perfect for summer outfits." }
+  { 
+    id: 1, 
+    name: "Handbag", 
+    weight: 1,
+    colors: [
+      { name: "Brown", image: "assets/Images/brownhandbag1.jpg", price: 120 },
+      { name: "Red", image: "assets/Images/redhandbag1.jpg", price: 150 },
+      { name: "Black", image: "assets/Images/blackhandbag1.jpg", price: 140 }
+    ],
+    description: "Stylish handbag, available in multiple colors."
+  },
+  { 
+    id: 2, 
+    name: "Backpack", 
+    weight: 1.2,
+    colors: [
+      { name: "Green", image: "assets/Images/greenbackpack1.jpg", price: 130 },
+      { name: "Blue", image: "assets/Images/bluebackpack1.jpg", price: 140 }
+    ],
+    description: "Durable backpack for everyday use."
+  }
 ];
-
-
   
