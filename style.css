@@ -748,19 +748,23 @@ transform: scale(1.1);
   border-bottom: 1px solid #ddd;
 }
 
-.back-home-btn {
-  padding: 8px 12px;       /* smaller padding for icon only */
-  background-color: #0f9d58;
-  color: white;
+.back-home-btn.back-home-btn {
+  padding: 8px 12px;       
+  background-color: #0f9d58; /* brand green */
+  color: white;              /* ensures the icon is white */
   text-decoration: none;
   border-radius: 5px;
-  font-size: 16px;         /* icon size */
+  font-size: 16px;           
   display: flex;
   align-items: center;
   justify-content: center;
   transition: 0.3s;
 }
 
+.back-home-btn i {
+  color: white;              /* explicitly sets icon color */
+}
+
 .back-home-btn:hover {
-  background-color: #0b7a43;
+  background-color: #0b7a43; 
 }
