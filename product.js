@@ -12,4 +12,23 @@ const products = [
     ],
     weight: 1
   }
+
+  {
+  id: 2,
+  name: "Gamazine 20L",
+  category: "Paints",
+  image: "assets/Images/gamazine.jpg",
+  price: 399,
+  size: "20 Litres",
+  finish: "Textured, decorative",
+  coverage: "±6–8 m² per 20L",
+  application: "Steel trowel",
+  features: [
+    "Durable",
+    "Waterproof",
+    "Low maintenance",
+    "Crack-resistant"
+  ],
+  description: "Perfect for feature walls, ceilings, facades, and residential or commercial projects."
+}
 ];
