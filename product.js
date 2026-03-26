@@ -17,7 +17,7 @@ const products = [
   id: 2,
   name: "Gamazine 20L",
   category: "Paints",
-  image: "assets/Images/gamazine.jpg",
+  image: "assets/Images/gamazine-20l.jpg",
   price: 399,
   size: "20 Litres",
   finish: "Textured, decorative",
