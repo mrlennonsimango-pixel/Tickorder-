@@ -109,15 +109,15 @@ function addToCart(product, selectedColor, productBox) {
   });
 
   // --- Sort Products ---
-  sortSelect.addEventListener("change", () => {
-    const value = sortSelect.value;
-    if (value === "low") filteredProducts.sort((a, b) => a.price - b.price);
-    else if (value === "high") filteredProducts.sort((a, b) => b.price - a.price);
-    else if (value === "new") filteredProducts.sort((a, b) => b.id - a.id);
+  // --- Sort Products ---
+sortSelect.addEventListener("change", () => {
+  const value = sortSelect.value;
+  if (value === "low") filteredProducts.sort((a, b) => a.colors[0].price - b.colors[0].price);
+  else if (value === "high") filteredProducts.sort((a, b) => b.colors[0].price - a.colors[0].price);
+  else if (value === "new") filteredProducts.sort((a, b) => b.id - a.id);
 
-    displayProducts(filteredProducts);
-  });
-
+  displayProducts(filteredProducts);
+});
   // --- Initial Display ---
   displayProducts(filteredProducts);
   updateCartCounter();
