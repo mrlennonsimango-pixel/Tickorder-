@@ -34,11 +34,33 @@ const products = [
   },
   { 
     id: 4,
+    parentId: 1,
+    name: "Handbag - Black",
+    category: "Handbags",
+    image: "assets/Images/blackhandbag.jpg",
+    price: 140,
+    color: "Black",
+    link: "product.html?id=1&color=black",
+    description: "Stylish and durable handbag."
+  },
+  { 
+    id: 5,
+    parentId: 1,
+    name: "Handbag - White",
+    category: "Handbags",
+    image: "assets/Images/whitehandbag.jpg",
+    price: 135,
+    color: "White",
+    link: "product.html?id=1&color=white",
+    description: "Stylish and durable handbag."
+  },
+  { 
+    id: 6,
     name: "Gamazine 20L",
     category: "Paints",
     image: "assets/Images/gamazine-20l.jpg",
     price: 399,
-    link: "product.html?id=4",
+    link: "product.html?id=6",
     description: "Perfect for feature walls, ceilings, facades, and residential or commercial projects."
   }
 ];
