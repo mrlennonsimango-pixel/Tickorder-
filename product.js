@@ -3,7 +3,7 @@ const products = [
     id: 1,
     parentId: 1,
     name: "Handbag - Brown",
-    category: "Handbags",
+    category: "handbags",
     image: "assets/Images/brownhandbag.jpg",
     price: 120,
     color: "Brown",
@@ -13,7 +13,7 @@ const products = [
   { 
     id: 2,
     parentId: 1,
-    name: "Handbag - Red",
+    name: "handbag - Red",
     category: "Handbags",
     image: "assets/Images/redhandbag.jpg",
     price: 150,
@@ -24,7 +24,7 @@ const products = [
   { 
     id: 3,
     parentId: 1,
-    name: "Handbag - Green",
+    name: "handbag - Green",
     category: "Handbags",
     image: "assets/Images/greenhandbag.jpg",
     price: 130,
@@ -35,7 +35,7 @@ const products = [
   { 
     id: 4,
     parentId: 1,
-    name: "Handbag - Black",
+    name: "handbag - Black",
     category: "Handbags",
     image: "assets/Images/blackhandbag.jpg",
     price: 140,
@@ -46,7 +46,7 @@ const products = [
   { 
     id: 5,
     parentId: 1,
-    name: "Handbag - White",
+    name: "handbag - White",
     category: "Handbags",
     image: "assets/Images/whitehandbag.jpg",
     price: 135,
@@ -57,7 +57,7 @@ const products = [
   { 
     id: 6,
     name: "Gamazine 20L",
-    category: "Paints",
+    category: "paints",
     image: "assets/Images/gamazine-20l.jpg",
     price: 399,
     link: "product.html?id=6",
