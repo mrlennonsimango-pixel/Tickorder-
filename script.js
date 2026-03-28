@@ -32,10 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Products row (flex)
     const productsRow = document.createElement("div");
-    productsRow.style.display = "flex";
-    productsRow.style.flexWrap = "wrap";
-    productsRow.style.gap = "20px"; // spacing between products
-
+    productsRow.style.display = "grid";
+productsRow.style.gridTemplateColumns = "repeat(auto-fill, minmax(160px, 1fr))";
+productsRow.style.gap = "15px";
+productsRow.style.marginBottom = "30px";
+    
     categories[category].forEach(product => {
       const productBox = document.createElement("div");
       productBox.classList.add("product");
