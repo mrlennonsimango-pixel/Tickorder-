@@ -23,37 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- Display Products ---
-  function displayProducts(productsList) {
-    container.innerHTML = "";
-    productsList.forEach(product => {
-      const productBox = document.createElement("div");
-      productBox.classList.add("product");
-
-      const firstColor = product.colors[0]; // default color
-      productBox.innerHTML = `
-        <img class="product-img" src="${firstColor.image}" alt="${product.name}" />
-        <h3>${product.name}</h3>
-        <p>R${firstColor.price}</p>
-        <button>Add to Cart</button>
-      `;
-
-      // Click to view product details
-      productBox.addEventListener("click", () => {
-        localStorage.setItem("selectedProduct", product.id);
-        window.location.href = "product.html";
-      });
-
-      // Add to cart button
-      const addBtn = productBox.querySelector("button");
-      addBtn.addEventListener("click", e => {
-        e.stopPropagation();
-        addToCart(product, firstColor, productBox);
-      });
-
-      container.appendChild(productBox);
-    });
-  }
-
+  
   // --- Add to Cart with Fly Animation ---
   function addToCart(product, color, productBox) {
     cart.push({
@@ -75,7 +45,51 @@ document.addEventListener("DOMContentLoaded", () => {
     const cartLink = document.getElementById("cart-link");
     const cartRect = cartLink.getBoundingClientRect();
 
-    Object.assign(imgClone.style, {
+    Object.assign(imgClone.style,function displayProducts(productsList) {
+  container.innerHTML = "";
+  productsList.forEach(product => {
+    const productBox = document.createElement("div");
+    productBox.classList.add("product");
+
+    // Use main image for shop page
+    const displayImage = product.image 
+      ? product.image 
+      : product.colors && product.colors[0] 
+        ? product.colors[0].image 
+        : ""; // fallback
+
+    const displayPrice = product.price 
+      ? product.price 
+      : product.colors && product.colors[0] 
+        ? product.colors[0].price 
+        : 0;
+
+    productBox.innerHTML = `
+      <img class="product-img" src="${displayImage}" alt="${product.name}" />
+      <h3>${product.name}</h3>
+      <p>R${displayPrice}</p>
+      <button>Add to Cart</button>
+    `;
+
+    // Click to view product details
+    productBox.addEventListener("click", () => {
+      localStorage.setItem("selectedProduct", product.id);
+      window.location.href = "product.html";
+    });
+
+    // Add to cart button (uses first color or main image)
+    const firstColor = product.colors && product.colors[0] 
+      ? product.colors[0] 
+      : { name: "", image: displayImage, price: displayPrice };
+
+    productBox.querySelector("button").addEventListener("click", e => {
+      e.stopPropagation();
+      addToCart(product, firstColor, productBox);
+    });
+
+    container.appendChild(productBox);
+  });
+                          } {
       position: "absolute",
       top: `${imgRect.top}px`,
       left: `${imgRect.left}px`,
