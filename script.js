@@ -14,56 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Display all products on shop page
-  function displayProducts(productsList) {
-  container.innerHTML = "";
 
-  // Group products by category
-  const categories = {};
-  productsList.forEach(product => {
-    if (!categories[product.category]) categories[product.category] = [];
-    categories[product.category].push(product);
-  });
-
-  // Render each category
-  for (const category in categories) {
-    const categorySection = document.createElement("div");
-    categorySection.classList.add("category-section");
-
-    const categoryTitle = document.createElement("h2");
-    categoryTitle.textContent = category;
-    categorySection.appendChild(categoryTitle);
-
-    const productsContainer = document.createElement("div");
-    productsContainer.classList.add("category-products");
-
-    categories[category].forEach(product => {
-      const productBox = document.createElement("div");
-      productBox.classList.add("product");
-
-      productBox.innerHTML = `
-        <img class="product-img" src="${product.image}" alt="${product.name}" />
-        <h3>${product.name}</h3>
-        <p>R${product.price}</p>
-        <button>Add to Cart</button>
-      `;
-
-      productBox.addEventListener("click", () => {
-        window.location.href = product.link;
-      });
-
-      const addBtn = productBox.querySelector("button");
-      addBtn.addEventListener("click", e => {
-        e.stopPropagation();
-        addToCart(product, product, productBox);
-      });
-
-      productsContainer.appendChild(productBox);
-    });
-
-    categorySection.appendChild(productsContainer);
-    container.appendChild(categorySection);
-  }
-}
   // Add to Cart
   function addToCart(product, color, productBox) {
     cart.push({
@@ -76,7 +27,63 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("tickorderCart", JSON.stringify(cart));
     updateCartCounter();
 
-    const productImg = productBox.querySelector("img");
+    const function displayProducts(productsList) {
+  container.innerHTML = "";
+
+  // Group products by category
+  const categories = {};
+  productsList.forEach(product => {
+    if (!categories[product.category]) categories[product.category] = [];
+    categories[product.category].push(product);
+  });
+
+  // Render each category
+  for (const category in categories) {
+    // Category title
+    const categoryTitle = document.createElement("h2");
+    categoryTitle.textContent = category;
+    categoryTitle.style.margin = "20px 0 10px 0"; // spacing
+    container.appendChild(categoryTitle);
+
+    // Products container (flex row)
+    const productsRow = document.createElement("div");
+    productsRow.classList.add("category-products-row");
+    productsRow.style.display = "flex";
+    productsRow.style.flexWrap = "wrap";
+    productsRow.style.gap = "20px"; // spacing between products
+
+    categories[category].forEach(product => {
+      const productBox = document.createElement("div");
+      productBox.classList.add("product");
+      productBox.style.flex = "0 0 200px"; // width of each product box
+
+      const displayImage = product.image || (product.colors && product.colors[0].image) || "";
+      const displayPrice = product.price || (product.colors && product.colors[0].price) || 0;
+
+      productBox.innerHTML = `
+        <img class="product-img" src="${displayImage}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p>R${displayPrice}</p>
+        <button>Add to Cart</button>
+      `;
+
+      productBox.addEventListener("click", () => {
+        window.location.href = product.link;
+      });
+
+      const addBtn = productBox.querySelector("button");
+      const firstColor = product.colors && product.colors[0] ? product.colors[0] : { name: "", image: displayImage, price: displayPrice };
+      addBtn.addEventListener("click", e => {
+        e.stopPropagation();
+        addToCart(product, firstColor, productBox);
+      });
+
+      productsRow.appendChild(productBox);
+    });
+
+    container.appendChild(productsRow);
+  }
+    }productImg = productBox.querySelector("img");
     const imgClone = productImg.cloneNode(true);
     imgClone.classList.add("flying-img");
 
