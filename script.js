@@ -13,62 +13,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Display products grouped by category ---
   function displayProducts(productsList) {
-    container.innerHTML = "";
+  container.innerHTML = "";
 
-    // Group products by category
-    const categories = {};
-    productsList.forEach(product => {
-      if (!categories[product.category]) categories[product.category] = [];
-      categories[product.category].push(product);
-    });
+  // Group products by category
+  const categories = {};
+  productsList.forEach(product => {
+    if (!categories[product.category]) categories[product.category] = [];
+    categories[product.category].push(product);
+  });
 
-    // Render each category
-    for (const category in categories) {
-      const categoryTitle = document.createElement("h2");
-      categoryTitle.textContent = category;
-      categoryTitle.style.margin = "20px 0 10px 0";
-      container.appendChild(categoryTitle);
+  // Render each category
+  for (const category in categories) {
+    // Category title
+    const categoryTitle = document.createElement("h2");
+    categoryTitle.textContent = category;
+    categoryTitle.style.margin = "20px 0 10px 0";
+    container.appendChild(categoryTitle);
 
-      const productsRow = document.createElement("div");
-      productsRow.style.display = "flex";
-      productsRow.style.flexWrap = "wrap";
-      productsRow.style.gap = "20px";
+    // Products row (flex)
+    const productsRow = document.createElement("div");
+    productsRow.style.display = "flex";
+    productsRow.style.flexWrap = "wrap";
+    productsRow.style.gap = "20px"; // spacing between products
 
-      categories[category].forEach(product => {
-        const productBox = document.createElement("div");
-        productBox.classList.add("product");
-        productBox.style.flex = "0 0 200px";
+    categories[category].forEach(product => {
+      const productBox = document.createElement("div");
+      productBox.classList.add("product");
+      productBox.style.flex = "0 0 200px"; // width of each product box
 
-        const displayImage = product.image || (product.colors && product.colors[0].image) || "";
-        const displayPrice = product.price || (product.colors && product.colors[0].price) || 0;
+      const displayImage = product.image || "";
+      const displayPrice = product.price || 0;
 
-        productBox.innerHTML = `
-          <img class="product-img" src="${displayImage}" alt="${product.name}" />
-          <h3>${product.name}</h3>
-          <p>R${displayPrice}</p>
-          <button>Add to Cart</button>
-        `;
+      productBox.innerHTML = `
+        <img class="product-img" src="${displayImage}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p>R${displayPrice}</p>
+        <button>Add to Cart</button>
+      `;
 
-        // Go to individual product page
-        productBox.addEventListener("click", () => {
-          window.location.href = product.link;
-        });
-
-        // Add to cart
-        const addBtn = productBox.querySelector("button");
-        const firstColor = product.colors && product.colors[0] ? product.colors[0] : { name: "", image: displayImage, price: displayPrice };
-        addBtn.addEventListener("click", e => {
-          e.stopPropagation();
-          addToCart(product, firstColor, productBox);
-        });
-
-        productsRow.appendChild(productBox);
+      // Go to individual product page
+      productBox.addEventListener("click", () => {
+        window.location.href = product.link;
       });
 
-      container.appendChild(productsRow);
-    }
-  }
+      // Add to cart button
+      const addBtn = productBox.querySelector("button");
+      addBtn.addEventListener("click", e => {
+        e.stopPropagation();
+        addToCart(product, { name: "", image: displayImage, price: displayPrice }, productBox);
+      });
 
+      productsRow.appendChild(productBox);
+    });
+
+    container.appendChild(productsRow);
+  }
+}
   // --- Add to Cart ---
   function addToCart(product, color, productBox) {
     cart.push({
