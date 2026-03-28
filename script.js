@@ -15,51 +15,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Display all products on shop page
   function displayProducts(productsList) {
-    container.innerHTML = "";
+  container.innerHTML = "";
+  productsList.forEach(product => {
+    const productBox = document.createElement("div");
+    productBox.classList.add("product");
 
-    productsList.forEach(product => {
-      const productBox = document.createElement("div");
-      productBox.classList.add("product");
+    productBox.innerHTML = `
+      <img class="product-img" src="${product.image}" alt="${product.name}" />
+      <h3>${product.name}</h3>
+      <p>R${product.price}</p>
+      <button>Add to Cart</button>
+    `;
 
-      // Show main image for shop page (color does not matter here)
-      const displayImage = product.image 
-        ? product.image 
-        : product.colors && product.colors[0] 
-          ? product.colors[0].image 
-          : "";
-
-      const displayPrice = product.price 
-        ? product.price 
-        : product.colors && product.colors[0] 
-          ? product.colors[0].price 
-          : 0;
-
-      productBox.innerHTML = `
-        <img class="product-img" src="${displayImage}" alt="${product.name}" />
-        <h3>${product.name}</h3>
-        <p>R${displayPrice}</p>
-        <button>Add to Cart</button>
-      `;
-
-      // Click product goes to product page
-      productBox.addEventListener("click", () => {
-        localStorage.setItem("selectedProduct", product.id);
-        window.location.href = "product.html";
-      });
-
-      const firstColor = product.colors && product.colors[0]
-        ? product.colors[0]
-        : { name: "", image: displayImage, price: displayPrice };
-
-      productBox.querySelector("button").addEventListener("click", e => {
-        e.stopPropagation();
-        addToCart(product, firstColor, productBox);
-      });
-
-      container.appendChild(productBox);
+    // Go to individual product page
+    productBox.addEventListener("click", () => {
+      window.location.href = product.link;
     });
-  }
 
+    // Add to cart button
+    productBox.querySelector("button").addEventListener("click", e => {
+      e.stopPropagation();
+      addToCart(product, product, productBox); // here option = product itself
+    });
+
+    container.appendChild(productBox);
+  });
+}
   // Add to Cart
   function addToCart(product, color, productBox) {
     cart.push({
