@@ -240,7 +240,26 @@ function showSection(section) {
 
   content.innerHTML = "<h2>" + section.toUpperCase() + "</h2><p>Section loading...</p>";
 }
-  
+
+  function addColorRow() {
+  const container = document.getElementById("colorOptionsContainer");
+  const row = document.createElement("div");
+  row.className = "colorRow";
+  row.style.marginBottom = "8px";
+
+  row.innerHTML = `
+    <input placeholder="Colour Name" class="colorName" style="padding:6px; width:120px;">
+    <input type="number" placeholder="Price" class="colorPrice" style="padding:6px; width:80px;">
+    <input type="file" class="colorImage">
+    <button onclick="removeColorRow(this)">Remove</button>
+  `;
+
+  container.appendChild(row);
+}
+
+function removeColorRow(btn) {
+  btn.parentElement.remove();
+}
   function loadOrdersSection() {
   const content = document.getElementById("content");
 
@@ -789,18 +808,58 @@ function deliverOrder(orderId) {
   });
     }
 
-  function addProduct(){
-
+  function addProduct() {
   const name = document.getElementById("productName").value;
-  const price = parseFloat(document.getElementById("productPrice").value);
-  const stockQty = parseInt(document.getElementById("productStock").value);
-  const imageFile = document.getElementById("productImage").files[0];
+  const category = document.getElementById("productCategory").value;
 
-  if(!name || !price || !stockQty){
-    alert("Fill all fields");
+  if(!name || !category) {
+    alert("Product name and category required");
     return;
   }
 
+  const colorRows = document.querySelectorAll(".colorRow");
+  if(colorRows.length === 0) {
+    alert("Add at least one colour");
+    return;
+  }
+
+  const colors = [];
+  const uploadPromises = [];
+
+  colorRows.forEach((row, index) => {
+    const colorName = row.querySelector(".colorName").value;
+    const colorPrice = parseFloat(row.querySelector(".colorPrice").value) || 0;
+    const colorImageFile = row.querySelector(".colorImage").files[0];
+
+    if(!colorName || !colorImageFile){
+      alert("Each colour must have a name and image");
+      return;
+    }
+
+    // Upload image to Firebase Storage
+    const storageRef = storage.ref("product_images/" + Date.now() + "_" + colorImageFile.name);
+    const uploadTask = storageRef.put(colorImageFile).then(snapshot => snapshot.ref.getDownloadURL())
+      .then(downloadURL => {
+        colors.push({ name: colorName, price: colorPrice, image: downloadURL });
+      });
+
+    uploadPromises.push(uploadTask);
+  });
+
+  Promise.all(uploadPromises).then(() => {
+    db.collection("products").add({
+      name,
+      category,
+      colors
+    }).then(() => {
+      alert("Product added successfully with colours!");
+      showSection('stock'); // reload stock
+    }).catch(err => {
+      console.error(err);
+      alert("Error adding product");
+    });
+  });
+}
   function saveProduct(imageURL=""){
 
     db.collection("products").add({
