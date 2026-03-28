@@ -211,17 +211,26 @@ function showSection(section) {
       </div>
 
       <div style="margin:20px 0; padding:15px; background:#f4f6f5; border-radius:8px;">
-        <input id="productName" placeholder="Product Name" style="padding:8px; margin-right:5px;">
-        <input id="productPrice" placeholder="Price" type="number" style="padding:8px; margin-right:5px;">
-        <input id="productStock" placeholder="Stock Qty" type="number" style="padding:8px; margin-right:5px;">
-        <input type="file" id="productImage" accept="image/*">
+  <input id="productName" placeholder="Product Name" style="padding:8px; margin-right:5px;">
+  <input id="productCategory" placeholder="Category" style="padding:8px; margin-right:5px;">
+  
+  <div id="colorOptionsContainer">
+    <p>Colours:</p>
+    <!-- Example colour row -->
+    <div class="colorRow">
+      <input placeholder="Colour Name" class="colorName" style="padding:6px; width:120px;">
+      <input type="number" placeholder="Price" class="colorPrice" style="padding:6px; width:80px;">
+      <input type="file" class="colorImage">
+      <button onclick="removeColorRow(this)">Remove</button>
+    </div>
+  </div>
+  <button onclick="addColorRow()">+ Add Colour</button>
 
-        <button onclick="addProduct()"
-        style="background:#0bbf63;color:white;border:none;padding:8px 15px;border-radius:5px;">
-        Add Product
-        </button>
-      </div>
-
+  <button onclick="addProduct()"
+          style="background:#0bbf63;color:white;border:none;padding:8px 15px;border-radius:5px;">
+    Add Product
+  </button>
+</div>
       <div id="stockList"></div>
     `;
 
