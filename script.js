@@ -41,8 +41,13 @@ document.addEventListener("DOMContentLoaded", () => {
       productBox.classList.add("product");
       productBox.style.flex = "0 0 200px"; // width of each product box
 
-      const displayImage = product.image || "";
-      const displayPrice = product.price || 0;
+      const displayImage = product.image 
+  ? product.image 
+  : "assets/Images/placeholder.jpg";
+
+const displayPrice = product.price 
+  ? product.price 
+  : "0";
 
       productBox.innerHTML = `
         <img class="product-img" src="${displayImage}" alt="${product.name}" />
@@ -72,12 +77,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Add to Cart ---
   function addToCart(product, color, productBox) {
     cart.push({
-      id: product.id,
-      name: product.name,
-      image: color.image,
-      price: color.price,
-      color: color.name
-    });
+  id: product.id,
+  name: product.name,
+  image: product.image,
+  price: product.price
+});
     localStorage.setItem("tickorderCart", JSON.stringify(cart));
     updateCartCounter();
 
