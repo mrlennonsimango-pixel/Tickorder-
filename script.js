@@ -16,30 +16,53 @@ document.addEventListener("DOMContentLoaded", () => {
   // Display all products on shop page
   function displayProducts(productsList) {
   container.innerHTML = "";
+
+  // Group products by category
+  const categories = {};
   productsList.forEach(product => {
-    const productBox = document.createElement("div");
-    productBox.classList.add("product");
-
-    productBox.innerHTML = `
-      <img class="product-img" src="${product.image}" alt="${product.name}" />
-      <h3>${product.name}</h3>
-      <p>R${product.price}</p>
-      <button>Add to Cart</button>
-    `;
-
-    // Go to individual product page
-    productBox.addEventListener("click", () => {
-      window.location.href = product.link;
-    });
-
-    // Add to cart button
-    productBox.querySelector("button").addEventListener("click", e => {
-      e.stopPropagation();
-      addToCart(product, product, productBox); // here option = product itself
-    });
-
-    container.appendChild(productBox);
+    if (!categories[product.category]) categories[product.category] = [];
+    categories[product.category].push(product);
   });
+
+  // Render each category
+  for (const category in categories) {
+    const categorySection = document.createElement("div");
+    categorySection.classList.add("category-section");
+
+    const categoryTitle = document.createElement("h2");
+    categoryTitle.textContent = category;
+    categorySection.appendChild(categoryTitle);
+
+    const productsContainer = document.createElement("div");
+    productsContainer.classList.add("category-products");
+
+    categories[category].forEach(product => {
+      const productBox = document.createElement("div");
+      productBox.classList.add("product");
+
+      productBox.innerHTML = `
+        <img class="product-img" src="${product.image}" alt="${product.name}" />
+        <h3>${product.name}</h3>
+        <p>R${product.price}</p>
+        <button>Add to Cart</button>
+      `;
+
+      productBox.addEventListener("click", () => {
+        window.location.href = product.link;
+      });
+
+      const addBtn = productBox.querySelector("button");
+      addBtn.addEventListener("click", e => {
+        e.stopPropagation();
+        addToCart(product, product, productBox);
+      });
+
+      productsContainer.appendChild(productBox);
+    });
+
+    categorySection.appendChild(productsContainer);
+    container.appendChild(categorySection);
+  }
 }
   // Add to Cart
   function addToCart(product, color, productBox) {
