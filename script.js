@@ -12,32 +12,35 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- Display products grouped by category ---
-  function displayProducts(productsList) {
-  container.innerHTML = "";
+  // ==========================
+// DISPLAY PRODUCTS BY CATEGORY
+// Each category gets its own grid
+// ==========================
+function displayProducts(productsList) {
+  container.innerHTML = ""; // Clear previous content
 
   // Group products by category
   const categories = {};
   productsList.forEach(product => {
-    const cat = product.category.trim(); // remove extra spaces
+    const cat = product.category.trim(); // Ensure no extra spaces
     if (!categories[cat]) categories[cat] = [];
     categories[cat].push(product);
   });
 
-  // Render each category
+  // Loop through each category
   for (const category in categories) {
-    // Category container
-    const categoryContainer = document.createElement("div");
-    categoryContainer.classList.add("category-section");
-
-    // Category title
+    // --- Category title ---
     const categoryTitle = document.createElement("h2");
     categoryTitle.classList.add("category-title");
     categoryTitle.textContent = category;
-    categoryContainer.appendChild(categoryTitle);
+    container.appendChild(categoryTitle);
 
-    // Products grid
-    const productsGrid = document.createElement("div");
-    productsGrid.classList.add("products-grid"); // style in CSS
+    // --- Category grid container ---
+    const grid = document.createElement("div");
+    grid.classList.add("category-grid"); // Each category has its own grid
+    container.appendChild(grid);
+
+    // --- Render products in this category ---
     categories[category].forEach(product => {
       const productBox = document.createElement("div");
       productBox.classList.add("product");
@@ -52,26 +55,24 @@ document.addEventListener("DOMContentLoaded", () => {
         <button>Add to Cart</button>
       `;
 
-      // Click to open product page
+      // --- Click product to open product page ---
       productBox.addEventListener("click", () => {
         localStorage.setItem("selectedProduct", product.id);
         window.location.href = "product.html";
       });
 
-      // Add to cart button
+      // --- Add to Cart button ---
       const addBtn = productBox.querySelector("button");
       addBtn.addEventListener("click", e => {
         e.stopPropagation();
         addToCart(product, { name: "", image: displayImage, price: displayPrice }, productBox);
       });
 
-      productsGrid.appendChild(productBox);
+      // Append product to this category’s grid
+      grid.appendChild(productBox);
     });
-
-    categoryContainer.appendChild(productsGrid);
-    container.appendChild(categoryContainer);
   }
-  }
+}
   // --- Add to Cart ---
   function addToCart(product, color, productBox) {
     cart.push({
