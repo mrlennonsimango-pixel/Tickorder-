@@ -59,8 +59,8 @@ const displayPrice = product.price
 
       // Go to individual product page
       productBox.addEventListener("click", () => {
-        window.location.href = product.link;
-      });
+  window.location.href = `product.html?id=${product.id}`;
+});
 
       // Add to cart button
       const addBtn = productBox.querySelector("button");
