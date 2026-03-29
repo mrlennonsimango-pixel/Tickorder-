@@ -858,3 +858,31 @@ transform: scale(1.1);
   color: black;
   font-weight: bold;
 }
+
+/* Category title */
+.category-title {
+  font-size: 22px;
+  margin: 20px 0 10px 0;
+  color: #0f9d58; /* brand green */
+}
+
+/* Each category has its own grid */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+/* Individual product box */
+.product {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+
+
