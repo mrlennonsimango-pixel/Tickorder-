@@ -29,144 +29,92 @@
 <div id="product-details" class="product-details"></div>
 
 <script>
-  const productId = localStorage.getItem("selectedProduct");
-  const product = products.find(p => p.id == productId);
-  const container = document.getElementById("product-details");
+// ==========================
+// LOAD PRODUCT ON PRODUCT PAGE
+// ==========================
 
-  if (product) {
-    // JS logic outside the template
-    let selectedColorIndex = Number(localStorage.getItem("selectedColorIndex")) || 0;
-    const color = product.colors[selectedColorIndex];
+// Get the product id saved from the homepage click
+const productId = Number(localStorage.getItem("selectedProduct"));
 
-    container.innerHTML = `
-      <h2 class="product-title">${product.name}</h2>
+// Find the product in the products array
+const product = products.find(p => p.id === productId);
 
-      <div class="image-section">
-        <img id="main-product-img" src="${color.image}" alt="${product.name}">
+// Container where product details will be displayed
+const container = document.getElementById("product-details");
 
-        <!-- Vertical color selector -->
-        <div class="color-section-vertical">
-          ${product.colors.map((c, i) => `
-            <button class="color-btn ${i === selectedColorIndex ? 'active' : ''}"
-              onclick="selectColor(${i})"
-              title="${c.name}"
-              style="background-color:${c.name.toLowerCase()}">
-            </button>
-          `).join('')}
-        </div>
-      </div>
+if (product) {
+  // --- Display product details ---
+  container.innerHTML = `
+    <h2 class="product-title">${product.name}</h2>
 
-      <div class="description-section">
-        <h3>Description</h3>
-        <p>${product.description || "No description available."}</p>
-        <p class="price">Price: R<span id="product-price">${color.price}</span></p>
-      </div>
+    <!-- Product image -->
+    <img id="main-product-img" src="${product.image}" alt="${product.name}">
 
-      <div class="buttons">
-        <button onclick="addToCart(${product.id})" class="cart-btn">Add to Cart</button>
-        <button onclick="buyNow(${product.id})" class="buy-btn">Buy Now</button>
-      </div>
-    `;
-  } else {
-    container.innerHTML = "<p>Product not found</p>";
-  }
+    <!-- Product description -->
+    <p>${product.description || "No description available."}</p>
 
-  // Add to Cart
-  function addToCart(id) {
-    let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
-    const product = products.find(p => p.id === id);
+    <!-- Product price -->
+    <p class="price">Price: R${product.price}</p>
 
-    const index = Number(localStorage.getItem("selectedColorIndex")) || 0;
-    const selectedColor = product.colors[index];
+    <!-- Add to Cart & Buy Now buttons -->
+    <button onclick="addToCart(${product.id})">Add to Cart</button>
+    <button onclick="buyNow(${product.id})">Buy Now</button>
+  `;
+} else {
+  // If product not found
+  container.innerHTML = "<p>Product not found</p>";
+}
 
-    cart.push({
-      id: product.id,
-      name: product.name,
-      image: selectedColor.image,
-      price: selectedColor.price,
-      color: selectedColor.name
-    });
+// ==========================
+// ADD TO CART FUNCTION
+// ==========================
+function addToCart(id) {
+  const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
+  const product = products.find(p => p.id === id);
 
-    localStorage.setItem("tickorderCart", JSON.stringify(cart));
+  cart.push({
+    id: product.id,
+    name: product.name,
+    image: product.image,
+    price: product.price,
+    color: product.color || "Default"
+  });
 
-    // Update counters
-    document.getElementById("cart-count").textContent = cart.length;
-    document.getElementById("floating-cart-count").textContent = cart.length;
+  localStorage.setItem("tickorderCart", JSON.stringify(cart));
 
-    // Toast notification
-    const toast = document.getElementById("toast");
-    toast.textContent = `${product.name} (${selectedColor.name}) added to cart`;
-    toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 2000);
+  // Update cart counters
+  document.getElementById("cart-count").textContent = cart.length;
+  document.getElementById("floating-cart-count").textContent = cart.length;
 
-    // Fly-to-cart animation
-    const productImg = document.querySelector(".image-section img");
-    const imgClone = productImg.cloneNode(true);
-    imgClone.classList.add("flying-img");
+  // Show toast notification
+  const toast = document.getElementById("toast");
+  toast.textContent = `${product.name} added to cart`;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
 
-    const imgRect = productImg.getBoundingClientRect();
-    const cartLink = document.getElementById("cart-link");
-    const cartRect = cartLink.getBoundingClientRect();
+// ==========================
+// BUY NOW FUNCTION
+// ==========================
+function buyNow(id) {
+  const product = products.find(p => p.id === id);
+  const cart = [{
+    id: product.id,
+    name: product.name,
+    image: product.image,
+    price: product.price,
+    color: product.color || "Default"
+  }];
+  localStorage.setItem("tickorderCart", JSON.stringify(cart));
+  window.location.href = "checkout.html";
+}
 
-    imgClone.style.top = `${imgRect.top}px`;
-    imgClone.style.left = `${imgRect.left}px`;
-    imgClone.style.width = `${imgRect.width}px`;
-    imgClone.style.height = `${imgRect.height}px`;
-    imgClone.style.position = "absolute";
-    imgClone.style.transition = "all 0.7s ease";
-
-    document.body.appendChild(imgClone);
-
-    requestAnimationFrame(() => {
-      imgClone.style.top = `${cartRect.top}px`;
-      imgClone.style.left = `${cartRect.left}px`;
-      imgClone.style.width = `20px`;
-      imgClone.style.height = `20px`;
-      imgClone.style.opacity = 0.5;
-    });
-
-    imgClone.addEventListener("transitionend", () => imgClone.remove());
-  }
-
-  // Buy Now
-  function buyNow(id) {
-    const cart = [];
-    const product = products.find(p => p.id === id);
-    const index = Number(localStorage.getItem("selectedColorIndex")) || 0;
-    const selectedColor = product.colors[index];
-
-    cart.push({
-      id: product.id,
-      name: product.name,
-      image: selectedColor.image,
-      price: selectedColor.price,
-      color: selectedColor.name
-    });
-
-    localStorage.setItem("tickorderCart", JSON.stringify(cart));
-    window.location.href = "checkout.html";
-  }
-
-  // Initialize cart counters on page load
-  const initialCart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
-  document.getElementById("cart-count").textContent = initialCart.length;
-  document.getElementById("floating-cart-count").textContent = initialCart.length;
-
-  // Select Color
-  function selectColor(index) {
-    const product = products.find(p => p.id == productId);
-    const color = product.colors[index];
-
-    document.getElementById("main-product-img").src = color.image;
-    document.getElementById("product-price").textContent = color.price;
-
-    document.querySelectorAll(".color-btn").forEach((btn, i) => {
-      btn.classList.toggle("active", i === index);
-    });
-
-    localStorage.setItem("selectedColorIndex", index);
-  }
+// ==========================
+// INITIALIZE CART COUNTERS
+// ==========================
+const initialCart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
+document.getElementById("cart-count").textContent = initialCart.length;
+document.getElementById("floating-cart-count").textContent = initialCart.length;
 </script>
-
 </body>
 </html>
