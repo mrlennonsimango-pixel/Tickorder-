@@ -1,7 +1,6 @@
 const products = [
   { 
     id: 1,
-    parentId: 1,
     name: "Handbag - Brown",
     category: "handbags",
     image: "assets/Images/brownhandbag.jpg",
@@ -11,7 +10,6 @@ const products = [
   },
   { 
     id: 2,
-    parentId: 1,
     name: "Handbag - Red",
     category: "handbags",
     image: "assets/Images/redhandbag.jpg",
@@ -21,7 +19,6 @@ const products = [
   },
   { 
     id: 3,
-    parentId: 1,
     name: "Handbag - Green",
     category: "handbags",
     image: "assets/Images/greenhandbag.jpg",
@@ -31,7 +28,6 @@ const products = [
   },
   { 
     id: 4,
-    parentId: 1,
     name: "Handbag - Black",
     category: "handbags",
     image: "assets/Images/blackhandbag.jpg",
@@ -41,7 +37,6 @@ const products = [
   },
   { 
     id: 5,
-    parentId: 1,
     name: "Handbag - White",
     category: "handbags",
     image: "assets/Images/whitehandbag.jpg",
