@@ -18,37 +18,32 @@ document.addEventListener("DOMContentLoaded", () => {
   // Group products by category
   const categories = {};
   productsList.forEach(product => {
-    if (!categories[product.category]) categories[product.category] = [];
-    categories[product.category].push(product);
+    const cat = product.category.trim(); // remove extra spaces
+    if (!categories[cat]) categories[cat] = [];
+    categories[cat].push(product);
   });
 
   // Render each category
   for (const category in categories) {
+    // Category container
+    const categoryContainer = document.createElement("div");
+    categoryContainer.classList.add("category-section");
+
     // Category title
     const categoryTitle = document.createElement("h2");
+    categoryTitle.classList.add("category-title");
     categoryTitle.textContent = category;
-    categoryTitle.style.margin = "20px 0 10px 0";
-    container.appendChild(categoryTitle);
+    categoryContainer.appendChild(categoryTitle);
 
-    // Products row (flex)
-    const productsRow = document.createElement("div");
-    productsRow.style.display = "grid";
-productsRow.style.gridTemplateColumns = "repeat(auto-fill, minmax(160px, 1fr))";
-productsRow.style.gap = "15px";
-productsRow.style.marginBottom = "30px";
-    
+    // Products grid
+    const productsGrid = document.createElement("div");
+    productsGrid.classList.add("products-grid"); // style in CSS
     categories[category].forEach(product => {
       const productBox = document.createElement("div");
       productBox.classList.add("product");
-      productBox.style.flex = "0 0 200px"; // width of each product box
 
-      const displayImage = product.image 
-  ? product.image 
-  : "assets/Images/placeholder.jpg";
-
-const displayPrice = product.price 
-  ? product.price 
-  : "0";
+      const displayImage = product.image || "assets/Images/placeholder.jpg";
+      const displayPrice = product.price || "0";
 
       productBox.innerHTML = `
         <img class="product-img" src="${displayImage}" alt="${product.name}" />
@@ -57,15 +52,11 @@ const displayPrice = product.price
         <button>Add to Cart</button>
       `;
 
-// ==========================
-// CLICK PRODUCT TO OPEN PRODUCT PAGE
-// ==========================
-// Save selected product id to localStorage
-// So product.html can load it individually
-productBox.addEventListener("click", () => {
-  localStorage.setItem("selectedProduct", product.id);
-  window.location.href = "product.html";
-});
+      // Click to open product page
+      productBox.addEventListener("click", () => {
+        localStorage.setItem("selectedProduct", product.id);
+        window.location.href = "product.html";
+      });
 
       // Add to cart button
       const addBtn = productBox.querySelector("button");
@@ -74,12 +65,13 @@ productBox.addEventListener("click", () => {
         addToCart(product, { name: "", image: displayImage, price: displayPrice }, productBox);
       });
 
-      productsRow.appendChild(productBox);
+      productsGrid.appendChild(productBox);
     });
 
-    container.appendChild(productsRow);
+    categoryContainer.appendChild(productsGrid);
+    container.appendChild(categoryContainer);
   }
-}
+  }
   // --- Add to Cart ---
   function addToCart(product, color, productBox) {
     cart.push({
