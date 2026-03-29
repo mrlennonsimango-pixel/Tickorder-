@@ -57,9 +57,14 @@ const displayPrice = product.price
         <button>Add to Cart</button>
       `;
 
-      // Go to individual product page
-      productBox.addEventListener("click", () => {
-  window.location.href = `product.html?id=${product.id}`;
+// ==========================
+// CLICK PRODUCT TO OPEN PRODUCT PAGE
+// ==========================
+// Save selected product id to localStorage
+// So product.html can load it individually
+productBox.addEventListener("click", () => {
+  localStorage.setItem("selectedProduct", product.id);
+  window.location.href = "product.html";
 });
 
       // Add to cart button
