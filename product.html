@@ -54,11 +54,19 @@ container.innerHTML = `
     <!-- Product info section -->
     <div class="product-info">
       <h2 class="product-title">${product.name}</h2>
+
+      <!-- Price -->
       <p class="price">R${product.price}</p>
-      <p>${product.description || "No description available."}</p>
+
+      <!-- Description -->
+      <div class="description-section">
+        <p>${product.description || "No description available."}</p>
+      </div>
+
+      <!-- Action buttons -->
       <div class="buttons">
-        <button onclick="addToCart(${product.id})">Add to Cart</button>
-        <button onclick="buyNow(${product.id})">Buy Now</button>
+        <button class="cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+        <button class="buy-btn" onclick="buyNow(${product.id})">Buy Now</button>
       </div>
     </div>
   </div>
