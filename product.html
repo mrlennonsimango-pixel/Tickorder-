@@ -44,22 +44,25 @@ const container = document.getElementById("product-details");
 
 if (product) {
   // --- Display product details ---
-  container.innerHTML = `
-    <h2 class="product-title">${product.name}</h2>
+container.innerHTML = `
+  <div class="product-container">
+    <!-- Image section -->
+    <div class="image-section">
+      <img id="main-product-img" src="${product.image}" alt="${product.name}">
+    </div>
 
-    <!-- Product image -->
-    <img id="main-product-img" src="${product.image}" alt="${product.name}">
-
-    <!-- Product description -->
-    <p>${product.description || "No description available."}</p>
-
-    <!-- Product price -->
-    <p class="price">Price: R${product.price}</p>
-
-    <!-- Add to Cart & Buy Now buttons -->
-    <button onclick="addToCart(${product.id})">Add to Cart</button>
-    <button onclick="buyNow(${product.id})">Buy Now</button>
-  `;
+    <!-- Product info section -->
+    <div class="product-info">
+      <h2 class="product-title">${product.name}</h2>
+      <p class="price">R${product.price}</p>
+      <p>${product.description || "No description available."}</p>
+      <div class="buttons">
+        <button onclick="addToCart(${product.id})">Add to Cart</button>
+        <button onclick="buyNow(${product.id})">Buy Now</button>
+      </div>
+    </div>
+  </div>
+`;
 } else {
   // If product not found
   container.innerHTML = "<p>Product not found</p>";
