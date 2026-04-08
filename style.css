@@ -437,24 +437,78 @@ footer {
   }
 }
 
-.browse-all-btn-container {
-  text-align: center;
-  margin: 20px 0;
+/* ===========================
+TickOrder Browse All Grid
+=========================== */
+
+/* Grid container */
+.browse-all-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* flexible columns */
+  gap: 16px; /* space between items */
+  padding: 16px;
+  background-color: #f9f9f9; /* optional light background */
 }
 
-.browse-all-btn {
-  background: var(--brand-green);
-  color: white;
-  padding: 12px 25px;
+/* Product cards */
+.browse-all-container .product-card {
+  background-color: #fff;
   border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 16px;
-  transition: 0.2s;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.browse-all-btn:hover {
-  background: #0a6f3c;
- }
+/* Hover effect */
+.browse-all-container .product-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
 
+/* Product image */
+.product-card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+/* Product info */
+.product-card .product-name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.product-card .product-price {
+  font-size: 13px;
+  font-weight: 500;
+  color: #0f9d58; /* TickOrder brand green */
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .browse-all-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .product-card {
+    padding: 8px;
+  }
+
+  .product-card .product-name {
+    font-size: 13px;
+  }
+
+  .product-card .product-price {
+    font-size: 12px;
+  }
 }
