@@ -1,23 +1,19 @@
-// ============================
-// browse.js - Full Browse All Page Only
-// ============================
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("all-products");
 
-// Container
-const browseContainer = document.getElementById('all-products');
+  if (!container) return;
 
-if (browseContainer) {
-  // Show all products as they are
   products.forEach(item => {
-    const card = document.createElement('div');
-    card.classList.add('product'); // your existing CSS
+    const productCard = document.createElement("div");
+    productCard.className = "product";
 
-    card.innerHTML = `
+    productCard.innerHTML = `
       <img src="${item.image}" alt="${item.name}">
       <h3>${item.name}</h3>
-      <p class="price">R${item.price}</p>
+      <p>R${item.price}</p>
       <button>Add to Cart</button>
     `;
 
-    browseContainer.appendChild(card);
+    container.appendChild(productCard);
   });
-}
+});
