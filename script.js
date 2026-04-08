@@ -125,33 +125,3 @@ function displayProducts(productsList) {
   updateCartCounter();
 });
 
-/* ==========================
-   CATEGORY SECTION STYLES
-   ========================== */
-.category-section {
-  margin-bottom: 40px;
-}
-
-/* Category title */
-.category-title {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: #0f9d58; /* Brand green */
-}
-
-/* Products grid layout */
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 15px;
-}
-
-/* Individual product box */
-.product {
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  text-align: center;
-  cursor: pointer;
-  background-color: #fff;
-}
