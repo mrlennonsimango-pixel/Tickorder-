@@ -436,3 +436,23 @@ footer {
     height: 200px;
   }
 }
+
+.browse-all-btn-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.browse-all-btn {
+  background: var(--brand-green);
+  color: white;
+  padding: 12px 25px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  transition: 0.2s;
+}
+
+.browse-all-btn:hover {
+  background: #0a6f3c;
+}
