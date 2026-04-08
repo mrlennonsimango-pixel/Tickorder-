@@ -27,51 +27,51 @@ function displayProducts(productsList) {
     categories[cat].push(product);
   });
 
-  // Loop through each category
-  for (const category in categories) {
-    // --- Category title ---
-    const categoryTitle = document.createElement("h2");
-    categoryTitle.classList.add("category-title");
-    categoryTitle.textContent = category;
-    container.appendChild(categoryTitle);
+// Loop through each category
+for (const category in categories) {
+  // --- Category title as clickable link ---
+  const categoryLink = document.createElement("a");
+  categoryLink.classList.add("category-title");
+  categoryLink.textContent = category;
+  categoryLink.href = `category.html?name=${encodeURIComponent(category)}`; // Pass category name in URL
+  container.appendChild(categoryLink);
 
-    // --- Category grid container ---
-    const grid = document.createElement("div");
-    grid.classList.add("category-grid"); // Each category has its own grid
-    container.appendChild(grid);
+  // --- Category grid container ---
+  const grid = document.createElement("div");
+  grid.classList.add("category-grid"); // Each category has its own grid
+  container.appendChild(grid);
 
-    // --- Render products in this category ---
-    categories[category].forEach(product => {
-      const productBox = document.createElement("div");
-      productBox.classList.add("product");
+  // --- Render products in this category ---
+  categories[category].forEach(product => {
+    const productBox = document.createElement("div");
+    productBox.classList.add("product");
 
-      const displayImage = product.image || "assets/Images/placeholder.jpg";
-      const displayPrice = product.price || "0";
+    const displayImage = product.image || "assets/Images/placeholder.jpg";
+    const displayPrice = product.price || "0";
 
-      productBox.innerHTML = `
-        <img class="product-img" src="${displayImage}" alt="${product.name}" />
-        <h3>${product.name}</h3>
-        <p>R${displayPrice}</p>
-        <button>Add to Cart</button>
-      `;
+    productBox.innerHTML = `
+      <img class="product-img" src="${displayImage}" alt="${product.name}" />
+      <h3>${product.name}</h3>
+      <p>R${displayPrice}</p>
+      <button>Add to Cart</button>
+    `;
 
-      // --- Click product to open product page ---
-      productBox.addEventListener("click", () => {
-        localStorage.setItem("selectedProduct", product.id);
-        window.location.href = "product.html";
-      });
-
-      // --- Add to Cart button ---
-      const addBtn = productBox.querySelector("button");
-      addBtn.addEventListener("click", e => {
-        e.stopPropagation();
-        addToCart(product, { name: "", image: displayImage, price: displayPrice }, productBox);
-      });
-
-      // Append product to this category’s grid
-      grid.appendChild(productBox);
+    // --- Click product to open product page ---
+    productBox.addEventListener("click", () => {
+      localStorage.setItem("selectedProduct", product.id);
+      window.location.href = "product.html";
     });
-  }
+
+    // --- Add to Cart button ---
+    const addBtn = productBox.querySelector("button");
+    addBtn.addEventListener("click", e => {
+      e.stopPropagation();
+      addToCart(product, { name: "", image: displayImage, price: displayPrice }, productBox);
+    });
+
+    grid.appendChild(productBox);
+  });
+}
 }
   // --- Add to Cart ---
   function addToCart(product, color, productBox) {
