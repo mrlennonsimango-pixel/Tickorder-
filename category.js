@@ -10,8 +10,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const categoryProducts = products.filter(p => p.category === categoryName);
 
   categoryProducts.forEach(product => {
-    const productBox = document.createElement("div");
-    productBox.classList.add("product");
+    const productBox = document.createElement("a");
+productBox.href = `product.html?id=${product.id}`;
+    productBox.classList.add("product-card-link");
 
     productBox.innerHTML = `
       <img src="${product.image}" alt="${product.name}" />
