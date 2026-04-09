@@ -539,7 +539,10 @@ TickOrder Browse All Grid
     transform: scale(0.98); /* Button press effect */
 }
 
-/* Product Page Layout Fix */
+/* ===========================
+Product Page Layout - TickOrder
+=========================== */
+
 .product-container {
   display: flex;
   flex-direction: column;
@@ -548,7 +551,7 @@ TickOrder Browse All Grid
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-  margin: 15px 0;
+  margin: 15px 10px;
 }
 
 .image-section img {
@@ -557,7 +560,7 @@ TickOrder Browse All Grid
   object-fit: cover;
   border-radius: 10px;
   display: block;
-  margin: auto;
+  margin: 0 auto;
 }
 
 .product-info {
@@ -570,6 +573,7 @@ TickOrder Browse All Grid
 .product-title {
   font-size: 22px;
   font-weight: bold;
+  color: var(--brand-green);
 }
 
 .price {
@@ -581,6 +585,7 @@ TickOrder Browse All Grid
 .description-section {
   font-size: 14px;
   line-height: 1.6;
+  color: #333;
 }
 
 /* Buttons */
@@ -600,6 +605,7 @@ TickOrder Browse All Grid
   font-weight: bold;
   cursor: pointer;
   border: none;
+  transition: all 0.2s ease-in-out;
 }
 
 .cart-btn {
@@ -607,16 +613,29 @@ TickOrder Browse All Grid
   color: white;
 }
 
+.cart-btn:hover {
+  background: #0c7a45;
+  transform: translateY(-2px);
+}
+
 .buy-btn {
   background: #ff9900;
   color: white;
+}
+
+.buy-btn:hover {
+  background: #cc7a00;
+  transform: translateY(-2px);
 }
 
 /* Desktop layout */
 @media(min-width: 768px){
   .product-container {
     flex-direction: row;
+    gap: 40px;
     align-items: flex-start;
+    max-width: 1000px;
+    margin: 20px auto;
   }
 
   .image-section, .product-info {
@@ -631,4 +650,21 @@ TickOrder Browse All Grid
   .buttons {
     justify-content: flex-start;
   }
+}
+
+/* Mobile tweaks for very small screens */
+@media(max-width: 480px){
+  .product-title {
+    font-size: 20px;
   }
+  .price {
+    font-size: 18px;
+  }
+  .description-section {
+    font-size: 13px;
+  }
+  .cart-btn, .buy-btn {
+    font-size: 13px;
+    padding: 10px;
+  }
+}
