@@ -673,3 +673,46 @@ Product Page Layout - TickOrder
     padding: 12px 0;
   }
 }
+
+/* ===========================
+TOP BUTTONS + CART LINK FIX
+=========================== */
+
+/* Remove blue links + underlines */
+header nav a,
+#cart-link,
+#floating-cart a {
+  text-decoration: none;
+  color: white;
+}
+
+/* Back + Home buttons styling */
+.back-btn,
+.home-btn {
+  background: var(--brand-green);
+  color: white !important;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  display: inline-block;
+  transition: all 0.25s ease-in-out;
+  margin-right: 8px;
+}
+
+.back-btn:hover,
+.home-btn:hover {
+  background: #0c7a45;
+  transform: translateY(-2px);
+}
+
+/* Cart icon top */
+#cart-link {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Floating cart icon */
+#floating-cart a {
+  color: white;
+  }
