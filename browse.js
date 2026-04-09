@@ -4,8 +4,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!container) return;
 
   products.forEach(item => {
-    const productCard = document.createElement("div");
-    productCard.className = "product";
+    const productCard = document.createElement("a");
+    productCard.href = `product.html?id=${item.id}`;
+    productCard.className = "product-card-link";
 
     productCard.innerHTML = `
       <img src="${item.image}" alt="${item.name}">
