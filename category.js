@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!container) return;
 
-  const categoryName = new URLSearchParams(window.location.search).get("name");
+  const categoryName = new URLSearchParams(window.location.search).get("category");
   if (categoryName) {
     const title = document.getElementById("category-title");
     if (title) title.textContent = categoryName;
