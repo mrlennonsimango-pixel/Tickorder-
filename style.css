@@ -720,32 +720,3 @@ header nav a,
   color: white;
   }
 
-/* Back button, Home button, Cart link, Floating cart icon */
-/* These selectors target all navigation-style buttons in your site */
-
-.back-btn,
-.home-btn,
-.cart-link,
-#floating-cart a {
-
-  /* Makes links behave like button blocks (not inline text links) */
-  display: inline-block;
-
-  /* Main brand color (TickOrder green) */
-  background-color: var(--brand-green);
-
-  /* Text color inside buttons */
-  color: white;
-
-  /* Space inside the button (top/bottom left/right) */
-  padding: 10px 14px;
-
-  /* Rounded corners for modern UI look */
-  border-radius: 8px;
-
-  /* Makes text bold so it looks like a real button */
-  font-weight: bold;
-
-  /* Changes mouse cursor to hand pointer */
-  cursor: pointer;
-}
