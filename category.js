@@ -28,8 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Click anywhere on the product box (except Add to Cart) → go to product page
     productBox.addEventListener("click", () => {
-      window.location.href = `product.html?id=${product.id}`;
-    });
+  localStorage.setItem("selectedProduct", product.id);
+  window.location.href = "product.html";
+});
 
     // Add to cart button should not trigger navigation
     const addBtn = productBox.querySelector(".add-to-cart-btn");
