@@ -53,3 +53,20 @@ const products = [
     description: "Perfect for feature walls, ceilings, facades, and residential or commercial projects."
   }
 ];
+
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get("id");
+
+  const selectedProduct = products.find(p => p.id == productId);
+
+  if (!selectedProduct) {
+    document.body.innerHTML = "<h2>Product not found</h2>";
+    return;
+  }
+
+  document.getElementById("product-name").textContent = selectedProduct.name;
+  document.getElementById("product-image").src = selectedProduct.image;
+  document.getElementById("product-price").textContent = "R" + selectedProduct.price;
+  document.getElementById("product-description").textContent = selectedProduct.description;
+});
