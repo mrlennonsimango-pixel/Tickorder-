@@ -18,7 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
 const clickableArea = productCard.querySelector("img");
 
 clickableArea.addEventListener("click", () => {
-  window.location.href = `product.html?id=${product.id}`;
+  localStorage.setItem("selectedProduct", product.id);
+  window.location.href = "product.html";
 });
 
     // Add to cart (no navigation)
