@@ -15,9 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     // ✅ ONLY NAVIGATION METHOD (CLEAN)
-    productCard.addEventListener("click", () => {
-      window.location.href = `product.html?id=${product.id}`;
-    });
+const clickableArea = productCard.querySelector("img");
+
+clickableArea.addEventListener("click", () => {
+  window.location.href = `product.html?id=${product.id}`;
+});
 
     // Add to cart (no navigation)
     const addBtn = productCard.querySelector(".add-to-cart-btn");
