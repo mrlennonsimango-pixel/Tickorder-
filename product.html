@@ -42,7 +42,12 @@ const productId = Number(localStorage.getItem("selectedProduct"));
 const product = products.find(p => p.id === productId);
 
 const container = document.getElementById("product-details");
-
+// ===============================
+// Quantity system (starts at 1)
+// This controls how many items user selects
+// ===============================
+let quantity = 1;
+  
 if (!product) {
   container.innerHTML = "<p>Product not found</p>";
 } else {
@@ -70,6 +75,22 @@ container.innerHTML = `
       </div>
 
       <!-- Action buttons -->
+      <!-- ===============================
+Quantity selector
+User chooses how many items to buy
+=============================== -->
+<div class="quantity-box">
+
+  <!-- Decrease quantity -->
+  <button onclick="changeQty(-1)">-</button>
+
+  <!-- Show current quantity -->
+  <span id="qty">1</span>
+
+  <!-- Increase quantity -->
+  <button onclick="changeQty(1)">+</button>
+
+</div>
       <div class="buttons">
         <button class="cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
         <button class="buy-btn" onclick="buyNow(${product.id})">Buy Now</button>
@@ -95,12 +116,19 @@ function addToCart(id) {
   const product = products.find(p => p.id === id);
 
   cart.push({
-    id: product.id,
-    name: product.name,
-    image: product.image,
-    price: product.price,
-    color: product.color || "Default"
-  });
+  id: product.id,
+  name: product.name,
+  image: product.image,
+  price: product.price,
+
+  // IMPORTANT: selected quantity
+  quantity: quantity,
+
+  // total price for this item
+  total: product.price * quantity,
+
+  color: product.color || "Default"
+});
 
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
 
@@ -130,6 +158,31 @@ function buyNow(id) {
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
   window.location.href = "checkout.html";
 }
+
+  // ===============================
+// Quantity control function
+// Stops user from exceeding stock
+// ===============================
+function changeQty(value) {
+
+  // increase or decrease
+  quantity = quantity + value;
+
+  // never go below 1
+  if (quantity < 1) {
+    quantity = 1;
+  }
+
+  // stop at stock limit
+  if (quantity > product.stock) {
+    quantity = product.stock;
+
+    alert("Only " + product.stock + " available");
+  }
+
+  // update UI
+  document.getElementById("qty").textContent = quantity;
+                                                       }
 
 // ==========================
 // INITIALIZE CART COUNTERS
