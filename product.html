@@ -47,7 +47,6 @@ if (!product) {
   container.innerHTML = "<p>Product not found</p>";
 } else {
   
-
   // --- Display product details ---
 container.innerHTML = `
   <div class="product-container">
@@ -78,15 +77,15 @@ container.innerHTML = `
     </div>
   </div>
 `;
-} else {
-  // If product not found
-  container.innerHTML = "<p>Product not found</p>";
-}
 
+  // ✅ STOCK BLOCK (SAFE HERE)
   if (product.stock === 0) {
-  document.querySelector(".cart-btn").disabled = true;
-  document.querySelector(".buy-btn").disabled = true;
+    setTimeout(() => {
+      document.querySelector(".cart-btn").disabled = true;
+      document.querySelector(".buy-btn").disabled = true;
+    }, 0);
   }
+}
   
 // ==========================
 // ADD TO CART FUNCTION
