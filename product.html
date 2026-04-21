@@ -66,6 +66,8 @@ container.innerHTML = `
       <!-- Price -->
       <p class="price">R${product.price}</p>
 
+      <p class="stock">${product.stock > 0 ? "In Stock" : "Out of Stock"}</p>
+   
       <!-- Description -->
       <div class="description-section">
         <p>${product.description || "No description available."}</p>
