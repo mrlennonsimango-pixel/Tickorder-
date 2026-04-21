@@ -39,17 +39,14 @@
 // Get the product id saved from the homepage click
 const productId = Number(localStorage.getItem("selectedProduct"));
 
-// Find the product in the products array
 const product = products.find(p => p.id === productId);
+
+const container = document.getElementById("product-details");
 
 if (!product) {
   container.innerHTML = "<p>Product not found</p>";
-  return;
-}
-
-// Container where product details will be displayed
-const container = document.getElementById("product-details");
-
+} else {
+  
 if (product) {
   // --- Display product details ---
 container.innerHTML = `
