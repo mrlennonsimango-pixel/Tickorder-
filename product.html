@@ -86,6 +86,11 @@ container.innerHTML = `
   container.innerHTML = "<p>Product not found</p>";
 }
 
+  if (product.stock === 0) {
+  document.querySelector(".cart-btn").disabled = true;
+  document.querySelector(".buy-btn").disabled = true;
+  }
+  
 // ==========================
 // ADD TO CART FUNCTION
 // ==========================
