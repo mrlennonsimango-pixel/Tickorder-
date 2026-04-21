@@ -46,12 +46,12 @@ const container = document.getElementById("product-details");
 // Quantity system (starts at 1)
 // This controls how many items user selects
 // ===============================
-let quantity = 1;
+
   
 if (!product) {
   container.innerHTML = "<p>Product not found</p>";
 } else {
-  
+  let quantity = 1;
   // --- Display product details ---
 container.innerHTML = `
   <div class="product-container">
@@ -163,26 +163,29 @@ function buyNow(id) {
 // Quantity control function
 // Stops user from exceeding stock
 // ===============================
+// ===============================
+// Quantity control function
+// Keeps quantity inside stock limits
+// ===============================
 function changeQty(value) {
 
-  // increase or decrease
+  // update quantity
   quantity = quantity + value;
 
-  // never go below 1
+  // minimum is 1
   if (quantity < 1) {
     quantity = 1;
   }
 
-  // stop at stock limit
+  // maximum is stock (safe check)
   if (quantity > product.stock) {
     quantity = product.stock;
-
     alert("Only " + product.stock + " available");
   }
 
-  // update UI
+  // update display
   document.getElementById("qty").textContent = quantity;
-                                                       }
+}
 
 // ==========================
 // INITIALIZE CART COUNTERS
