@@ -42,7 +42,10 @@ const productId = Number(localStorage.getItem("selectedProduct"));
 // Find the product in the products array
 const product = products.find(p => p.id === productId);
 
-const stockStatus = product.stock > 0 ? "In Stock" : "Out of Stock";
+if (!product) {
+  container.innerHTML = "<p>Product not found</p>";
+  return;
+}
 
 // Container where product details will be displayed
 const container = document.getElementById("product-details");
