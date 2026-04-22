@@ -4,7 +4,7 @@
   <title>Product Details - TickOrder</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <script src="product.js" defer></script>
+  <script src="product.js"></script>
 </head>
 <body>
 
@@ -45,13 +45,7 @@ let quantity = 1;
 // Get the product id saved from the homepage click
 const productId = Number(localStorage.getItem("selectedProduct"));
 
-let product = null;
-
-if (typeof products !== "undefined" && Array.isArray(products)) {
-  product = products.find(p => p.id === productId);
-} else {
-  console.error("products is not loaded");
-}
+const product = products.find(p => p.id === productId);
 const container = document.getElementById("product-details");
 // ===============================
 // Quantity system (starts at 1)
