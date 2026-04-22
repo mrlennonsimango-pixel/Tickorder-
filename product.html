@@ -140,36 +140,49 @@ setTimeout(() => {
 // ADD TO CART FUNCTION
 // ==========================
 function addToCart(id) {
+function addToCart(id) {
   const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
   const product = products.find(p => p.id === id);
 
-  cart.push({
-  id: product.id,
-  name: product.name,
-  image: product.image,
-  price: product.price,
+  // check if product already exists in cart
+  const existingItem = cart.find(item => item.id === product.id);
 
-  // IMPORTANT: selected quantity
-  quantity: quantity,
+  if (existingItem) {
+    // update quantity instead of duplicating
+    existingItem.quantity += quantity;
+    existingItem.total = existingItem.price * existingItem.quantity;
+  } else {
+    // add new item
+    cart.push({
+      id: product.id,
+      name: product.name,
+      image: product.image,
+      price: product.price,
 
-  // total price for this item
-  total: product.price * quantity,
+      quantity: quantity,
+      total: product.price * quantity,
 
-  color: product.color || "Default"
-});
+      color: product.color || "Default"
+    });
+  }
 
+  // save updated cart
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
 
-  // Update cart counters
-  document.getElementById("cart-count").textContent = cart.length;
-  document.getElementById("floating-cart-count").textContent = cart.length;
+  // IMPORTANT FIX: show total items correctly
+  const totalItems = cart.reduce((sum, item) => {
+    return sum + (item.quantity || 1);
+  }, 0);
 
-  // Show toast notification
+  document.getElementById("cart-count").textContent = totalItems;
+  document.getElementById("floating-cart-count").textContent = totalItems;
+
+  // toast message
   const toast = document.getElementById("toast");
   toast.textContent = `${product.name} added to cart`;
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 2000);
-}
+  }
 
 // ==========================
 // BUY NOW FUNCTION
