@@ -139,7 +139,7 @@ setTimeout(() => {
 // ==========================
 // ADD TO CART FUNCTION
 // ==========================
-function addToCart(id) {
+
 function addToCart(id) {
   const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
   const product = products.find(p => p.id === id);
