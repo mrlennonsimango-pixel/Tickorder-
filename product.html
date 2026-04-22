@@ -32,6 +32,7 @@
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", function () {
 
   // ===============================
 // GLOBAL QUANTITY (used everywhere)
@@ -227,6 +228,7 @@ function updateCartCount() {
   document.getElementById("floating-cart-count").textContent = totalItems;
 }
   document.addEventListener("DOMContentLoaded", updateCartCount);
-</script>
+});
+      </script>
 </body>
 </html>
