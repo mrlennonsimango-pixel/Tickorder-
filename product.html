@@ -87,54 +87,77 @@ User chooses how many items to buy
 =============================== -->
 <div class="quantity-box">
 
-  <!-- Decrease quantity -->
-  <button onclick="changeQty(-1)" id="minusBtn">-</button>
+<script>
 
-  <!-- Show current quantity -->
-  <span id="qty">1</span>
+// ===============================
+// GLOBAL QUANTITY
+// ===============================
+let quantity = 1;
 
-  <!-- Increase quantity -->
-  <button onclick="changeQty(1)" id="plusBtn">+</button>
+// ===============================
+// LOAD PRODUCT
+// ===============================
+const productId = Number(localStorage.getItem("selectedProduct"));
+const product = products.find(p => p.id === productId);
+const container = document.getElementById("product-details");
 
-</div>
-      <div class="buttons">
-        <button class="cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
-        <button class="buy-btn" onclick="buyNow(${product.id})">Buy Now</button>
+if (!product) {
+  container.innerHTML = "<p>Product not found</p>";
+} else {
+  quantity = 1;
+
+  container.innerHTML = `
+    <div class="product-container">
+      <div class="image-section">
+        <img id="main-product-img" src="${product.image}" alt="${product.name}">
+      </div>
+
+      <div class="product-info">
+        <h2 class="product-title">${product.name}</h2>
+        <p class="price">R${product.price}</p>
+        <p class="stock">${product.stock > 0 ? "In Stock" : "Out of Stock"}</p>
+
+        <div class="description-section">
+          <p>${product.description || "No description available."}</p>
+        </div>
+
+        <div class="quantity-box">
+          <button onclick="changeQty(-1)" id="minusBtn">-</button>
+          <span id="qty">1</span>
+          <button onclick="changeQty(1)" id="plusBtn">+</button>
+        </div>
+
+        <div class="buttons">
+          <button class="cart-btn" onclick="addToCart(${product.id})">Add to Cart</button>
+          <button class="buy-btn" onclick="buyNow()">Buy Now</button>
+        </div>
       </div>
     </div>
-  </div>
-`;
-// ===============================
-// STEP 2: Smart + button control
-// ===============================
-setTimeout(() => {
+  `;
 
-  const plusBtn = document.getElementById("plusBtn");
-  const minusBtn = document.getElementById("minusBtn");
+  // Button control after render
+  setTimeout(() => {
+    const plusBtn = document.getElementById("plusBtn");
+    const minusBtn = document.getElementById("minusBtn");
 
-  if (!plusBtn || !minusBtn) return;
+    if (!plusBtn || !minusBtn) return;
 
-  // If no stock → disable everything
-  if (product.stock === 0) {
-    plusBtn.disabled = true;
+    if (product.stock === 0) {
+      plusBtn.disabled = true;
+      minusBtn.disabled = true;
+      return;
+    }
+
     minusBtn.disabled = true;
-    return;
-  }
+    plusBtn.disabled = false;
+  }, 0);
+}
 
-  // Initial state
-  minusBtn.disabled = true; // because quantity starts at 1
-  plusBtn.disabled = false;
-
-}, 0);
-
-  
-// ==========================
-// ADD TO CART FUNCTION
-// ==========================
-
+// ===============================
+// ADD TO CART
+// ===============================
 function addToCart(id) {
   const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
-
   const item = products.find(p => p.id === id);
 
   if (!item) return;
@@ -157,7 +180,6 @@ function addToCart(id) {
   }
 
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
-
   updateCartCount();
 
   const toast = document.getElementById("toast");
@@ -165,10 +187,11 @@ function addToCart(id) {
   toast.classList.add("show");
 
   setTimeout(() => toast.classList.remove("show"), 2000);
-  }
-// ==========================
-// BUY NOW FUNCTION
-// ==========================
+}
+
+// ===============================
+// BUY NOW
+// ===============================
 function buyNow() {
   const cart = [{
     id: product.id,
@@ -184,38 +207,29 @@ function buyNow() {
   window.location.href = "checkout.html";
 }
 
+// ===============================
+// CHANGE QUANTITY
+// ===============================
 function changeQty(value) {
-
-  // safety check
   if (!product) return;
 
-  // update quantity
   quantity += value;
 
-  // minimum limit
   if (quantity < 1) quantity = 1;
+  if (quantity > product.stock) quantity = product.stock;
 
-  // maximum limit (stock safe)
-  if (quantity > product.stock) {
-    quantity = product.stock;
-  }
-
-  // update number on screen
   document.getElementById("qty").textContent = quantity;
 
-  // ===============================
-  // BUTTON CONTROL (IMPORTANT PART)
-  // ===============================
   const plusBtn = document.getElementById("plusBtn");
   const minusBtn = document.getElementById("minusBtn");
 
-  // Disable "-" if quantity is 1
   minusBtn.disabled = (quantity === 1);
-
-  // Disable "+" if quantity reached stock
   plusBtn.disabled = (quantity === product.stock);
 }
-  
+
+// ===============================
+// UPDATE CART COUNT
+// ===============================
 function updateCartCount() {
   const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
 
@@ -226,7 +240,8 @@ function updateCartCount() {
   document.getElementById("cart-count").textContent = totalItems;
   document.getElementById("floating-cart-count").textContent = totalItems;
 }
-  document.addEventListener("DOMContentLoaded", updateCartCount);
+
+document.addEventListener("DOMContentLoaded", updateCartCount);
 
 </script>
 </body>
