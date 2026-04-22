@@ -135,41 +135,34 @@ setTimeout(() => {
 
 function addToCart(id) {
   const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
-const product = products.find(p => p.id === id);
 
-  // check if product already exists in cart
   const existingItem = cart.find(item => item.id === product.id);
 
   if (existingItem) {
-    // update quantity instead of duplicating
     existingItem.quantity += quantity;
     existingItem.total = existingItem.price * existingItem.quantity;
   } else {
-    // add new item
     cart.push({
       id: product.id,
       name: product.name,
       image: product.image,
       price: product.price,
-
       quantity: quantity,
       total: product.price * quantity,
-
       color: product.color || "Default"
     });
   }
 
-  // save updated cart
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
 
-updateCartCount();
+  updateCartCount();
 
-  // toast message
   const toast = document.getElementById("toast");
   toast.textContent = `${product.name} added to cart`;
   toast.classList.add("show");
+
   setTimeout(() => toast.classList.remove("show"), 2000);
-  }
+}
 
 // ==========================
 // BUY NOW FUNCTION
