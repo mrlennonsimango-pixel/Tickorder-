@@ -95,7 +95,7 @@ User chooses how many items to buy
   <span id="qty">1</span>
 
   <!-- Increase quantity -->
-  <button onclick="changeQty(1)">+</button>
+  <button onclick="changeQty(1)" id="plusBtn">+</button>
 
 </div>
       <div class="buttons">
@@ -105,7 +105,25 @@ User chooses how many items to buy
     </div>
   </div>
 `;
+// ===============================
+// STEP 2: Smart + button control
+// ===============================
+setTimeout(() => {
 
+  const plusBtn = document.getElementById("plusBtn");
+
+  if (!plusBtn) return;
+
+  // Disable if no stock
+  if (product.stock === 0) {
+    plusBtn.disabled = true;
+    return;
+  }
+
+  // Optional: prepare for future stock limit control
+  // (we will connect this with quantity later)
+
+}, 0);
   // ✅ STOCK BLOCK (SAFE HERE)
   if (product.stock === 0) {
     setTimeout(() => {
@@ -166,37 +184,33 @@ function buyNow(id) {
   window.location.href = "checkout.html";
 }
 
-  // ===============================
-// Quantity control function
-// Stops user from exceeding stock
-// ===============================
-// ===============================
-// Quantity control function
-// Keeps quantity inside stock limits
-// ===============================
-// ===============================
-// Quantity controller (safe + clean)
-// ===============================
 function changeQty(value) {
 
-  // update value
+  // safety check
+  if (!product) return;
+
+  // update quantity
   quantity += value;
 
   // minimum limit
   if (quantity < 1) quantity = 1;
 
-  // maximum limit (stock)
-  if (quantity > product.stock) {
+  // maximum limit (stock safe)
+  if (quantity >= product.stock) {
     quantity = product.stock;
 
-    // better UX than alert (optional warning)
-    console.log("Max stock reached");
+    // OPTIONAL UX FEEDBACK (clean, not alert)
+    document.getElementById("toast").textContent = "Max stock reached";
+    document.getElementById("toast").classList.add("show");
+
+    setTimeout(() => {
+      document.getElementById("toast").classList.remove("show");
+    }, 1500);
   }
 
   // update UI
   document.getElementById("qty").textContent = quantity;
 }
-
 // ==========================
 // INITIALIZE CART COUNTERS
 // ==========================
