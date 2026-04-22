@@ -135,7 +135,7 @@ setTimeout(() => {
 
 function addToCart(id) {
   const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
-  const product = products.find(p => p.id === id);
+const productItem = products.find(p => p.id === id);
 
   // check if product already exists in cart
   const existingItem = cart.find(item => item.id === product.id);
@@ -162,13 +162,7 @@ function addToCart(id) {
   // save updated cart
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
 
-  // IMPORTANT FIX: show total items correctly
-  const totalItems = cart.reduce((sum, item) => {
-    return sum + (item.quantity || 1);
-  }, 0);
-
-  document.getElementById("cart-count").textContent = totalItems;
-  document.getElementById("floating-cart-count").textContent = totalItems;
+updateCartCount();
 
   // toast message
   const toast = document.getElementById("toast");
@@ -239,7 +233,7 @@ function updateCartCount() {
   document.getElementById("cart-count").textContent = totalItems;
   document.getElementById("floating-cart-count").textContent = totalItems;
 }
-  updateCartCount();
+  document.addEventListener("DOMContentLoaded", updateCartCount);
 </script>
 </body>
 </html>
