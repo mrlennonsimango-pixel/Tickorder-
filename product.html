@@ -135,7 +135,7 @@ setTimeout(() => {
 
 function addToCart(id) {
   const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
-const productItem = products.find(p => p.id === id);
+const product = products.find(p => p.id === id);
 
   // check if product already exists in cart
   const existingItem = cart.find(item => item.id === product.id);
