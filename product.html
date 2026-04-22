@@ -89,7 +89,7 @@ User chooses how many items to buy
 <div class="quantity-box">
 
   <!-- Decrease quantity -->
-  <button onclick="changeQty(-1)">-</button>
+  <button onclick="changeQty(-1)" id="minusBtn">-</button>
 
   <!-- Show current quantity -->
   <span id="qty">1</span>
@@ -111,17 +111,20 @@ User chooses how many items to buy
 setTimeout(() => {
 
   const plusBtn = document.getElementById("plusBtn");
+  const minusBtn = document.getElementById("minusBtn");
 
-  if (!plusBtn) return;
+  if (!plusBtn || !minusBtn) return;
 
-  // Disable if no stock
+  // If no stock → disable everything
   if (product.stock === 0) {
     plusBtn.disabled = true;
+    minusBtn.disabled = true;
     return;
   }
 
-  // Optional: prepare for future stock limit control
-  // (we will connect this with quantity later)
+  // Initial state
+  minusBtn.disabled = true; // because quantity starts at 1
+  plusBtn.disabled = false;
 
 }, 0);
   // ✅ STOCK BLOCK (SAFE HERE)
@@ -196,20 +199,24 @@ function changeQty(value) {
   if (quantity < 1) quantity = 1;
 
   // maximum limit (stock safe)
-  if (quantity >= product.stock) {
+  if (quantity > product.stock) {
     quantity = product.stock;
-
-    // OPTIONAL UX FEEDBACK (clean, not alert)
-    document.getElementById("toast").textContent = "Max stock reached";
-    document.getElementById("toast").classList.add("show");
-
-    setTimeout(() => {
-      document.getElementById("toast").classList.remove("show");
-    }, 1500);
   }
 
-  // update UI
+  // update number on screen
   document.getElementById("qty").textContent = quantity;
+
+  // ===============================
+  // BUTTON CONTROL (IMPORTANT PART)
+  // ===============================
+  const plusBtn = document.getElementById("plusBtn");
+  const minusBtn = document.getElementById("minusBtn");
+
+  // Disable "-" if quantity is 1
+  minusBtn.disabled = (quantity === 1);
+
+  // Disable "+" if quantity reached stock
+  plusBtn.disabled = (quantity === product.stock);
 }
 // ==========================
 // INITIALIZE CART COUNTERS
