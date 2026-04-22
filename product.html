@@ -170,17 +170,15 @@ function addToCart(id) {
 // ==========================
 // BUY NOW FUNCTION
 // ==========================
-function buyNow(id) {
-  const productItem = products.find(p => p.id === id);
-
+function buyNow() {
   const cart = [{
-    id: productItem.id,
-    name: productItem.name,
-    image: productItem.image,
-    price: productItem.price,
+    id: product.id,
+    name: product.name,
+    image: product.image,
+    price: product.price,
     quantity: quantity,
-    total: productItem.price * quantity,
-    color: productItem.color || "Default"
+    total: product.price * quantity,
+    color: product.color || "Default"
   }];
 
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
