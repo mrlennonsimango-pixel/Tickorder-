@@ -45,8 +45,13 @@ let quantity = 1;
 // Get the product id saved from the homepage click
 const productId = Number(localStorage.getItem("selectedProduct"));
 
-const product = products.find(p => p.id === productId);
+let product = null;
 
+if (typeof products !== "undefined" && Array.isArray(products)) {
+  product = products.find(p => p.id === productId);
+} else {
+  console.error("products is not loaded");
+}
 const container = document.getElementById("product-details");
 // ===============================
 // Quantity system (starts at 1)
