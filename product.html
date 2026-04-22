@@ -4,7 +4,7 @@
   <title>Product Details - TickOrder</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <script src="product.js"></script>
+  <script src="product.js" defer></script>
 </head>
 <body>
 
@@ -224,12 +224,18 @@ function changeQty(value) {
   // Disable "+" if quantity reached stock
   plusBtn.disabled = (quantity === product.stock);
 }
-// ==========================
-// INITIALIZE CART COUNTERS
-// ==========================
-const initialCart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
-document.getElementById("cart-count").textContent = initialCart.length;
-document.getElementById("floating-cart-count").textContent = initialCart.length;
+  
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
+
+  const totalItems = cart.reduce((sum, item) => {
+    return sum + (item.quantity || 1);
+  }, 0);
+
+  document.getElementById("cart-count").textContent = totalItems;
+  document.getElementById("floating-cart-count").textContent = totalItems;
+}
+  updateCartCount();
 </script>
 </body>
 </html>
