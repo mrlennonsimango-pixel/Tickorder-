@@ -181,14 +181,18 @@ function addToCart(id) {
 // BUY NOW FUNCTION
 // ==========================
 function buyNow(id) {
-  const product = products.find(p => p.id === id);
+  const productItem = products.find(p => p.id === id);
+
   const cart = [{
-    id: product.id,
-    name: product.name,
-    image: product.image,
-    price: product.price,
-    color: product.color || "Default"
+    id: productItem.id,
+    name: productItem.name,
+    image: productItem.image,
+    price: productItem.price,
+    quantity: quantity,
+    total: productItem.price * quantity,
+    color: productItem.color || "Default"
   }];
+
   localStorage.setItem("tickorderCart", JSON.stringify(cart));
   window.location.href = "checkout.html";
 }
