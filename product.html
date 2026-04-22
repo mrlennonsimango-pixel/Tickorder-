@@ -30,7 +30,10 @@
 <div class="page-container">
   <div id="product-details" class="product-details"></div>
 </div>
-
+// ===============================
+// GLOBAL QUANTITY (used everywhere)
+// ===============================
+let quantity = 1;
 <script>
 // ==========================
 // LOAD PRODUCT ON PRODUCT PAGE
@@ -51,7 +54,8 @@ const container = document.getElementById("product-details");
 if (!product) {
   container.innerHTML = "<p>Product not found</p>";
 } else {
-  let quantity = 1;
+// Reset quantity every time product loads
+quantity = 1;
   // --- Display product details ---
 container.innerHTML = `
   <div class="product-container">
@@ -167,23 +171,26 @@ function buyNow(id) {
 // Quantity control function
 // Keeps quantity inside stock limits
 // ===============================
+// ===============================
+// Quantity controller (safe + clean)
+// ===============================
 function changeQty(value) {
 
-  // update quantity
-  quantity = quantity + value;
+  // update value
+  quantity += value;
 
-  // minimum is 1
-  if (quantity < 1) {
-    quantity = 1;
-  }
+  // minimum limit
+  if (quantity < 1) quantity = 1;
 
-  // maximum is stock (safe check)
+  // maximum limit (stock)
   if (quantity > product.stock) {
     quantity = product.stock;
-    alert("Only " + product.stock + " available");
+
+    // better UX than alert (optional warning)
+    console.log("Max stock reached");
   }
 
-  // update display
+  // update UI
   document.getElementById("qty").textContent = quantity;
 }
 
