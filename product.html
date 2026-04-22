@@ -127,14 +127,7 @@ setTimeout(() => {
   plusBtn.disabled = false;
 
 }, 0);
-  // ✅ STOCK BLOCK (SAFE HERE)
-  if (product.stock === 0) {
-    setTimeout(() => {
-      document.querySelector(".cart-btn").disabled = true;
-      document.querySelector(".buy-btn").disabled = true;
-    }, 0);
-  }
-}
+
   
 // ==========================
 // ADD TO CART FUNCTION
