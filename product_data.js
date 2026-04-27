@@ -18,11 +18,35 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     container.innerHTML = `
-        <img src="${product.image}" width="250">
-        <h2>${product.name}</h2>
-        <p>R${product.price}</p>
+  <div class="product-view">
+
+    <div class="product-image-section">
+      <img src="${product.image}" class="main-image">
+    </div>
+
+    <div class="product-info-section">
+
+      <h1>${product.name}</h1>
+
+      <p class="price">R${product.price}</p>
+
+      ${product.color ? `<p><strong>Color:</strong> ${product.color}</p>` : ""}
+
+      <p class="stock ${product.stock > 0 ? 'in-stock' : 'out-stock'}">
+        ${product.stock > 0 ? product.stock + " in stock" : "Out of stock"}
+      </p>
+
+      <div class="description-box">
+        <h3>Description</h3>
         <p>${product.description}</p>
-        <p>${product.stock} in stock</p>
-        <button onclick="addToCart(${product.id})">Add to Cart</button>
-    `;
+      </div>
+
+      <button onclick="addToCart(${product.id})" class="add-btn">
+        Add to Cart
+      </button>
+
+    </div>
+
+  </div>
+`;
 });
