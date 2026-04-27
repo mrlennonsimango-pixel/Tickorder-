@@ -108,12 +108,17 @@ cart.forEach((item, index) => {
 
     div.innerHTML = `
       <img src="${item.image}" alt="${item.name}" />
-      <span>
-  ${item.name}<br>
-  Qty: ${item.quantity || 1} × R${item.price}
-  <br>
-  <b>Total: R${item.price * (item.quantity || 1)}</b>
-</span>
+      <div>
+  <strong>${item.name}</strong><br>
+
+  <div style="margin:5px 0;">
+    <button onclick="decreaseQty(${index})">-</button>
+    <span id="qty-${index}">${item.quantity || 1}</span>
+    <button onclick="increaseQty(${index})">+</button>
+  </div>
+
+  <b>Subtotal: R${item.price * (item.quantity || 1)}</b>
+</div>
       <button onclick="removeItem(${index})">Remove</button>
     `;
 
@@ -141,6 +146,27 @@ document.getElementById("checkoutBtn").addEventListener("click", () => {
 
 renderCart();
 updateCartCounter();
+
+  function increaseQty(index) {
+  cart[index].quantity = (cart[index].quantity || 1) + 1;
+  saveCart();
+}
+
+function decreaseQty(index) {
+  cart[index].quantity = (cart[index].quantity || 1) - 1;
+
+  if (cart[index].quantity < 1) {
+    cart[index].quantity = 1;
+  }
+
+  saveCart();
+}
+
+function saveCart() {
+  localStorage.setItem("tickorderCart", JSON.stringify(cart));
+  renderCart();
+  updateCartCounter();
+                      }
 </script>
 
 </body>
