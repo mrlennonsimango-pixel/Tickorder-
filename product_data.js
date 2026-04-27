@@ -1,10 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const params = new URLSearchParams(window.location.search);
-    const productId = params.get("id");
     const container = document.getElementById("product-details");
+    if (!container) return;
 
-    if (!container || typeof products === "undefined") return;
+    const productId = localStorage.getItem("selectedProduct");
+
+    if (!productId) {
+        container.innerHTML = "<h2>No product selected</h2>";
+        return;
+    }
 
     const product = products.find(p => p.id == productId);
 
@@ -22,10 +26,3 @@ document.addEventListener("DOMContentLoaded", () => {
         <button onclick="addToCart(${product.id})">Add to Cart</button>
     `;
 });
-
-function addToCart(id) {
-    const product = products.find(p => p.id == id);
-    if (!product) return;
-
-    alert(product.name + " added to cart!");
-}
