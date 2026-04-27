@@ -41,10 +41,15 @@ container.innerHTML = `
     </div>
 
     <p id="total">Total: R${product.price}</p>
-
-    <button onclick="addToCart(${product.id})">
+    
+${product.stock > 0 
+  ? `<button onclick="addToCart(${product.id})">
         Add to Cart
-    </button>
+     </button>`
+  : `<button disabled>
+        Out of Stock
+     </button>`
+}
 `;
 });
 
