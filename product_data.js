@@ -53,25 +53,38 @@ function changeQty(amount) {
     let qtyEl = document.getElementById("qty");
     let totalEl = document.getElementById("total");
 
-    let qty = parseInt(qtyEl.textContent);
-
-    qty += amount;
-
-    if (qty < 1) qty = 1;
-
-    qtyEl.textContent = qty;
+    let currentQty = parseInt(qtyEl.textContent);
 
     const productId = localStorage.getItem("selectedProduct");
     const product = products.find(p => p.id == productId);
 
-    totalEl.textContent = "Total: R" + (product.price * qty);
-        }
+    // increase/decrease
+    currentQty += amount;
+
+    // minimum is 1
+    if (currentQty < 1) currentQty = 1;
+
+    // 🚨 MAX LIMIT = STOCK
+    if (currentQty > product.stock) {
+        currentQty = product.stock;
+        alert("Only " + product.stock + " items available in stock");
+    }
+
+    qtyEl.textContent = currentQty;
+
+    totalEl.textContent = "Total: R" + (product.price * currentQty);
+}
 
 function addToCart(id) {
     const product = products.find(p => p.id == id);
     if (!product) return;
 
-    let qty = document.getElementById("qty").textContent;
+    let qty = parseInt(document.getElementById("qty").textContent);
+
+    // 🚨 prevent overstock safety
+    if (qty > product.stock) {
+        qty = product.stock;
+    }
 
     let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
 
@@ -79,11 +92,11 @@ function addToCart(id) {
         id: product.id,
         name: product.name,
         price: product.price,
-        quantity: Number(qty),
+        quantity: qty,
         image: product.image
     });
 
     localStorage.setItem("tickorderCart", JSON.stringify(cart));
 
     alert(product.name + " added to cart!");
-         }
+}
