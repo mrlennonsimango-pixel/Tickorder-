@@ -17,36 +17,73 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    container.innerHTML = `
-  <div class="product-view">
+   
+let quantity = 1;
 
-    <div class="product-image-section">
-      <img src="${product.image}" class="main-image">
+container.innerHTML = `
+    <img src="${product.image}" width="250">
+
+    <h2>${product.name}</h2>
+
+    <p>R${product.price}</p>
+
+    ${product.color ? `<p><strong>Color:</strong> ${product.color}</p>` : ""}
+
+    <p>${product.description}</p>
+
+    <p id="stock">Stock: ${product.stock}</p>
+
+    <!-- QUANTITY CONTROLS -->
+    <div style="margin:10px 0;">
+        <button onclick="changeQty(-1)">-</button>
+        <span id="qty">1</span>
+        <button onclick="changeQty(1)">+</button>
     </div>
 
-    <div class="product-info-section">
+    <p id="total">Total: R${product.price}</p>
 
-      <h1>${product.name}</h1>
-
-      <p class="price">R${product.price}</p>
-
-      ${product.color ? `<p><strong>Color:</strong> ${product.color}</p>` : ""}
-
-      <p class="stock ${product.stock > 0 ? 'in-stock' : 'out-stock'}">
-        ${product.stock > 0 ? product.stock + " in stock" : "Out of stock"}
-      </p>
-
-      <div class="description-box">
-        <h3>Description</h3>
-        <p>${product.description}</p>
-      </div>
-
-      <button onclick="addToCart(${product.id})" class="add-btn">
+    <button onclick="addToCart(${product.id})">
         Add to Cart
-      </button>
-
-    </div>
-
-  </div>
+    </button>
 `;
 });
+
+function changeQty(amount) {
+
+    let qtyEl = document.getElementById("qty");
+    let totalEl = document.getElementById("total");
+
+    let qty = parseInt(qtyEl.textContent);
+
+    qty += amount;
+
+    if (qty < 1) qty = 1;
+
+    qtyEl.textContent = qty;
+
+    const productId = localStorage.getItem("selectedProduct");
+    const product = products.find(p => p.id == productId);
+
+    totalEl.textContent = "Total: R" + (product.price * qty);
+        }
+
+function addToCart(id) {
+    const product = products.find(p => p.id == id);
+    if (!product) return;
+
+    let qty = document.getElementById("qty").textContent;
+
+    let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
+
+    cart.push({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: Number(qty),
+        image: product.image
+    });
+
+    localStorage.setItem("tickorderCart", JSON.stringify(cart));
+
+    alert(product.name + " added to cart!");
+         }
