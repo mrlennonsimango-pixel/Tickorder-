@@ -102,6 +102,21 @@ function addToCart(id) {
     });
 
     localStorage.setItem("tickorderCart", JSON.stringify(cart));
-
+    updateCartUI();
     alert(product.name + " added to cart!");
+}
+
+function updateCartUI() {
+
+  let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
+
+  const totalItems = cart.reduce((sum, item) => {
+    return sum + (item.quantity || 1);
+  }, 0);
+
+  const cartCount = document.getElementById("cart-count");
+  if (cartCount) cartCount.textContent = totalItems;
+
+  const floating = document.getElementById("floating-cart-count");
+  if (floating) floating.textContent = totalItems;
 }
