@@ -53,6 +53,17 @@ ${product.stock > 0
      </button>`
 }
 `;
+    // ✅ NOW it's in the correct place
+    if (product.stock === 0) {
+        document.getElementById("qty").textContent = 0;
+
+        const buttons = document.querySelectorAll("#product-details button");
+        buttons.forEach(btn => {
+            if (btn.textContent === "+" || btn.textContent === "-") {
+                btn.disabled = true;
+            }
+        });
+    }
 });
 
 function changeQty(amount) {
