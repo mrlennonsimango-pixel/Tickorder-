@@ -1,11 +1,23 @@
 /* ===========================
    TICKORDER ADMIN SYSTEM v1
-   Layout for iframe-based dashboard
+   GREEN DOMINANT DESIGN
 =========================== */
 
 
 /* ===========================
-   GLOBAL RESET + BASE LAYOUT
+   BRAND SYSTEM
+=========================== */
+:root {
+  --brand-green: #0f9d58;
+  --dark: #111;
+  --dark-soft: #1a1a1a;
+  --light: #f5f5f5;
+  --white: #ffffff;
+}
+
+
+/* ===========================
+   GLOBAL RESET
 =========================== */
 * {
   margin: 0;
@@ -15,28 +27,26 @@
 }
 
 body {
-  background: #f5f5f5;
+  background: var(--light);
   color: #222;
 }
 
 
 /* ===========================
-   ADMIN HEADER BAR
-   (Top branding section)
+   HEADER (GREEN DOMINANT)
 =========================== */
 .header {
-  background: #111;
-  color: #fff;
+  background: var(--brand-green);
+  color: white;
   padding: 15px;
   font-size: 18px;
   font-weight: bold;
-  border-bottom: 3px solid var(--brand-green);
+  border-bottom: 3px solid #0c7c45;
 }
 
 
 /* ===========================
-   MAIN CONTAINER LAYOUT
-   (Sidebar + Content structure)
+   MAIN LAYOUT
 =========================== */
 .container {
   display: flex;
@@ -45,12 +55,11 @@ body {
 
 
 /* ===========================
-   SIDEBAR NAVIGATION MENU
-   (Admin navigation system)
+   SIDEBAR (DARK SUPPORT LAYER)
 =========================== */
 .sidebar {
   width: 220px;
-  background: #1a1a1a;
+  background: var(--dark);
   color: white;
   padding: 15px;
   display: flex;
@@ -58,11 +67,95 @@ body {
   gap: 10px;
 }
 
-/* Sidebar menu items */
+/* Menu items now GREEN DRIVEN */
 .menu-item {
-  background: #222;
+  background: var(--dark-soft);
   padding: 12px;
   border-radius: 6px;
   cursor: pointer;
   transition: 0.2s;
-  font-size:
+  font-size: 14px;
+  border-left: 3px solid transparent;
+}
+
+/* GREEN FOCUS STATE */
+.menu-item:hover {
+  background: var(--brand-green);
+  border-left: 3px solid white;
+}
+
+
+/* ===========================
+   MAIN CONTENT AREA
+=========================== */
+.main {
+  flex: 1;
+  padding: 15px;
+  background: var(--light);
+}
+
+
+/* ===========================
+   CONTENT CARD SYSTEM
+=========================== */
+.card {
+  background: var(--white);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+
+/* ===========================
+   IFRAME CONTENT
+=========================== */
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 8px;
+}
+
+
+/* ===========================
+   STATUS SYSTEM (GREEN-FIRST LOGIC)
+=========================== */
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.pending {
+  background: #ff9800;
+  color: white;
+}
+
+.completed {
+  background: var(--brand-green);
+  color: white;
+}
+
+
+/* ===========================
+   RESPONSIVE DESIGN
+=========================== */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+
+  .menu-item {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+  }
+}
