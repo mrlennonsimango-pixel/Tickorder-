@@ -73,9 +73,8 @@ function changeQty(amount) {
 
     // 🚨 MAX LIMIT = STOCK
     if (currentQty > product.stock) {
-        currentQty = product.stock;
-        alert("Only " + product.stock + " items available in stock");
-    }
+    currentQty = product.stock;
+        }
 
     qtyEl.textContent = currentQty;
 
@@ -86,25 +85,47 @@ function addToCart(id) {
     const product = products.find(p => p.id == id);
     if (!product) return;
 
+    // 🚫 block if out of stock
+    if (product.stock <= 0) {
+        alert("This product is out of stock");
+        return;
+    }
+
     let qty = parseInt(document.getElementById("qty").textContent);
 
-    // 🚨 prevent overstock safety
+    // limit to stock
     if (qty > product.stock) {
         qty = product.stock;
     }
 
     let cart = JSON.parse(localStorage.getItem("tickorderCart")) || [];
 
-    cart.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        quantity: qty,
-        image: product.image
-    });
+    let existing = cart.find(item => item.id == product.id);
+
+    if (existing) {
+        // 🔥 FIX: prevent exceeding stock
+        let newQty = existing.quantity + qty;
+
+        if (newQty > product.stock) {
+            existing.quantity = product.stock;
+        } else {
+            existing.quantity = newQty;
+        }
+
+    } else {
+        cart.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            quantity: qty,
+            image: product.image
+        });
+    }
 
     localStorage.setItem("tickorderCart", JSON.stringify(cart));
+
     updateCartUI();
+
     alert(product.name + " added to cart!");
 }
 
