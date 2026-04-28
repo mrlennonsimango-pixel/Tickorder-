@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Orders - Admin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="card">
+
+  <h2>Orders</h2>
+
+  <div style="margin-bottom:20px;">
+    <button class="filterBtn" onclick="setFilter(this,'all')">All</button>
+    <button class="filterBtn" onclick="setFilter(this,'pendingConfirmation')">Pending</button>
+    <button class="filterBtn" onclick="setFilter(this,'confirmed')">Confirmed</button>
+    <button class="filterBtn" onclick="setFilter(this,'shipped')">Shipped</button>
+    <button class="filterBtn" onclick="setFilter(this,'delivered')">Delivered</button>
+  </div>
+
+  <div style="margin-bottom:10px;">
+    <button onclick="exportFilteredOrders(currentFilter)">Export Orders</button>
+  </div>
+
+  <div id="ordersList"></div>
+
+</div>
