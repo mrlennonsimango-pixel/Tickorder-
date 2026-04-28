@@ -31,7 +31,9 @@ container.innerHTML = `
 
     <p>${product.description}</p>
 
-    <p id="stock">Stock: ${product.stock}</p>
+    <p id="stock" class="${product.stock > 0 ? 'in-stock' : 'out-of-stock'}">
+  ${product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+</p>
 
     <!-- QUANTITY CONTROLS -->
     <div style="margin:10px 0;">
