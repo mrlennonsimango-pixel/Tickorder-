@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+<h2>Product Management</h2>
+
+<!-- ADD / EDIT PRODUCT -->
+<div class="card">
+  <h3>Add / Edit Product</h3>
+
+  <input type="text" id="name" placeholder="Product Name"><br><br>
+  <input type="number" id="price" placeholder="Price"><br><br>
+  <input type="text" id="image" placeholder="Image URL"><br><br>
+  <input type="text" id="category" placeholder="Category"><br><br>
+
+  <button class="btn btn-primary" onclick="saveProduct()">Save Product</button>
+</div>
+
+<br>
+
+<!-- PRODUCT LIST -->
+<div id="product-list"></div>
+
+<script src="stock.js"></script>
+
+</body>
+</html>
