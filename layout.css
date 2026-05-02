@@ -41,3 +41,30 @@ footer {
   border-top: 1px solid #555;
   padding-top: 5px;
 }
+
+.browse-all-btn {
+    display: inline-block;
+    background-color: var(--brand-green);
+    color: #ffffff;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-align: center;
+    transition: 0.3s;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.browse-all-btn:hover {
+    background-color: #0c7c45;
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.browse-all-btn:active {
+    transform: scale(0.98);
+}
+
+
