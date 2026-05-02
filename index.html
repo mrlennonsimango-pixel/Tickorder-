@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="base.css">
 <link rel="stylesheet" href="layout.css">
 <link rel="stylesheet" href="home.css">
-<link rel="stylesheet" href="category.css">
+
 </head>
 <body>
 
@@ -23,28 +23,38 @@
 <!-- Add this in your <head> to get Font Awesome icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<section class="hero">
-  <h2>Welcome to TickOrder</h2>
-  <p>From Style to Essentials, Tick It, We'll Deliver It.</p>
-  <button id="shopBtn">Shop Now</button>
-</section>
-<div class="browse-all-btn-container">
-  <a href="browse.html" class="browse-all-btn">Browse All Products</a>
-</div>
+<section class="home-page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <h2>Welcome to TickOrder</h2>
+    <p>From Style to Essentials, Tick It, We'll Deliver It.</p>
+    <button id="shopBtn">Shop Now</button>
+  </section>
+
+  <!-- BROWSE BUTTON -->
+  <div class="browse-all-btn-container">
+    <a href="browse.html" class="browse-all-btn">Browse All Products</a>
   </div>
+
+  <!-- CONTROLS -->
+  <div class="shop-controls">
+    <input type="text" id="search-input" placeholder="Search products...">
+    <select id="sort-select">
+      <option value="">Sort By</option>
+      <option value="low">Price: Low → High</option>
+      <option value="high">Price: High → Low</option>
+      <option value="new">Newest</option>
+    </select>
+  </div>
+
+  <!-- PRODUCTS -->
+  <section id="products" class="products"></section>
+
+  <!-- LOAD MORE (optional) -->
   <button id="load-more-btn" style="display:none;">Load More</button>
+
 </section>
-  
-<div class="shop-controls">
-  <input type="text" id="search-input" placeholder="Search products...">
-  <select id="sort-select">
-    <option value="">Sort By</option>
-    <option value="low">Price: Low → High</option>
-    <option value="high">Price: High → Low</option>
-    <option value="new">Newest</option>
-  </select>
-</div>
-<section id="products" class="products"></section>
 
   <div id="toast"></div>
   <script src="product.js"></script>
