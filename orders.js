@@ -1,92 +1,84 @@
-// Load existing orders OR empty
-let orders = JSON.parse(localStorage.getItem("orders")) || [];
+// Firebase config (same as checkout)
+const firebaseConfig = {
+  apiKey: "AIzaSyBhDQeyV9_REmBi0zjQQyawkDoaX7Ho544",
+  authDomain: "tickorder-13b84.firebaseapp.com",
+  projectId: "tickorder-13b84",
+  storageBucket: "tickorder-13b84.appspot.com",
+  messagingSenderId: "288232701324",
+  appId: "1:288232701324:web:ae43423dacecd9508f6aa9"
+};
 
-// Load products (important connection)
-let products = JSON.parse(localStorage.getItem("products")) || [];
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
 const container = document.getElementById("orders-container");
 
 // ==========================
-// CREATE ORDER (FROM PRODUCT)
+// LOAD ORDERS FROM FIREBASE
 // ==========================
-function createOrder(productIndex) {
-  const product = products[productIndex];
+function loadOrders() {
+  container.innerHTML = "<p>Loading orders...</p>";
 
-  const newOrder = {
-    id: Date.now(),
-    productName: product.name,
-    price: product.price,
-    status: "pending",
-    date: new Date().toLocaleString()
-  };
+  db.collection("orders")
+    .orderBy("createdAt", "desc")
+    .onSnapshot((snapshot) => {
+      container.innerHTML = "";
 
-  orders.push(newOrder);
-  saveOrders();
-}
+      if (snapshot.empty) {
+        container.innerHTML = "<p>No orders yet</p>";
+        return;
+      }
 
-// ==========================
-// DISPLAY ORDERS
-// ==========================
-function renderOrders() {
-  container.innerHTML = "";
+      snapshot.forEach((doc) => {
+        const order = doc.data();
 
-  if (orders.length === 0) {
-    container.innerHTML = "<p>No orders yet</p>";
-    return;
-  }
+        container.innerHTML += `
+          <div class="card">
+            <h3>${order.orderID || "Order"}</h3>
 
-  orders.forEach((order, index) => {
-    container.innerHTML += `
-      <div class="card">
-        <h3>Order #${order.id}</h3>
+            <p><strong>Name:</strong> ${order.name}</p>
+            <p><strong>Email:</strong> ${order.email}</p>
+            <p><strong>Phone:</strong> ${order.phone}</p>
 
-        <p><strong>Product:</strong> ${order.productName}</p>
-        <p><strong>Price:</strong> R${order.price}</p>
-        <p><strong>Date:</strong> ${order.date}</p>
+            <p><strong>Total:</strong> R${order.total}</p>
+            <p><strong>Delivery:</strong> ${order.deliveryType}</p>
+            <p><strong>Status:</strong> ${order.status}</p>
 
-        <span class="status ${order.status}">
-          ${order.status}
-        </span>
+            <hr>
 
-        <br><br>
+            <p><strong>Items:</strong></p>
+            <ul>
+              ${(order.items || []).map(i => `<li>${i.name} - R${i.price}</li>`).join("")}
+            </ul>
 
-        <button class="btn btn-primary" onclick="markComplete(${index})">
-          Complete
-        </button>
+            <button onclick="markComplete('${doc.id}')">
+              Mark Completed
+            </button>
 
-        <button class="btn btn-danger" onclick="deleteOrder(${index})">
-          Delete
-        </button>
-      </div>
-    `;
-  });
+            <button onclick="deleteOrder('${doc.id}')">
+              Delete
+            </button>
+          </div>
+        `;
+      });
+    });
 }
 
 // ==========================
 // UPDATE STATUS
 // ==========================
-function markComplete(index) {
-  orders[index].status = "completed";
-  saveOrders();
+function markComplete(id) {
+  db.collection("orders").doc(id).update({
+    status: "completed"
+  });
 }
 
 // ==========================
 // DELETE ORDER
 // ==========================
-function deleteOrder(index) {
-  orders.splice(index, 1);
-  saveOrders();
+function deleteOrder(id) {
+  db.collection("orders").doc(id).delete();
 }
 
-// ==========================
-// SAVE
-// ==========================
-function saveOrders() {
-  localStorage.setItem("orders", JSON.stringify(orders));
-  renderOrders();
-}
-
-// ==========================
 // INIT
-// ==========================
-renderOrders();
+loadOrders();
