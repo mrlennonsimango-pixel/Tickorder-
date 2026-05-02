@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   products.forEach(product => {
 
     const productCard = document.createElement("div");
-    productCard.className = "product";
+    productCard.className = "product-card";
 
     productCard.innerHTML = `
       <img src="${product.image}" alt="${product.name}">
