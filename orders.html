@@ -10,6 +10,27 @@
 
 <h2>Orders</h2>
 
+<!-- ✅ PASTE FILTERS HERE -->
+<div class="filters">
+
+  <select id="status-filter">
+    <option value="all">All Orders</option>
+    <option value="pending">Pending</option>
+    <option value="processing">Processing (Packed)</option>
+    <option value="shipped">Shipped</option>
+    <option value="completed">Completed</option>
+  </select>
+
+  <input type="text" id="search-input" placeholder="Search name, phone, order ID">
+
+  <select id="sort-filter">
+    <option value="newest">Newest First</option>
+    <option value="oldest">Oldest First</option>
+  </select>
+
+</div>
+
+<!-- Orders will appear here -->
 <div id="orders-container"></div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
