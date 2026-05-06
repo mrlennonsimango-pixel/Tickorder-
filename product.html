@@ -2,37 +2,50 @@
 <html>
 <head>
   <title>Product Details - TickOrder</title>
-  <link rel="stylesheet" href="style.css">
+
+  <!-- SYSTEM CSS -->
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="layout.css">
+  <link rel="stylesheet" href="product.css">
+
+  <!-- ICONS -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- LOGIC -->
+  <script src="product_data.js" defer></script>
   <script src="product.js" defer></script>
-<script src="product_data.js" defer></script>
-  
 </head>
+
 <body>
 
 <header>
   <div class="nav-buttons">
-    <a href="javascript:history.back()" class="back-btn">⬅ Back</a>
-    <a href="index.html" class="home-btn">🏠 Home</a>
+    <a href="javascript:history.back()" class="btn back">⬅ Back</a>
+    <a href="index.html" class="btn home">🏠 Home</a>
   </div>
+
   <h1>TickOrder</h1>
-  <a href="cart.html" class="cart-link">🛒 <span id="cart-count">0</span></a>
+
+  <a href="cart.html" class="cart">
+    🛒 <span id="cart-count">0</span>
+  </a>
 </header>
-<!-- Floating cart -->
-<div id="floating-cart">
+
+<!-- FLOAT CART -->
+<div class="floating-cart">
   <a href="cart.html">
     <i class="fa-solid fa-cart-shopping"></i>
     <span id="floating-cart-count">0</span>
   </a>
 </div>
 
-<!-- Toast -->
+<!-- TOAST -->
 <div id="toast"></div>
 
-<div class="page-container">
-  <div id="product-details" class="product-details"></div>
-</div>
-
+<!-- PRODUCT OUTPUT -->
+<main class="product-page">
+  <div id="product-details"></div>
+</main>
 
 </body>
 </html>
