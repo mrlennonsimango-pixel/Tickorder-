@@ -21,37 +21,48 @@ document.addEventListener("DOMContentLoaded", () => {
 let quantity = 1;
 
 container.innerHTML = `
-    <img src="${product.image}" width="250">
+container.innerHTML = `
+<div class="product-layout">
+
+  <!-- IMAGE -->
+  <div class="product-image">
+    <img src="${product.image}" id="mainImage" onclick="zoomImage(this)">
+  </div>
+
+  <!-- INFO -->
+  <div class="product-info">
 
     <h2>${product.name}</h2>
 
-    <p>R${product.price}</p>
+    <p class="price">R${product.price}</p>
 
     ${product.color ? `<p><strong>Color:</strong> ${product.color}</p>` : ""}
 
-    <p>${product.description}</p>
+    <p class="description">${product.description}</p>
 
-    <p id="stock" class="${product.stock > 0 ? 'in-stock' : 'out-of-stock'}">
-  ${product.stock > 0 ? 'In Stock' : 'Out of Stock'}
-</p>
+    <p class="${product.stock > 0 ? 'in-stock' : 'out-of-stock'}">
+      ${product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+    </p>
 
-    <!-- QUANTITY CONTROLS -->
-    <div style="margin:10px 0;">
+    <!-- QUANTITY -->
+    <div class="qty-box">
         <button onclick="changeQty(-1)">-</button>
         <span id="qty">1</span>
         <button onclick="changeQty(1)">+</button>
     </div>
 
     <p id="total">Total: R${product.price}</p>
-    
-${product.stock > 0 
-  ? `<button onclick="addToCart(${product.id})">
+
+    <!-- ACTIONS -->
+    <div class="actions">
+      <button class="btn-cart" onclick="addToCart(${product.id})">
         Add to Cart
-     </button>`
-  : `<button disabled>
-        Out of Stock
-     </button>`
-}
+      </button>
+    </div>
+
+  </div>
+
+</div>
 `;
     // ✅ NOW it's in the correct place
     if (product.stock === 0) {
