@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Product Details - TickOrder</title>
+  <title>Product - TickOrder</title>
 
-  <!-- SYSTEM CSS -->
-  <link rel="stylesheet" href="base.css">
-  <link rel="stylesheet" href="layout.css">
   <link rel="stylesheet" href="product.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
 
-  <!-- ICONS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-  <!-- LOGIC -->
   <script src="product_data.js" defer></script>
   <script src="product.js" defer></script>
 </head>
@@ -19,32 +14,13 @@
 <body>
 
 <header>
-  <div class="nav-buttons">
-    <a href="javascript:history.back()" class="btn back">⬅ Back</a>
-    <a href="index.html" class="btn home">🏠 Home</a>
-  </div>
-
+  <a href="javascript:history.back()">⬅ Back</a>
   <h1>TickOrder</h1>
-
-  <a href="cart.html" class="cart">
-    🛒 <span id="cart-count">0</span>
-  </a>
+  <a href="../cart.html">🛒 <span id="cart-count">0</span></a>
 </header>
 
-<!-- FLOAT CART -->
-<div class="floating-cart">
-  <a href="cart.html">
-    <i class="fa-solid fa-cart-shopping"></i>
-    <span id="floating-cart-count">0</span>
-  </a>
-</div>
-
-<!-- TOAST -->
-<div id="toast"></div>
-
-<!-- PRODUCT OUTPUT -->
 <main class="product-page">
-  <div id="product-details"></div>
+  <div id="product-root"></div>
 </main>
 
 </body>
