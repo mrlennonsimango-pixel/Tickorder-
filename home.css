@@ -55,3 +55,16 @@
   gap: 15px;
   margin: 15px 0;
 }
+@media (min-width: 768px) {
+  .products {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.home-page {
+  padding: 10px;
+}
+
+.hero {
+  margin: 15px 0;
+}
